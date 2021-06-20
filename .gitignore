@@ -164,6 +164,7 @@ cython_debug/
 [Ss]cripts
 pyvenv.cfg
 .venv
+.vscode
 pip-selfcheck.json
 
 ### Python template
