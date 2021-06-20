@@ -1,5 +1,6 @@
 from django.db import models
 
+
 class Topic(models.Model):
     name = models.CharField(max_length=64)
     short_description = models.TextField(blank=True)

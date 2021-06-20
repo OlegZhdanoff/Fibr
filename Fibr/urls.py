@@ -21,8 +21,12 @@ import mainapp.urls as mainapp
 from Fibr import settings
 
 urlpatterns = [
+    path('', include(mainapp, namespace='mainapp')),
+    path('hub/', include('hub.urls', namespace='hub')),
+
+    # Оставил параметры админки по дефолту
     path('admin/', admin.site.urls),
-    path('', include(mainapp, namespace='main'))
+
 ]
 
 if settings.DEBUG:
