@@ -1,5 +1,5 @@
 from django.db import models
-from django.contrib.auth.models import User
+from authapp.models import User
 from hub.models import Topic
 
 class Article(models.Model):
