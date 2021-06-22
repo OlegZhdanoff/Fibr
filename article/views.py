@@ -1,3 +1,6 @@
 from django.shortcuts import render
 
-# Create your views here.
+
+def index(request):
+    context = {'title': 'How to Fight Fraud with Artificial Intelligence and Intelligent Analytics'}
+    return render(request, 'article.html', context)

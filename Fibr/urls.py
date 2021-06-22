@@ -23,6 +23,7 @@ from Fibr import settings
 urlpatterns = [
     path('', include(mainapp, namespace='mainapp')),
     path('hub/', include('hub.urls', namespace='hub')),
+    path('article/', include('article.urls', namespace='article')),
 
     # Оставил параметры админки по дефолту
     path('admin/', admin.site.urls),
