@@ -30,22 +30,11 @@
 </div>
 {% block content %} {% endblock %}
 
-<footer class="footer mt-auto py-3 bg-light">
 
+<footer class="footer mt-auto py-3 bg-light">
     <div class="container">
         <span class="text-muted">© 2021 «GB TEAM 2»</span>
     </div>
-        <div>
-            # НАЧАЛО НАВИГАЦИИ 1 #
-            {% for topic in topic_list %}
-            <a href="{% url 'mainapp:index' %}">
-            {{ topic.name }}
-            </a>
-
-            # КОНЕЦ НАВИГАЦИИ #
-            {% endfor %}
-    </div>
-
 </footer>
 
 <!-- Page content-->
