@@ -9,7 +9,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
     <meta name="description" content=""/>
     <meta name="author" content=""/>
-    <title>{{ title }}</title>
+    <title>{{ object.name }}</title>
     <!-- Favicon-->
     <link rel="icon" type="image/x-icon" href="{% static 'vendor/img/favicon.ico' %}"/>
     <!-- Core theme CSS (includes Bootstrap)-->
@@ -20,12 +20,11 @@
 </head>
 
 <body>
-
 {% include 'mainapp/includes/inc_nav_menu.html' %}
 
 <div class="h3 pt-5 px-lg-3 pb-4 text-black-50">
     <div class="container w-75">
-        <h3 class="h3"> {{ article }} </h3>
+        <h3 class="h3"> {{ object.name }} </h3>
     </div>
 
 </div>
@@ -35,6 +34,16 @@
 
     <div class="container">
         <span class="text-muted">© 2021 «GB TEAM 2»</span>
+    </div>
+        <div>
+            # НАЧАЛО НАВИГАЦИИ 1 #
+            {% for topic in topic_list %}
+            <a href="{% url 'mainapp:index' %}">
+            {{ topic.name }}
+            </a>
+
+            # КОНЕЦ НАВИГАЦИИ #
+            {% endfor %}
     </div>
 
 </footer>
