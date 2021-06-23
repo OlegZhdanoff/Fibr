@@ -2,6 +2,7 @@ from django.db import models
 from authapp.models import User
 from hub.models import Topic
 
+
 class Article(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     topic = models.ForeignKey(Topic, on_delete=models.CASCADE)
@@ -17,4 +18,3 @@ class Article(models.Model):
 
     def __str__(self):
         return self.title
-
