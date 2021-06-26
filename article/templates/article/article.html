@@ -8,17 +8,17 @@
                 <img src="http://placehold.it/30X30" width="24" height="24" class="img-fluid">
                 <span class="text">GB team 2</span>
             </a>
-            <p class="timelist"><small>сегодня в 17:03</small></p>
+            <p class="timelist"><small>{{ article.created_at }}</small></p>
 
         </header>
         <div class="col-sm-12 w-75">
-            <a href="/article/" class="card-title text-decoration-none" style="color: #86b7fe; cursor: pointer"><h1
-                    class="text"> How to Fight
+            <h1 class="card-title text" style="color: #86b7fe; cursor: default">
+                How to Fight
                 Fraud with Artificial Intelligence and Intelligent
-                Analytics</h1></a>
-            <p class="text-muted"><span class="glyphicon glyphicon-lock"></span> Available Exclusively
-                for Premium Members</p>
-            <p>Could artificial intelligence have been used to prevent the high-profile Target breach?
+                Analytics</h1>
+            <p class="text-muted"><span class="glyphicon glyphicon-lock"></span> {{ article.topic }}</p>
+            <p class="text lead ">Could artificial intelligence have been used to prevent the high-profile Target
+                breach?
                 The concept is not so far-fetched. Organizations such as Mastercard and RBS WorldPay
                 have long relied on artificial intelligence to detect fraudulent transaction patterns
                 and prevent card.</p>
@@ -28,7 +28,8 @@
 
 
         </div>
-        <p class="text w-75 pt-3">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris egestas nec ipsum a
+        <p class="text w-75 pt-3 lead" style="line-height: 30px">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris egestas nec ipsum
+            a
             pulvinar. Sed suscipit, neque ut laoreet congue, ligula lectus auctor mauris, fermentum tempor risus ligula
             eu risus. Cras tempus fermentum odio, vel laoreet libero tempus vel. Nam aliquet mi viverra velit fringilla,
             ac dapibus enim lacinia. Mauris molestie tellus libero, eu malesuada erat eleifend vel. Etiam hendrerit
