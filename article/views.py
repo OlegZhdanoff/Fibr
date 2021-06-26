@@ -1,6 +1,14 @@
-from django.shortcuts import render
+from django.views.generic import DetailView
+
+from article.models import Article
 
 
-def index(request):
-    context = {'title': 'How to Fight Fraud with Artificial Intelligence and Intelligent Analytics'}
-    return render(request, 'article/article.html', context)
+class ArticleView(DetailView):
+    model = Article
+    template_name = 'article/article.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['articles'] = Article.objects.filter(topic=self.kwargs.get('pk'))
+
+        return context

@@ -5,5 +5,5 @@ import article.views as article
 app_name = 'article'
 
 urlpatterns = [
-    path('', article.index, name='article'),
+    path('<int:pk>/', article.ArticleView.as_view(), name='article'),
 ]
