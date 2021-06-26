@@ -15,12 +15,19 @@ Including another URLconf
 """
 from django.conf.urls.static import static
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
 
+import mainapp.urls as mainapp
 from Fibr import settings
 
 urlpatterns = [
+    path('', include(mainapp, namespace='mainapp')),
+    path('hub/', include('hub.urls', namespace='hub')),
+    path('article/', include('article.urls', namespace='article')),
+
+    # Оставил параметры админки по дефолту
     path('admin/', admin.site.urls),
+
 ]
 
 if settings.DEBUG:
