@@ -1,4 +1,3 @@
-console.log('123')
 document.addEventListener("DOMContentLoaded", function(){
   window.addEventListener('scroll', function() {
       if (window.scrollY > 50) {
