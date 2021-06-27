@@ -42,11 +42,17 @@
                     <button class="btn btn-primary btn-sm my-0 m-1 " type="button" onclick="location.href='{% url 'auth:register' %}'">Регистрация</button>                    
                 </div>
             </li>
-        {% if user.is_authenticated %}
-            <li class="nav-item">
-                <a class="nav-link" href="/">{{ user.username }}</a>
-            </li>
-        {% endif %}
+            {% if user.is_authenticated %}
+                <li class="nav-item">
+                    <a class="nav-link" href="/">{{ user.username }}</a>
+                </li>
+            {% endif %}
+
+            {% if user.is_superuser %}
+                <li class="nav-item">
+                    <a class="nav-link" href="/admin/">Настройки</a>
+                </li>
+            {% endif %}        
 
         </ul>
     </div>
