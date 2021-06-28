@@ -5,66 +5,25 @@
     <div class="container w-75">
         <header class="accordion-header">
             <a href="user" class="text-info" title="Автор публикации" style="text-decoration: none;">
-                <img src="http://placehold.it/30X30" width="24" height="24" class="img-fluid">
+                <img src="http://placehold.it/30X30" width="24" height="24" class="img-fluid" alt="img">
                 <span class="text">GB team 2</span>
             </a>
-            <p class="timelist"><small>{{ article.created_at }}</small></p>
+            <p class="timelist text-muted"><small>{{ article.created_at }}</small></p>
 
         </header>
         <div class="col-sm-12 w-75">
             <h1 class="card-title text" style="color: #86b7fe; cursor: default">
-                How to Fight
-                Fraud with Artificial Intelligence and Intelligent
-                Analytics</h1>
+                {{ article.title }}</h1>
             <p class="text-muted"><span class="glyphicon glyphicon-lock"></span> {{ article.topic }}</p>
-            <p class="text lead ">Could artificial intelligence have been used to prevent the high-profile Target
-                breach?
-                The concept is not so far-fetched. Organizations such as Mastercard and RBS WorldPay
-                have long relied on artificial intelligence to detect fraudulent transaction patterns
-                and prevent card.</p>
-            <div class="col-sm-4"><a href="#" class=""><img src="http://placehold.it/700X500"
-                                                            class="img-responsive"></a>
+
+            <div class="col-sm-4">{% if article.image %}
+                <img src="{{ article.image.url }}" class="img-responsive" alt="img" width="750">
+            {% endif %}
             </div>
 
 
         </div>
-        <p class="text w-75 pt-3 lead" style="line-height: 30px">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris egestas nec ipsum
-            a
-            pulvinar. Sed suscipit, neque ut laoreet congue, ligula lectus auctor mauris, fermentum tempor risus ligula
-            eu risus. Cras tempus fermentum odio, vel laoreet libero tempus vel. Nam aliquet mi viverra velit fringilla,
-            ac dapibus enim lacinia. Mauris molestie tellus libero, eu malesuada erat eleifend vel. Etiam hendrerit
-            justo sed metus accumsan, non ullamcorper arcu mattis. Morbi tincidunt pharetra orci, ac finibus neque
-            faucibus vitae. Phasellus quis hendrerit purus. Aliquam erat volutpat.
-
-            Nam sed elit turpis. Nullam rutrum a mauris vel euismod. Pellentesque iaculis luctus magna non pulvinar.
-            Aliquam maximus odio blandit turpis auctor, pharetra congue dui rutrum. Praesent blandit viverra erat eget
-            cursus. Pellentesque id luctus nibh. Fusce bibendum imperdiet condimentum. Vestibulum feugiat nulla ut risus
-            aliquet, id bibendum tortor laoreet. Sed tempus mi quis dapibus tincidunt. Fusce id velit a dolor semper
-            sollicitudin. Aenean at porta neque. Quisque ac leo condimentum, scelerisque arcu interdum, lacinia tellus.
-            Quisque id turpis tortor. Nullam vulputate lectus leo, at bibendum sapien lacinia ut. Curabitur sollicitudin
-            nec erat non pulvinar. In dapibus ante purus, in pulvinar orci pellentesque vitae.
-
-            Vestibulum elementum nisi ac pretium dignissim. Quisque sodales, ligula vel placerat consectetur, dui ligula
-            porttitor erat, in pharetra urna purus at ipsum. Praesent sodales lacus vel sodales iaculis. Nam ut ante
-            consectetur, feugiat libero eget, elementum neque. Donec in mollis sem. Aenean pretium tortor quis odio
-            gravida vulputate. Mauris sollicitudin magna pellentesque rhoncus consectetur. Maecenas ligula velit,
-            elementum id iaculis sed, venenatis at velit. Nullam ipsum justo, malesuada ac est eget, laoreet imperdiet
-            enim.
-
-            Cras pellentesque sollicitudin mauris, ut scelerisque ante scelerisque a. Etiam rhoncus pulvinar est, in
-            semper ante accumsan quis. Ut at consectetur tortor. Mauris vulputate quis est eget posuere. Aenean quis
-            enim eget turpis tristique dictum vel eget metus. Vestibulum pellentesque vitae ipsum et rhoncus. Curabitur
-            sit amet dictum nulla, in accumsan est. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices
-            posuere cubilia curae; Nam porta purus et rutrum rhoncus. Curabitur ac tortor tincidunt, tincidunt massa at,
-            ultrices neque. Nunc arcu libero, vulputate at eleifend sed, consectetur volutpat odio. Sed pulvinar auctor
-            ex maximus lobortis. Phasellus eu arcu enim. Mauris sollicitudin justo ac arcu ornare ullamcorper a ac
-            libero.
-
-            Nulla facilisi. Quisque a nibh ac nunc commodo porta. Donec gravida enim tellus. Aenean rutrum, mauris at
-            rutrum imperdiet, tellus ante porta tellus, sit amet elementum dolor est vitae ligula. In ullamcorper
-            tincidunt eleifend. Aenean porta imperdiet consequat. Donec erat diam, feugiat eu risus eget, mattis
-            tristique dolor. Quisque tristique quis justo sit amet condimentum. Etiam sit amet diam auctor, elementum
-            erat in, placerat est.</p>
+        <p class="text w-75 pt-3" style="line-height: 1.70;font-size: 18px;overflow-wrap: break-word;"> {{ article.content }}</p>
     </div>
 
 {% endblock %}
