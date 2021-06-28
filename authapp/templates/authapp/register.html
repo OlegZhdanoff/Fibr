@@ -1,11 +1,7 @@
 {% extends 'authapp/base.html' %}
 {% load static %}
 
-{% block content %}
-    <link href="{% static 'css/header.css' %}" rel="stylesheet"/>
-    <link href="https://fonts.googleapis.com/css?family=Roboto:400,700" rel="stylesheet">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+{% block css %}
     <style>
 
         .form-control {
@@ -100,6 +96,10 @@
             text-align: center;
         }
     </style>
+{% endblock %}
+
+{% block content %}
+
 
     <div class="h3 px-lg-3   text-black-50"></div>
     <div class="signup-form">
