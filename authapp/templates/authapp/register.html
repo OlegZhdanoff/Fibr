@@ -1,14 +1,143 @@
-{% extends 'hub/base.html' %}
+{% extends 'authapp/base.html' %}
 {% load static %}
 
 {% block content %}
-<div class="container w-75 p-2">
-    <form class="form-horizontal" method="POST" novalidate>
-        {% csrf_token %}
+    <link href="{% static 'css/header.css' %}" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css?family=Roboto:400,700" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <style>
 
-        {{ form.as_p }}
+        .form-control {
+            height: 41px;
+            background: #f2f2f2;
+            box-shadow: none !important;
+            border: none;
+        }
 
-        <input type="submit" name="submit" value="Регистрация">
-    </form>
-</div> 
+        .form-control:focus {
+            background: #e2e2e2;
+        }
+
+        .form-control, .btn {
+            border-radius: 3px;
+        }
+
+        .signup-form {
+            width: 390px;
+            margin: 30px auto;
+        }
+
+        .signup-form form {
+            color: #999;
+            border-radius: 3px;
+            margin-bottom: 15px;
+            background: #fff;
+            box-shadow: 0 0 2px rgba(0, 0, 0, 0.5);
+
+            padding: 30px;
+        }
+
+        .signup-form h2 {
+            color: #333;
+            font-weight: bold;
+            margin-top: 0;
+        }
+
+        .signup-form hr {
+            margin: 0 -30px 20px;
+        }
+
+        .signup-form .form-group {
+            margin-bottom: 20px;
+        }
+
+        .signup-form input[type="checkbox"] {
+            margin-top: 3px;
+        }
+
+        .signup-form .row div:first-child {
+            padding-right: 10px;
+        }
+
+        .signup-form .row div:last-child {
+            padding-left: 10px;
+        }
+
+        .signup-form .btn {
+            font-size: 16px;
+            font-weight: bold;
+            background: #3598dc;
+            border: none;
+            min-width: 140px;
+        }
+
+        .signup-form .btn:hover, .signup-form .btn:focus {
+            background: #2389cd !important;
+            outline: none;
+        }
+
+        .signup-form a {
+            color: #fff;
+            text-decoration: underline;
+        }
+
+        .signup-form a:hover {
+            text-decoration: none;
+        }
+
+        .signup-form form a {
+            color: #3598dc;
+            text-decoration: none;
+        }
+
+        .signup-form form a:hover {
+            text-decoration: underline;
+        }
+
+        .signup-form .hint-text {
+            padding-bottom: 15px;
+            text-align: center;
+        }
+    </style>
+
+    <div class="h3 px-lg-3   text-black-50"></div>
+    <div class="signup-form">
+        <form method="post" novalidate>
+
+            {% csrf_token %}
+
+            <h2>Регистрация</h2>
+            <p>Пожалуйста заполните форму для регистрации!</p>
+            <hr>
+            <div class="form-group">
+                <div class="row">
+
+                    <div class="col-xs-6">{{ form.username }}</div>
+                    <div class="col-xs-6 pt-4">{{ form.email }}</div>
+
+                </div>
+            </div>
+            <div class="form-group">
+                {{ form.first_name }}
+            </div>
+            <div class="form-group">{{ form.last_name }}</div>
+            <div class="form-group">
+                {{ form.password1 }}
+            </div>
+            <div class="form-group">
+                {{ form.password2 }}
+            </div>
+            {#        <div class="form-group">#}
+            {#			<label class="checkbox-inline"><input type="checkbox" required="required"> I accept the <a href="#">Terms of Use</a> &amp; <a href="#">Privacy Policy</a></label>#}
+            {#		</div>#}
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary btn-lg">Зарегистрироваться</button>
+            </div>
+        </form>
+
+        <div class="hint-text">Есть аккаунт? <a style="color: #0d0d0d" href="{% url 'auth:login' %}">Войти</a></div>
+    </div>
+
+
 {% endblock %}
