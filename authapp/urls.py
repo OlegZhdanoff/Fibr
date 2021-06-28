@@ -8,5 +8,5 @@ urlpatterns = [
     path('login/', authapp.UserLogin.as_view(), name='login'),
     path('logout/', authapp.UserLogout.as_view(), name='logout'),
     path('register/', authapp.RegisterUserView.as_view(), name='register'),
-
+    path('profile/', authapp.profile, name='profile'),
 ]
