@@ -1,4 +1,4 @@
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 
 from authapp.models import User
 
@@ -17,4 +17,17 @@ class UserRegisterForm(UserCreationForm):
         self.fields['password1'].widget.attrs['placeholder'] = 'Введите пароль'
         self.fields['password2'].widget.attrs['placeholder'] = 'Подтвердите пароль'
         for field in self.fields.values():
-            field.widget.attrs['class'] = 'form-control py-4'
+            field.widget.attrs['class'] = 'form-control'
+
+
+class UserAuthenticationForm(AuthenticationForm):
+    class Meta:
+        model = User
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        self.fields['username'].widget.attrs['placeholder'] = 'Имя пользователя'
+        self.fields['password'].widget.attrs['placeholder'] = 'Пароль'
+        for field in self.fields.values():
+            field.widget.attrs['class'] = 'form-control py-4 fadeIn'
