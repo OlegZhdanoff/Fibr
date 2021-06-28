@@ -2,10 +2,11 @@ from django.contrib.auth.views import LoginView, LogoutView
 from django.views.generic import CreateView
 
 from authapp.models import User
-from authapp.forms import UserRegisterForm
+from authapp.forms import UserRegisterForm,UserAuthenticationForm
 
 
 class UserLogin(LoginView):
+    form_class = UserAuthenticationForm
     template_name = 'authapp/login.html'
 
 
