@@ -39,13 +39,14 @@ class UserProfileForm(UserChangeForm):
 
     class Meta:
         model = User
-        fields = ('first_name', 'last_name', 'avatar', 'username', 'email')
+        fields = ('first_name', 'last_name', 'avatar', 'username', 'email', 'password')
 
     def __init__(self, *args, **kwargs):
         super(UserProfileForm, self).__init__(*args, **kwargs)
         for field in self.fields.values():
             field.widget.attrs['class'] = 'form-control bg-light'
         self.fields['username'].widget.attrs['readonly'] = True
+        self.fields['password'].widget.attrs['readonly'] = True
         self.fields['email'].widget.attrs['readonly'] = True
         self.fields['avatar'].widget.attrs['class'] = 'custom-file-input'
 
