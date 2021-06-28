@@ -1,5 +1,6 @@
-from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, UserChangeForm
 from django import forms
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, UserChangeForm
+
 from authapp.models import User, UserProfile
 
 
@@ -42,8 +43,8 @@ class UserProfileForm(UserChangeForm):
 
     def __init__(self, *args, **kwargs):
         super(UserProfileForm, self).__init__(*args, **kwargs)
-        for field_name, field in self.fields.items():
-            field.widget.attrs['class'] = 'form-control py-4'
+        for field in self.fields.values():
+            field.widget.attrs['class'] = 'form-control bg-light'
         self.fields['username'].widget.attrs['readonly'] = True
         self.fields['email'].widget.attrs['readonly'] = True
         self.fields['avatar'].widget.attrs['class'] = 'custom-file-input'
@@ -56,5 +57,5 @@ class UserProfileEditForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        for field_name, field in self.fields.items():
-            field.widget.attrs['class'] = 'form-control'
+        for field in self.fields.values():
+            field.widget.attrs['class'] = 'form-control bg-light'
