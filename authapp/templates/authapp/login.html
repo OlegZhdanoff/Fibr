@@ -1,8 +1,12 @@
 {% extends 'authapp/base.html' %}
 {% load static %}
 
-{% block content %}
+{% block css %}
     <link href="{% static 'css/login.css' %}" rel="stylesheet"/>
+{% endblock %}
+
+{% block content %}
+
 
     <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
@@ -13,13 +17,9 @@
         <div id="formContent">
             <!-- Tabs Titles -->
 
-            <!-- Icon -->
-            <div class="fadeIn first">
-                <img src="{{ user.image.url }}" id="icon" alt="User Icon"/>
-            </div>
 
             <!-- Login Form -->
-            <form method="post" novalidate>
+            <form class="pt-3" method="post" novalidate>
 
                 {% csrf_token %}
                 {{ form.username }}
@@ -29,12 +29,11 @@
             </form>
 
 
-
         </div>
     </div>
-<!-- Remind Passowrd -->
-{#    <div id="formFooter">#}
-{#      <a class="underlineHover" href="#">Forgot Password?</a>#}
-{#    </div>#}
+    <!-- Remind Passowrd -->
+    {#    <div id="formFooter">#}
+    {#      <a class="underlineHover" href="#">Forgot Password?</a>#}
+    {#    </div>#}
 
 {% endblock %}
