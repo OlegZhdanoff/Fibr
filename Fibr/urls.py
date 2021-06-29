@@ -24,6 +24,7 @@ urlpatterns = [
     path('hub/', include('hub.urls', namespace='hub')),
     path('article/', include('article.urls', namespace='article')),
     path('auth/', include('authapp.urls', namespace='auth')),
+    path('admin-staff/', include('adminapp.urls', namespace='admin-staff')),
 
     # Оставил параметры админки по дефолту
     path('admin/', admin.site.urls),
