@@ -9,7 +9,6 @@ from authapp.models import User
 from django.db import transaction
 
 
-
 class UserLogin(LoginView):
     form_class = UserAuthenticationForm
     template_name = 'authapp/login.html'

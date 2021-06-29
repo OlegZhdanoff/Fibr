@@ -2,6 +2,8 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.dispatch import receiver
 from django.db.models.signals import post_save
+
+
 # from article.models import ArticleView
 
 
@@ -36,5 +38,5 @@ class UserProfile(models.Model):
             UserProfile.objects.create(user=instance)
 
     @receiver(post_save, sender=User)
-    def save_user_profile(self, instance,  **kwargs):
+    def save_user_profile(self, instance, **kwargs):
         instance.userprofile.save()
