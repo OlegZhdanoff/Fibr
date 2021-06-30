@@ -5,7 +5,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="2e8216fa-ab1e-4ec7-a527-7e1ec6c14359" name="Default Changelist" comment="user profile and user edit">
+      <change afterPath="$PROJECT_DIR$/authapp/migrations/0006_alter_userprofile_article.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/authapp/migrations/0007_alter_user_image.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/img/default.jpg" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/authapp/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/authapp/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/authapp/templates/authapp/profile.html" beforeDir="false" afterPath="$PROJECT_DIR$/authapp/templates/authapp/profile.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/authapp/templates/authapp/register.html" beforeDir="false" afterPath="$PROJECT_DIR$/authapp/templates/authapp/register.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/db.sqlite3" beforeDir="false" afterPath="$PROJECT_DIR$/db.sqlite3" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -51,6 +58,10 @@
       <filtered-out-file-type name="COMMIT_BY_MESSAGE" />
     </file-type-list>
   </component>
+  <component name="JsBowerSettings">
+    <bower-package value="" />
+    <bower.json value="" />
+  </component>
   <component name="ProjectId" id="1uECEVmycFq2SNsJufGyT05abp3" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
     <ConfirmationsSetting value="2" id="Add" />
@@ -66,12 +77,13 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../Django Framework/geekshop-server/geekshop" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.detected.package.tslint" value="true" />
     <property name="node.js.selected.package.eslint" value="(autodetect)" />
     <property name="node.js.selected.package.tslint" value="(autodetect)" />
-    <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
+    <property name="nodejs_package_manager_path" value="npm" />
+    <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
   <component name="RunManager">
     <configuration name="Fibr" type="Python.DjangoServer" factoryName="Django server">
@@ -119,6 +131,12 @@
       <workItem from="1624911545916" duration="691000" />
       <workItem from="1624990769908" duration="2684000" />
       <workItem from="1624993741651" duration="5344000" />
+      <workItem from="1624999173418" duration="1113000" />
+      <workItem from="1625000314020" duration="306000" />
+      <workItem from="1625000635648" duration="592000" />
+      <workItem from="1625078298147" duration="177000" />
+      <workItem from="1625078717241" duration="2024000" />
+      <workItem from="1625080809746" duration="1389000" />
     </task>
     <task id="LOCAL-00001" summary="user profile (models, views, forms)">
       <created>1624906651489</created>
@@ -162,7 +180,14 @@
       <option name="project" value="LOCAL" />
       <updated>1624998991336</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="user profile and user edit">
+      <created>1624999337624</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1624999337624</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
