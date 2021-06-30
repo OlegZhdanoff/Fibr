@@ -6,4 +6,5 @@ app_name = 'article'
 
 urlpatterns = [
     path('<int:pk>/', article.ArticleView.as_view(), name='article'),
+    path('create-article/', article.ArticleCreateView.as_view(), name='article_create'),
 ]

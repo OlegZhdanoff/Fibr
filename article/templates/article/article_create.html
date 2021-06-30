@@ -1,0 +1,39 @@
+{% extends 'article/base.html' %}
+{% load static %}
+
+{% block content %}
+    <div class="container w-75">
+
+        <form method="post">
+            {% csrf_token %}
+            {{ form.non_field.errors }}
+
+            {%  comment %}
+            {{ form.as_p | safe}}
+            <div class="invalid-feedback">
+                {{ field.errors }}
+            </div>
+            {% endcomment %}
+            {% for field in form %}
+            <div class="form-group">
+                {{ field.label_tag }}
+                {% if field.name == 'content' %}
+                    {{ field | safe }}
+                {% else %}
+                    {{ field | safe}}
+                {% endif %}
+                <div class="invalid-feedback">
+                    {{ field.errors }}
+                </div>
+            </div>
+            {% endfor %}
+
+
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary btn-lg">Создать</button>
+                <button type="reset" class="btn btn-secondary btn-lg">Отменить</button>
+            </div>
+        </form>
+    </div>
+
+{% endblock %}
