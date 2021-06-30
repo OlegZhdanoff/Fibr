@@ -2,7 +2,44 @@
 
 {% block content %}
     <div class="container w-75">
-        <p class="mb-4">Здесь будет отображаться вся информация об удаленных пользователях данного сайта </p>
+        <p class="mb-4">Здесь отображаться вся информация об удаленных пользователях данного сайта </p>
+    </div>
+
+    <div class="my-3 p-3 bg-body rounded shadow-sm">
+        <h6 class="border-bottom pb-2 mb-0">Список пользователей</h6>
+            <table id="datatable" class="table dt-responsive nowrap table-vertical"
+                   width="100%" cellspacing="0">
+                <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Аватар</th>
+                    <th>Никнейм</th>
+                    <th>Имя</th>
+                    <th>Фамилия</th>
+                    <th>Возраст</th>
+                    <th>Email</th>
+                    <th>Редактировать</th>
+                    <th>Статус</th>
+                </tr>
+                </thead>
+                <tbody>
+
+                    <tr>
+                        <td>12</td>
+                        <td><img alt="not" src="№" height="50px"></td>
+                        <td>Ivanushka</td>
+                        <td>Ivan</td>
+                        <td>Ivanov</td>
+                        <td>32</td>
+                        <td>sdd@dd.local</td>
+                        <td><a href="#" class="btn btn-info btn-circle btn-sm">
+                    <i class="fas fa-info-circle"></i>
+                    </a></td>
+                        <td>Delete</td>
+                </tbody>
+
+            </table>
+
     </div>
 
 {% endblock %}
