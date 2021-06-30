@@ -1,9 +1,9 @@
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
-from django.views.generic import DetailView, CreateView
+from django.views.generic import DetailView, CreateView, UpdateView
 
-from article.forms import ArticleCreateForm
+from article.forms import ArticleCreateForm, ArticleEditForm
 from article.models import Article
 
 
@@ -22,7 +22,7 @@ class ArticleCreateView(LoginRequiredMixin, CreateView):
     model = Article
     template_name = 'article/article_create.html'
     form_class = ArticleCreateForm
-    success_url = reverse_lazy('authapp:profile')
+    success_url = '/'
     success_msg = 'Статья успешно создана'
 
     def form_valid(self, form):
@@ -42,3 +42,11 @@ class ArticleCreateView(LoginRequiredMixin, CreateView):
         #     if self.object.get_total_cost() == 0:
         #         self.object.delete()
         return super().form_valid(form)
+
+
+class ArticleEditView(LoginRequiredMixin, UpdateView):
+    model = Article
+    template_name = 'article/article_edit.html'
+    form_class = ArticleEditForm
+    success_url = reverse_lazy('authapp:profile')
+    success_msg = 'Статья успешно отредактирована'
