@@ -11,9 +11,11 @@
         <h4 class="pb-4 border-bottom">Настройки аккаунта</h4>
         <form method="post" novalidate>
             {% csrf_token %}
-            <div class="d-flex align-items-start py-3 border-bottom"><img
-                    src="{{ user.image.url }}"
+            <div class="d-flex align-items-start py-3 border-bottom">
+                {% if user.image %}
+                    <img src="{{ user.image.url }}"
                     class="img" alt="">
+                {% endif %}
                 <div class="pl-sm-4 pl-4" id="img-section" style="padding-left: 20px"><b>Фото профиля</b>
                     <p>Accepted file type .png. Less than 1MB</p>
                     <button class="btn button border"><b>Загрузить</b></button>
