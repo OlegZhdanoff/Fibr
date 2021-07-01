@@ -4,6 +4,7 @@ from django.shortcuts import render
 from django.urls import reverse
 from django.views.generic import CreateView
 
+from article.models import Article
 from authapp.forms import UserRegisterForm, UserAuthenticationForm, UserProfileForm, UserProfileEditForm
 from authapp.models import User
 
@@ -36,5 +37,7 @@ def profile(request):
 
     context = {
         'form': form,
+        'articles': Article.get_user_articles(request.user.pk)
     }
+    print(request.user.pk)
     return render(request, 'authapp/profile.html', context)

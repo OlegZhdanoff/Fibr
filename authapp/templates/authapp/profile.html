@@ -6,7 +6,9 @@
 {% endblock %}
 
 {% block content %}
-
+<div class="container">
+<div class="row justify-content-md-center">
+<div class="col-8">
     <div class="wrapper bg-white mt-sm-4">
         <h4 class="pb-4 border-bottom">Настройки аккаунта</h4>
         <form method="post" novalidate>
@@ -66,5 +68,21 @@
             </div>
         </form>
     </div>
-
+</div>
+<div class="col-4">
+    <div class="wrapper bg-white mt-sm-4">
+    <p><a class="text-decoration-none" href="{% url 'article:create' %}">
+                                    <button type="button" class="btn btn-primary"> Создать статью </button>
+                                </a></p>
+        <ul>
+            {% for article in articles %}
+                <li><a class="text-decoration-none" href="{% url 'article:edit' article.pk %}"> {{ article.title }}<br>
+                                    <button type="button" class="btn bg-light btn-outline-info btn-sm"> Редактировать </button>
+                                </a></li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
+</div>
+</div>
 {% endblock %}

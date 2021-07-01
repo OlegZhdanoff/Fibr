@@ -18,3 +18,7 @@ class Article(models.Model):
 
     def __str__(self):
         return self.title
+
+    @staticmethod
+    def get_user_articles(user_pk):
+        return Article.objects.filter(user=user_pk)
