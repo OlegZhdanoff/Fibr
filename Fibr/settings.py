@@ -35,6 +35,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django_summernote',
 
     'mainapp',
     'hub',
@@ -138,3 +139,7 @@ AUTH_USER_MODEL = 'authapp.User'
 # Login
 LOGIN_URL = 'auth/login'
 LOGIN_REDIRECT_URL = '/'
+
+# create/edit article
+X_FRAME_OPTIONS = 'SAMEORIGIN'
+SUMMERNOTE_THEME = 'bs4'

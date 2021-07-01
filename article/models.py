@@ -5,10 +5,10 @@ from hub.models import Topic
 
 class Article(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    topic = models.ForeignKey(Topic, on_delete=models.CASCADE)
-    title = models.CharField(max_length=64, unique=True)
-    content = models.TextField(blank=True)
-    image = models.ImageField(upload_to='article_images', blank=True)
+    topic = models.ForeignKey(Topic, on_delete=models.CASCADE, verbose_name='Раздел')
+    title = models.CharField(max_length=64, unique=True, verbose_name='Название')
+    content = models.TextField(blank=True, verbose_name='Статья')
+    image = models.ImageField(upload_to='article_images', blank=True, verbose_name='Фото')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -18,3 +18,7 @@ class Article(models.Model):
 
     def __str__(self):
         return self.title
+
+    @staticmethod
+    def get_user_articles(user_pk):
+        return Article.objects.filter(user=user_pk)
