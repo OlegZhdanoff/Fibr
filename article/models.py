@@ -23,6 +23,7 @@ class Article(models.Model):
     def get_user_articles(user):
         return Article.objects.filter(user=user)
 
+
 class Like(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     article = models.ForeignKey(Article, on_delete=models.CASCADE)
@@ -33,3 +34,11 @@ class Like(models.Model):
         likes = Like.objects.filter(article=article, is_liked=True)
         users = [like.user for like in likes]
         return users
+
+
+class Comment(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    article = models.ForeignKey(Article, on_delete=models.CASCADE)
+    text = models.TextField(blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
