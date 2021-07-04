@@ -1,3 +1,4 @@
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy, reverse
 from django.views.generic import DetailView, CreateView, UpdateView
@@ -39,9 +40,11 @@ class ArticleEditView(LoginRequiredMixin, UpdateView):
     success_msg = 'Статья успешно отредактирована'
 
 
+@login_required(login_url='authapp:login')
 def article_like(request, pk):
-    """Вызывает метод set_like для статьи"""
-    article = get_object_or_404(Article, id=request.POST.get('article_id'))
-    article.set_like(user=request.user)
+    """Вызывает метод set_like для статьи или редиректит на статью после авторизации"""
+    if request.method == 'POST':
+        article = get_object_or_404(Article, id=request.POST.get('article_id'))
+        article.set_like(user=request.user)
 
     return HttpResponseRedirect(reverse('article:article', args=[str(pk)]))
