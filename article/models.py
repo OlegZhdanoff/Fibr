@@ -23,3 +23,8 @@ class Article(models.Model):
     def get_user_articles(user):
         return Article.objects.filter(user=user)
 
+class Like(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    article = models.ForeignKey(Article, on_delete=models.CASCADE)
+    is_liked = models.BooleanField(default=True)
+
