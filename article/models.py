@@ -23,6 +23,23 @@ class Article(models.Model):
     def get_user_articles(user):
         return Article.objects.filter(user=user)
 
+    def get_total_likes(self):
+        """Возвращает количество лайков для текущей статьи"""
+        likes = Like.objects.filter(article=self, is_liked=True)
+
+        return len(likes)
+
+    def set_like(self, user):
+        """Создает запись лайка или меняет свойство is_liked для существующей"""
+        like_object = Like.objects.filter(article=self, user=user)
+
+        if like_object:
+            like_object[0].switch_like()
+            print(f"debug {like_object[0].id}\nstate: {like_object[0].is_liked}")
+
+        else:
+            Like.objects.create(article=self, user=user)
+
 
 class Like(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -34,6 +51,11 @@ class Like(models.Model):
         likes = Like.objects.filter(article=article, is_liked=True)
         users = [like.user for like in likes]
         return users
+
+    def switch_like(self):
+        """Меняет значение is_liked на противоположное"""
+        self.is_liked = not self.is_liked
+        self.save()
 
 
 class Comment(models.Model):

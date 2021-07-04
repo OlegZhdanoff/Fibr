@@ -30,6 +30,10 @@
         </a>
     {% endif %}
     </div>
-
+    <form action="{% url 'article:like_article' article.pk %}" method="POST">
+        {% csrf_token %}
+        <button type="submit" name="article_id" value="{{ article.pk }}">LIKE</button>
+    </form>
+    <p>Liked: {{ article.get_total_likes }}</p>
 
 {% endblock %}
