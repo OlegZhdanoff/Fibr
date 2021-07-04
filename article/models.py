@@ -28,3 +28,8 @@ class Like(models.Model):
     article = models.ForeignKey(Article, on_delete=models.CASCADE)
     is_liked = models.BooleanField(default=True)
 
+    @staticmethod
+    def get_users_article_liked(article):
+        likes = Like.objects.filter(article=article, is_liked=True)
+        users = [like.user for like in likes]
+        return users
