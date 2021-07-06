@@ -29,16 +29,25 @@ class Article(models.Model):
 
         return len(likes)
 
-    def set_like(self, user):
+    def get_total_dislikes(self):
+        """Возвращает количество дизлайков для текущей статьи"""
+        likes = Like.objects.filter(article=self, is_disliked=True)
+
+        return len(likes)
+
+    def set_like_state(self, user, like_action):
         """Создает запись лайка или меняет свойство is_liked для существующей"""
         like_object = Like.objects.filter(article=self, user=user)
 
         if like_object:
-            like_object[0].switch_like()
-            print(f"debug {like_object[0].id}\nstate: {like_object[0].is_liked}")
+            like_object[0].switch_like(like_action)
+            like_object[0].save()
 
         else:
-            Like.objects.create(article=self, user=user)
+            if like_action == 'like':
+                Like.objects.create(article=self, user=user, is_liked=True)
+            else:
+                Like.objects.create(article=self, user=user, is_disliked=True)
 
 
 class Like(models.Model):
@@ -53,10 +62,19 @@ class Like(models.Model):
         users = [like.user for like in likes]
         return users
 
-    def switch_like(self):
-        """Меняет значение is_liked на противоположное"""
-        self.is_liked = not self.is_liked
-        self.save()
+    def switch_like(self, like_action):
+        """Меняет статус лайка/дизлайка"""
+        if like_action == 'like':
+            if self.is_liked:
+                self.cancel_liked()
+            else:
+                self.set_like()
+
+        else:
+            if self.is_disliked:
+                self.cancel_liked()
+            else:
+                self.set_dislike()
 
     def set_like(self):
         """Срабатывает при нажатии на кнопку 'like'"""

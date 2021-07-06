@@ -37,10 +37,10 @@
 
         <form action="{% url 'article:like_article' article.pk %}" method="POST">
             {% csrf_token %}
-            <button type="submit" name="article_id" value="{{ article.pk }}" style="color:#0000ff;">
+            <button type="submit" name="like_action" value="like" style="color:#0000ff;">
                 Like: {{ article.get_total_likes }}</button>
-            <button type="submit" name="article_id" value="{{ article.pk }}" style="color:#ff0000;">
-                Dislike: {{ article.get_total_likes }}</button>
+            <button type="submit" name="like_action" value="dislike" style="color:#ff0000;">
+                Dislike: {{ article.get_total_dislikes }}</button>
             <a action="{% url 'article:like_article' article.pk %}" method="POST">
                 {#               style="color:#0a58ca;">Кол-во комментариев: {{ article.get_total_likes }}#}
             </a>

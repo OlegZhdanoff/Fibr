@@ -44,7 +44,7 @@ class ArticleEditView(LoginRequiredMixin, UpdateView):
 def article_like(request, pk):
     """Вызывает метод set_like для статьи или редиректит на статью после авторизации"""
     if request.method == 'POST':
-        article = get_object_or_404(Article, id=request.POST.get('article_id'))
-        article.set_like(user=request.user)
+        article = get_object_or_404(Article, id=pk)
+        article.set_like_state(user=request.user, like_action=request.POST.get('like_action'))
 
     return HttpResponseRedirect(reverse('article:article', args=[str(pk)]))
