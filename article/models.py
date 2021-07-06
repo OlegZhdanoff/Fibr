@@ -62,6 +62,15 @@ class Like(models.Model):
         """Срабатывает при нажатии на кнопку 'like'"""
         self.is_liked = True
         self.is_disliked = False
+    
+    def set_dislike(self):
+        """Срабатывает при нажатии на кнопку 'dislike'"""
+        self.is_liked = False
+        self.is_disliked = True
+
+    def cancel_liked(self):
+        self.is_liked = False
+        self.is_disliked = False
 
 
 class Comment(models.Model):
