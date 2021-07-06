@@ -41,7 +41,7 @@
                                 <form action="{% url 'article:like_article' article.pk %}" method="POST"
                                       style="color:DodgerBlue;">Like: {{ article.get_total_likes }}</form>
                                 <form action="{% url 'article:like_article' article.pk %}" method="POST"
-                                      style="color:red;">Dislike: {{ article.get_total_likes }}</form>
+                                      style="color:red;">Dislike: {{ article.get_total_dislikes }}</form>
 
                             </div>
                         </div>

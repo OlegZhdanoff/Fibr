@@ -65,13 +65,13 @@ class Like(models.Model):
     def switch_like(self, like_action):
         """Меняет статус лайка/дизлайка"""
         if like_action == 'like':
-            if self.is_liked:
+            if self.is_like_set:
                 self.cancel_liked()
             else:
                 self.set_like()
 
         else:
-            if self.is_disliked:
+            if self.is_dislike_set:
                 self.cancel_liked()
             else:
                 self.set_dislike()
