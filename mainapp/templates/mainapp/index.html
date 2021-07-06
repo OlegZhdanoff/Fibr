@@ -6,31 +6,44 @@
         <div class="container w-75 p-2">
             <ul class="list-group list-group-flush w-75">
                 {% for article in articles %}
-                <li class="list-group-item">
-                    <div class="row">
-                        <header class="accordion-header">
-                            <a href="user" class="text-info" title="Автор публикации" style="text-decoration: none;">
-                                <img src="http://placehold.it/30X30" width="24" height="24" class="img-fluid">
-                                <span class="text">GB team 2</span>
-                            </a>
-                            <p class="timelist"><small> {{ article.created_at }}</small></p>
+                    <li class="list-group-item p-4">
+                        <div class="row">
+                            <header class="accordion-header">
+                                <a href="user" class="text-info" title="Автор публикации"
+                                   style="text-decoration: none;">
+                                    <img src="http://placehold.it/30X30" width="24" height="24" class="img-fluid"
+                                         alt="img">
+                                    <span class="text">{{ article.user }}</span>
+                                </a>
+                                <p class="timelist text-muted"><small>
+                                    {{ article.created_at }}
+                                </small></p>
 
-                        </header>
-                        <div class="col-sm-12">
-                            <a href="/article/" class="card-title text-decoration-none" style="color: #86b7fe; cursor: pointer"><h1 class="text">
-                                {{ article.title }}
-                            </h1></a>
-                            <p class="text-muted"><span class="glyphicon glyphicon-lock"></span> Available Exclusively
-                                for Premium Members</p>
-                            <p>{{ article.content }}</p>
-                            <div class="col-sm-4"><a href="#" class=""><img src="http://placehold.it/780X220"
-                                                                            class="img-responsive"></a>
+                            </header>
+
+                            <div class="col-sm-12">
+
+                                <a href="{% url 'article:article' article.pk %}" class="card-title text-decoration-none"
+                                   style="color: #86b7fe; cursor: pointer"><h1 class="text" style="font-size: 30px;">
+                                    {{ article.title }}
+                                </h1></a>
+                                <p class="text-muted"><span class="glyphicon glyphicon-lock"></span> {{ article.topic }}
+                                </p>
+                                <div class="col-sm-4">
+                                    {% if article.image %}
+                                        <img src="{{ article.image.url }}" class="img-responsive" alt="img" width="750">
+                                    {% endif %}
+                                </div>
+                                <br>
+                                <p class="card-text"
+                                   style="line-height: 1.70;font-size: 18px;overflow-wrap: break-word;">{{ article.content| safe| truncatewords:60 }}</p>
+                                <a class="text-decoration-none" href="{% url 'article:article' article.pk %}">
+                                    <button type="button" class="btn bg-light btn-outline-info"> Читать дальше → </button>
+                                </a>
+
                             </div>
-
-
                         </div>
-                    </div>
-                </li>
+                    </li>
                 {% endfor %}
             </ul>
         </div>

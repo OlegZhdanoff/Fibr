@@ -2,11 +2,7 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
 
     <div class="container w-75">
-        <a class="navbar-brand px-lg-3" href="#">Fibr</a>
-        <form class="form-inline d-flex justify-content-between">
-            <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-            <button class="btn btn-outline-success my-0 my-sm-0 m-2" type="submit">Search</button>
-        </form>
+        <a class="navbar-brand px-lg-3" href="/">Fibr</a>
 
     </div>
 
@@ -22,23 +18,46 @@
 
 
             {% for topic in topic_list %}
-            <li class="nav-item">
-                <a class="nav-link" href="{% url 'hub:topic' topic.pk %}">
-                    {{ topic.name }}
-                </a>
-            </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'hub:topic' topic.pk %}">
+                        {{ topic.name }}
+                    </a>
+                </li>
             {% endfor %}
 
         </ul>
 
         <ul class="nav">
-
             <li class="nav-item">
                 <div class="d-grid gap-2 d-md-block mt-1">
-                    <button class="btn btn-outline-secondary btn-sm my-0 m-1" type="button">Войти</button>
-                    <button class="btn btn-primary btn-sm my-0 m-1 " type="button">Регистрация</button>
+                    {% if user.is_authenticated %}
+                        <button class="btn btn-outline-secondary btn-sm my-0 m-1" type="button"
+                                onclick="location.href='{% url 'auth:logout' %}'">
+                            Выйти
+                        </button>
+                    {% else %}
+                        <button class="btn btn-outline-secondary btn-sm my-0 m-1" type="button"
+                                onclick="location.href='{% url 'auth:login' %}'">
+                            Войти
+                        </button>
+                        <button class="btn btn-primary btn-sm my-0 m-1 " type="button"
+                                onclick="location.href='{% url 'auth:register' %}'">Регистрация
+                        </button>
+                    {% endif %}
+
                 </div>
             </li>
+            {% if user.is_authenticated %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'auth:profile' %}">{{ user.username }}</a>
+                </li>
+            {% endif %}
+
+            {% if user.is_superuser %}
+                <li class="nav-item">
+                    <a class="nav-link" href="/admin-staff/">Администрирование</a>
+                </li>
+            {% endif %}
 
         </ul>
     </div>
