@@ -44,7 +44,8 @@ class Article(models.Model):
 class Like(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     article = models.ForeignKey(Article, on_delete=models.CASCADE)
-    is_liked = models.BooleanField(default=True)
+    is_liked = models.BooleanField(default=False)
+    is_disliked = models.BooleanField(default=False)
 
     @staticmethod
     def get_users_article_liked(article):
@@ -56,6 +57,28 @@ class Like(models.Model):
         """Меняет значение is_liked на противоположное"""
         self.is_liked = not self.is_liked
         self.save()
+
+    def set_like(self):
+        """Срабатывает при нажатии на кнопку 'like'"""
+        self.is_liked = True
+        self.is_disliked = False
+
+    def set_dislike(self):
+        """Срабатывает при нажатии на кнопку 'dislike'"""
+        self.is_liked = False
+        self.is_disliked = True
+
+    def cancel_liked(self):
+        self.is_liked = False
+        self.is_disliked = False
+
+    @property
+    def is_like_set(self):
+        return self.is_liked and not self.is_disliked
+
+    @property
+    def is_dislike_set(self):
+        return not self.is_liked and self.is_disliked
 
 
 class Comment(models.Model):
