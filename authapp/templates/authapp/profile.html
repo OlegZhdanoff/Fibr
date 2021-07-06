@@ -13,8 +13,9 @@
         <h4 class="pb-4 border-bottom">Настройки аккаунта</h4>
         <form method="post" novalidate>
             {% csrf_token %}
+
             <div class="d-flex align-items-start py-3 border-bottom"><img
-                    src="{{ object.image_url|default_if_none:'#' }}"
+                    src="{{ user.image_url|default_if_none:'#' }}"
                     class="img" alt="">
                 <div class="pl-sm-4 pl-4" id="img-section" style="padding-left: 20px"><b>Фото профиля</b>
                     <p>Accepted file type .png. Less than 1MB</p>
@@ -30,7 +31,7 @@
                 <div class="row py-2">
                     <div class="col-md-6"><label for="email">Email</label> {{ form.email }}
                     </div>
-                    <div class="col-md-6 pt-md-0 pt-3"><label for="birthdate">Пол</label>{{ form.gender }}
+                    <div class="col-md-6 pt-md-0 pt-3"><label for="birthdate">Дата рождения</label>{{ form.birthday }}
                     </div>
                 </div>
                 {#            <div class="row py-2">#}
