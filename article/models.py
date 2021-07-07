@@ -49,6 +49,10 @@ class Article(models.Model):
             else:
                 Like.objects.create(article=self, user=user, is_disliked=True)
 
+    def leave_comment(self, user, text):
+        """Создание нового комментария к статье"""
+        comment_object = Comment.objects.create(user=user, article=self, text=text)
+
 
 class Like(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
