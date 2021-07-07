@@ -24,6 +24,7 @@ class UserProfile(models.Model):
         (MALE, 'М'),
         (FEMALE, 'Ж'),
     )
+
     user = models.OneToOneField(User, unique=True, null=False, db_index=True, on_delete=models.CASCADE)
     about_me = models.TextField(blank=True, max_length=512, verbose_name='обо мне')
     gender = models.CharField(max_length=1, choices=GENDER_CHOICES, blank=True, verbose_name='пол')
