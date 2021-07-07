@@ -11,8 +11,9 @@
                             <header class="accordion-header">
                                 <a href="user" class="text-info" title="Автор публикации"
                                    style="text-decoration: none;">
-                                    <img src="http://placehold.it/30X30" width="24" height="24" class="img-fluid" alt="img">
-                                    <span class="text">GB team 2</span>
+                                    <img src="http://placehold.it/30X30" width="24" height="24" class="img-fluid"
+                                         alt="img">
+                                    <span class="text">{{ article.user }}</span>
                                 </a>
                                 <p class="timelist text-muted"><small> {{ article.created_at }}</small></p>
 
@@ -32,10 +33,15 @@
                                 </div>
                                 <br>
                                 <p class="card-text"
-                                   style="line-height: 1.70;font-size: 18px;overflow-wrap: break-word;">{{ article.content|truncatewords:60 }}</p>
+                                   style="line-height: 1.70;font-size: 18px;overflow-wrap: break-word;">{{ article.content|safe|truncatewords:60 }}</p>
                                 <a class="text-decoration-none" href="{% url 'article:article' article.pk %}">
-                                    <button type="button" class="btn bg-light btn-outline-info"> Читать дальше → </button>
+                                    <button type="button" class="btn bg-light btn-outline-info"> Читать дальше →
+                                    </button>
                                 </a>
+                                <form action="{% url 'article:like_article' article.pk %}" method="POST"
+                                      style="color:DodgerBlue;">Like: {{ article.get_total_likes }}</form>
+                                <form action="{% url 'article:like_article' article.pk %}" method="POST"
+                                      style="color:red;">Dislike: {{ article.get_total_dislikes }}</form>
 
                             </div>
                         </div>

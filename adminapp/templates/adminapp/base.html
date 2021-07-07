@@ -101,9 +101,6 @@
         </li>
 
 
-
-
-
     </ul>
 
     <div id="content-wrapper" class="d-flex flex-column">
@@ -158,15 +155,18 @@
                                  src="/static/img/undraw_profile.svg">
                         </a>
                         <!-- Dropdown - User Information -->
-                        <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
-                             aria-labelledby="userDropdown">
-
-
-                            <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
-                                <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
-                                Выход
-                            </a>
-                        </div>
+                            <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
+                                aria-labelledby="userDropdown">
+                                <a class="dropdown-item" href="#">
+                                    <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
+                                    Профиль
+                                </a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
+                                    <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                                    Выход
+                                </a>
+                            </div>
                     </li>
 
                 </ul>
@@ -179,13 +179,14 @@
 
                 <!-- Page Heading -->
                 <h1 class="h3 mb-2 text-gray-800">Добро пожаловать!</h1>
-                <p class="mb-4">Вы находитесь в администрировании сайта</p>
+{#                <p class="mb-4">Вы находитесь в администрировании сайта</p>#}
                 {% block content %} {% endblock %}
 
             </div>
 
 
         </div>
+
 
 
     </div>

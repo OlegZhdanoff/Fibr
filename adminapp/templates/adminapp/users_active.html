@@ -2,7 +2,72 @@
 
 {% block content %}
     <div class="container w-75">
-        <p class="mb-4">Здесь будет отображаться вся информация об активных пользователях данного сайта </p>
+        <p class="mb-4">Здесь отображаться вся информация об активных или не активных пользователях данного сайта </p>
     </div>
+
+    <div class="my-3 p-3 bg-body rounded shadow-sm">
+        <h6 class="border-bottom pb-2 mb-0">Список пользователей</h6>
+        <table id="datatable" class="table dt-responsive nowrap table-vertical"
+               width="100%" cellspacing="0">
+            <thead>
+            <tr>
+                <th>Id</th>
+                <th>Аватар</th>
+                <th>Никнейм</th>
+                <th>Имя</th>
+                <th>Фамилия</th>
+                <th>Возраст</th>
+                <th>Email</th>
+                <th>Редактировать/Удалить</th>
+                <th>Статус</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>43</td>
+                <td><img alt="not" src="№" height="50px"></td>
+                <td>Dimka</td>
+                <td>Dima</td>
+                <td>Ivanov</td>
+                <td>32</td>
+                <td>eww@tt.local</td>
+                <td><a href="#" class="btn btn-info btn-circle btn-sm">
+                    <i class="fas fa-info-circle"></i>
+                    </a>
+                    <a href="#" class="btn btn-danger btn-circle btn-sm">
+                        <i class="fas fa-trash"></i>
+                    </a>
+                </td>
+                <td>online</td>
+            </tr>
+
+            <tr>
+                <td>23</td>
+                <td><img alt="not" src="№" height="50px"></td>
+                <td>Vasia</td>
+                <td>Vasiliy</td>
+                <td>Petrov</td>
+                <td>23</td>
+                <td>hhh@tt.local</td>
+                <td><a href="#" class="btn btn-info btn-circle btn-sm">
+                    <i class="fas fa-info-circle"></i>
+                    </a>
+                    <a href="#" class="btn btn-danger btn-circle btn-sm">
+                        <i class="fas fa-trash"></i>
+
+                    </a>
+                </td>
+                <td>offline</td>
+            </tr>
+
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+
+
 
 {% endblock %}

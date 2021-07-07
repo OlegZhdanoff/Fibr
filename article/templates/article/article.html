@@ -4,26 +4,123 @@
 {% block content %}
     <div class="container w-75">
         <header class="accordion-header">
-            <a href="user" class="text-info" title="Автор публикации" style="text-decoration: none;">
-                <img src="http://placehold.it/30X30" width="24" height="24" class="img-fluid" alt="img">
-                <span class="text">GB team 2</span>
-            </a>
+            Автор: <a href="user" class="text-info" title="Автор публикации" style="text-decoration: none;">
+            <img src="http://placehold.it/30X30" width="24" height="24" class="img-fluid" alt="img">
+            <span class="text">{{ article.user }}</span>
+        </a>
             <p class="timelist text-muted"><small>{{ article.created_at }}</small></p>
 
         </header>
         <div class="col-sm-12 w-75">
             <h1 class="card-title text" style="color: #86b7fe; cursor: default">
                 {{ article.title }}</h1>
-            <p class="text-muted"><span class="glyphicon glyphicon-lock"></span> {{ article.topic }}</p>
+            <p class="text-muted"><span class="glyphicon glyphicon-lock"></span> {{ article.topic }}
+
+            </p>
 
             <div class="col-sm-4">{% if article.image %}
                 <img src="{{ article.image.url }}" class="img-responsive" alt="img" width="750">
             {% endif %}
             </div>
 
-
         </div>
-        <p class="text w-75 pt-3" style="line-height: 1.70;font-size: 18px;overflow-wrap: break-word;"> {{ article.content }}</p>
+        <p class="text w-75 pt-3"
+           style="line-height: 1.70;font-size: 18px;overflow-wrap: break-word;"> {{ article.content | safe }}</p>
+
+        {% if user.is_authenticated and user.pk == article.user.pk %}
+            {#            <a class="nav-link" href="{% url 'article:edit' article.pk %}" style="color: black">#}
+            {#                <i class="fas fa-user"></i> Редактировать#}
+            {#            </a>#}
+
+        {% endif %}
+
+
+        <form action="{% url 'article:like_article' article.pk %}" method="POST">
+            {% csrf_token %}
+            <button type="submit" name="like_action" value="like" style="color:#0000ff;">
+                Like: {{ article.get_total_likes }}</button>
+            <button type="submit" name="like_action" value="dislike" style="color:#ff0000;">
+                Dislike: {{ article.get_total_dislikes }}</button>
+            <a action="{% url 'article:like_article' article.pk %}" method="POST">
+                {#               style="color:#0a58ca;">Кол-во комментариев: {{ article.get_total_likes }}#}
+            </a>
+        </form>
+        <hr style="border: 2px solid blue;">
+
+        <h2 class="my-1">
+            Оставить комментарий
+        </h2>
+        <form class="form" action="{% url 'article:comment_article' article.pk %}" method="POST">
+            {% csrf_token %}
+            <div class="form-body">
+{#                <div class="row col-sm-7">#}
+{#                    <div class="col-md-6">#}
+{#                        <div class="form-group">#}
+{#                            <label for="pr-name">#}
+{#                                Ваше имя#}
+{#                            </label>#}
+{#                            <input class="form-control" id="pr-name" name="name" placeholder="Ваше имя" type="text">#}
+{#                        </div>#}
+{#                    </div>#}
+{#                    <div class="col-md-6">#}
+{#                                                <div class="form-group">#}
+{#                                                    <label for="pr-subject">#}
+{#                                                        Тема#}
+{#                                                    </label>#}
+{#                                                    <input class="form-control" id="pr-subject" name="lname" placeholder="Тема" type="text">#}
+{#                                                </div>#}
+{#                    </div>#}
+{#                </div>#}
+                <div class="form-group">
+                    <label for="review-desc-comment">
+                        Ваш комментарий
+                    </label>
+                    <textarea class="form-control" id="review-desc-comment" name="text"
+                              placeholder="введите текст" rows="5"></textarea>
+                </div>
+                <button class="btn btn-info" type="submit">
+                    <i class="la la-check">
+                    </i>
+                    Подтвердить
+                </button>
+            </div>
+        </form>
+
+        <div aria-labelledby="comments" class="tab-pane" id="comment">
+            <h2 class="my-1">
+                {#                    Комментарии: {{ article.get_total_likes }}#}
+                Комментарии:
+                <hr style="border: 1px solid grey;">
+            </h2>
+            {% for comment in comments %}
+                <div class="media-list media-bordered">
+                    <div class="media">
+                        <span class="media-left">
+                        <img alt="Generic placeholder image" class="media-object"
+                        src="/media/{{ comment.get_author_avatar }}" width="64" height="64"/>
+                        <p style="color:DodgerBlue;"> {{ comment.get_author_name }} </p>
+                        </span>
+                        <div class="media-body">
+                            {#                        <h4 class="media-heading mb-0 text-bold-600">#}
+                            {#                            Тема#}
+                            {#                        </h4>#}
+                            <div class="media-notation mb-1">
+                                {{ comment.created_at }}
+                            </div>
+                            {{ comment.text }}
+                        </div>
+                        <hr style="border: 1px solid grey;">
+                    </div>
+                </div>
+
+            {% endfor %}
+        </div>
+
+
     </div>
+
+
+
+
 
 {% endblock %}
