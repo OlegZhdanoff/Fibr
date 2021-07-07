@@ -50,44 +50,41 @@
                     </svg>
                     {{ article.get_total_dislikes }}</button>
                 <a action="{% url 'article:like_article' article.pk %}" method="POST">
-{#                                   style="color:#0a58ca;">Кол-во комментариев: {{ article.get_total_likes }}#}
+                    {#                                   style="color:#0a58ca;">Кол-во комментариев: {{ article.get_total_likes }}#}
                 </a>
             </form>
         </div>
         <div class="card-header mt-5 w-75 bg-light">
             <p class="h5"> Комментарии</p>
         </div>
-        <header class="accordion-header mt-2 w-75">
-            <a href="user" class="text-info" title="Автор публикации" style="text-decoration: none;">
-                <img src="{{ user.image.url|default_if_none:'#' }}" width="40" height="40" class="img-fluid" alt="img">
-                <span class="text">{{ user.username }}</span>
-            </a>
-            <p class="timelist text-muted"><small>23 июня 2021 г. 17:58 {#comment created_at#} </small></p>
+        {% for comment in comments %}
+            <header class="accordion-header mt-2 w-75">
+                <a href="user" class="text-info" title="Автор публикации" style="text-decoration: none;">
+                    <img src="/media/{{ comment.get_author_avatar }}" width="40" height="40" class="img-fluid"
+                         alt="img">
+                    <span class="text">{{ comment.get_author_name }}</span>
+                </a>
+                <p class="timelist text-muted"><small>{{ comment.created_at }}</small></p>
 
-        </header>
-        <div class="media-list media-bordered mt-2 w-75">
-            <div class="media">
+            </header>
+            <div class="media-list media-bordered mt-2 w-75">
+                <div class="media">
 
-                <div class="media-body">
+                    <div class="media-body">
 
-                    Cupcake ice cream cake cotton candy gummi bears cotton candy macaroon chocolate. Cake croissant
-                    tiramisu
-                    dragée marshmallow halvah tiramisu. Gummi bears soufflé pudding. Donut muffin brownie brownie.
-                    Liquorice
-                    sweet
-                    roll chocolate cake tootsie roll fruitcake. Jujubes bonbon cake chocolate bar liquorice pastry
-                    dessert.
-                    Fruitcake apple pie pie caramels sweet roll. Jelly icing jujubes soufflé.
+                        {{ comment.text }}
+                    </div>
+                    <hr style="border: 1px solid grey;">
                 </div>
-                <hr style="border: 1px solid grey;">
             </div>
-        </div>
-        <form class="form">
+        {% endfor %}
+        <form class="form" action="{% url 'article:comment_article' article.pk %}" method="POST">
+            {% csrf_token %}
             <div class="form-body">
                 <div class="form-group">
                     <label class="mt-4 w-75" for="review-desc-comment">Написать комментарий
                     </label>
-                    <textarea class="form-control w-75 mt-2" id="review-desc-comment" name="comment"
+                    <textarea class="form-control w-75 mt-2" id="review-desc-comment" name="text"
                               placeholder="введите текст" rows="5"></textarea>
                 </div>
                 <button class="btn btn-secondary mt-4 mb-4" type="submit">
