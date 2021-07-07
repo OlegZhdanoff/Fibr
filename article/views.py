@@ -48,3 +48,12 @@ def article_like(request, pk):
         article.set_like_state(user=request.user, like_action=request.POST.get('like_action'))
 
     return HttpResponseRedirect(reverse('article:article', args=[str(pk)]))
+
+@login_required(login_url='authapp:login')
+def article_comment(request, pk):
+    """Вызывает метод leave_comment для статьи или редиректит на статью после авторизации"""
+    if request.method == 'POST':
+        article = get_object_or_404(Article, id=pk)
+        article.leave_comment(user=request.user, text=request.POST.get('text'))
+
+    return HttpResponseRedirect(reverse('article:article', args=[str(pk)]))
