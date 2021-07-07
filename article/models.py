@@ -51,7 +51,7 @@ class Article(models.Model):
 
     def leave_comment(self, user, text):
         """Создание нового комментария к статье"""
-        comment_object = Comment.objects.create(user=user, article=self, text=text)
+        Comment.objects.create(user=user, article=self, text=text)
 
 
 class Like(models.Model):
@@ -109,3 +109,13 @@ class Comment(models.Model):
     text = models.TextField(blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+    @property
+    def get_author_name(self):
+        author_name = self.user.get_full_name()
+        return author_name
+
+    @property
+    def get_author_avatar(self):
+        author_avatar = self.user.image
+        return author_avatar

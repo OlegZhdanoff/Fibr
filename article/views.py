@@ -6,7 +6,7 @@ from django.shortcuts import get_object_or_404
 from django.http import HttpResponseRedirect
 
 from article.forms import ArticleCreateForm, ArticleEditForm
-from article.models import Article
+from article.models import Article, Comment
 
 
 class ArticleView(DetailView):
@@ -16,6 +16,7 @@ class ArticleView(DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['articles'] = Article.objects.filter(topic=self.kwargs.get('pk'))
+        context['comments'] = Comment.objects.filter(article=self.kwargs.get('pk'))
 
         return context
 
@@ -48,6 +49,7 @@ def article_like(request, pk):
         article.set_like_state(user=request.user, like_action=request.POST.get('like_action'))
 
     return HttpResponseRedirect(reverse('article:article', args=[str(pk)]))
+
 
 @login_required(login_url='authapp:login')
 def article_comment(request, pk):

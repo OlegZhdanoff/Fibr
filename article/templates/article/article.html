@@ -50,7 +50,8 @@
         <h2 class="my-1">
             Оставить комментарий
         </h2>
-        <form class="form">
+        <form class="form" action="{% url 'article:comment_article' article.pk %}" method="POST">
+            {% csrf_token %}
             <div class="form-body">
 {#                <div class="row col-sm-7">#}
 {#                    <div class="col-md-6">#}
@@ -74,7 +75,7 @@
                     <label for="review-desc-comment">
                         Ваш комментарий
                     </label>
-                    <textarea class="form-control" id="review-desc-comment" name="comment"
+                    <textarea class="form-control" id="review-desc-comment" name="text"
                               placeholder="введите текст" rows="5"></textarea>
                 </div>
                 <button class="btn btn-info" type="submit">
@@ -91,32 +92,28 @@
                 Комментарии:
                 <hr style="border: 1px solid grey;">
             </h2>
-            <div class="media-list media-bordered">
-                <div class="media">
+            {% for comment in comments %}
+                <div class="media-list media-bordered">
+                    <div class="media">
                         <span class="media-left">
-                            <img alt="Generic placeholder image" class="media-object"
-                                 src="/media/users_avatars/avatar-s-1.png" width="64" height="64"/>
-                            <p style="color:DodgerBlue;"> {{ user.username }} </p>
+                        <img alt="Generic placeholder image" class="media-object"
+                        src="/media/{{ comment.get_author_avatar }}" width="64" height="64"/>
+                        <p style="color:DodgerBlue;"> {{ comment.get_author_name }} </p>
                         </span>
                         <div class="media-body">
                             {#                        <h4 class="media-heading mb-0 text-bold-600">#}
                             {#                            Тема#}
                             {#                        </h4>#}
                             <div class="media-notation mb-1">
-                                20 Sep, 2020 at 7:37pm
+                                {{ comment.created_at }}
                             </div>
-                            Cupcake ice cream cake cotton candy gummi bears cotton candy macaroon chocolate. Cake croissant
-                            tiramisu
-                            dragée marshmallow halvah tiramisu. Gummi bears soufflé pudding. Donut muffin brownie brownie.
-                            Liquorice
-                            sweet
-                            roll chocolate cake tootsie roll fruitcake. Jujubes bonbon cake chocolate bar liquorice pastry
-                            dessert.
-                            Fruitcake apple pie pie caramels sweet roll. Jelly icing jujubes soufflé.
+                            {{ comment.text }}
                         </div>
                         <hr style="border: 1px solid grey;">
+                    </div>
                 </div>
-            </div>
+
+            {% endfor %}
         </div>
 
 
