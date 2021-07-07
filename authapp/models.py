@@ -6,7 +6,7 @@ from article.models import *
 
 
 class User(AbstractUser):
-    image = models.ImageField(upload_to='users_avatars', blank=True, default='static/img/default.jpg')
+    image = models.ImageField(upload_to='users_avatars', blank=True, default='users_avatars/default.jpg')
     birthday = models.DateField(blank=True, null=True)
 
     def __str__(self):
@@ -25,7 +25,6 @@ class UserProfile(models.Model):
         (FEMALE, 'Ж'),
     )
     user = models.OneToOneField(User, unique=True, null=False, db_index=True, on_delete=models.CASCADE)
-    article = models.TextField(blank=True, max_length=512, verbose_name='статья')
     about_me = models.TextField(blank=True, max_length=512, verbose_name='обо мне')
     gender = models.CharField(max_length=1, choices=GENDER_CHOICES, blank=True, verbose_name='пол')
 

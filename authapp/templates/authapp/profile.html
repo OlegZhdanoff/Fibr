@@ -1,61 +1,73 @@
 {% extends 'authapp/base.html' %}
 {% load static %}
 
-{% block css %}
-    <link href="{% static 'css/profile.css' %}" rel="stylesheet"/>
-{% endblock %}
 
 {% block content %}
-<div class="container">
-<div class="row justify-content-md-center">
-<div class="col-8">
-    <div class="wrapper bg-white mt-sm-4">
-        <h4 class="pb-4 border-bottom">Настройки аккаунта</h4>
-        <form method="post" novalidate>
-            {% csrf_token %}
+    {% load bootstrap4 %}
+    {% bootstrap_css %}
+    {% bootstrap_javascript jquery='full' %}
 
-            <div class="d-flex align-items-start py-3 border-bottom"><img
-                    src="/media/{{ user.image|default_if_none:'#' }}"
-                    class="img" alt="">
-                <div class="pl-sm-4 pl-4" id="img-section" style="padding-left: 20px"><b>Фото профиля</b>
-                    <p>Accepted file type .png. Less than 1MB</p>
-                    <button class="btn button border"><b>Загрузить</b></button>
-                </div>
-            </div>
+    {{ form.media }}
+
+<div class="container">
+    <div class="row justify-content-md-center">
+        <div class="col-8">
+            <div class="wrapper bg-white mt-sm-4">
+                <h4 class="pb-4 border-bottom">Настройки аккаунта</h4>
+                <form method="post" enctype='multipart/form-data'>
+                    {% csrf_token %}
+                    {{ form.non_field.errors }}
+
+                    <h6>Фото профиля</h6>
+                    <div class="row justify-content-md-justify border-bottom">
+                        <div class="col-6 py-1">
+                            <div class="d-flex align-items-start">
+                                <div class="form-group">
+                                    <img src="{{user.image.url}}" width="128" height="128">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="row justify-content-start">
+                                {{ form.image }}
+                            </div>
+                            <div class="invalid-feedback">
+                                {{ form.image.errors }}
+                            </div>
+                        </div>
+                    </div>
             <div class="py-2">
+                <div class="row py-2">
+                    <div class="col-md-6"><label for="username">Логин</label> {{ form.username }}</div>
+                    <div class="col-md-6 pt-md-0 pt-3"><label for="email">Email</label> {{ form.email }}
+                    </div>
+                </div>
                 <div class="row py-2">
                     <div class="col-md-6"><label for="firstname">Имя</label> {{ form.first_name }}</div>
                     <div class="col-md-6 pt-md-0 pt-3"><label for="lastname">Фамилия</label> {{ form.last_name }}
                     </div>
                 </div>
-                <div class="row py-2">
-                    <div class="col-md-6"><label for="email">Email</label> {{ form.email }}
+                <div class="row py-2 border-bottom pb-4">
+                    <div class="col-md-6"><label for="gender">Пол</label> {{ profile_form.gender }}
+                        <div class="invalid-feedback">
+                                {{ profile_form.gender.errors }}
+                        </div>
                     </div>
                     <div class="col-md-6 pt-md-0 pt-3"><label for="birthdate">Дата рождения</label>{{ form.birthday }}
+                        <div class="invalid-feedback">
+                                {{ form.birthday.errors }}
+                            </div>
                     </div>
                 </div>
-                {#            <div class="row py-2">#}
-                {#                <div class="col-md-6"><label for="country">Country</label> <select name="country" id="country"#}
-                {#                                                                                   class="bg-light">#}
-                {#                    <option value="india" selected>India</option>#}
-                {#                    <option value="usa">USA</option>#}
-                {#                    <option value="uk">UK</option>#}
-                {#                    <option value="uae">UAE</option>#}
-                {#                </select></div>#}
-                {#                <div class="col-md-6 pt-md-0 pt-3" id="lang"><label for="language">Language</label>#}
-                {#                    <div class="arrow"><select name="language" id="language" class="bg-light">#}
-                {#                        <option value="english" selected>English</option>#}
-                {#                        <option value="english_us">English (United States)</option>#}
-                {#                        <option value="enguk">English UK</option>#}
-                {#                        <option value="arab">Arabic</option>#}
-                {#                    </select></div>#}
-                {#                </div>#}
-                {#            </div>#}
-                <div class="py-3 pb-4 border-bottom">
-                    <button class="btn btn-primary mr-3">Сохранить</button>
-                    <button class="btn border button" style="margin-left: 10px">Отменить</button>
+                <div class="row justify-content-md-center pt-3">
+                    <label for="about_me">Напишите немного о себе:</label> {{ profile_form.about_me }}
+                </div>
+                <div class="py-3 pb-4">
+                    <button class="btn btn-primary mr-3" type="submit">Сохранить</button>
+                    <button class="btn border button" style="margin-left: 10px" type="reset">Отменить</button>
                 </div>
 
+                {% comment %}
                 <div class="d-sm-flex align-items-center pt-3" style="display: flex;flex-direction: column"
                      id="deactivate">
                     <div class="pt-3"><b>Деактивировать аккаунт</b>
@@ -64,6 +76,7 @@
                         <button class="btn danger">Деактивация</button>
                     </div>
                 </div>
+                {% endcomment %}
             </div>
         </form>
     </div>
