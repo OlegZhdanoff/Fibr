@@ -11,6 +11,6 @@ class Index(ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['articles'] = Article.objects.all().order_by('-created_at')[:3]
+        context['articles'] = Article.get_articles().order_by('-created_at')[:3]
 
         return context

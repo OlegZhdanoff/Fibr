@@ -36,6 +36,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django_summernote',
+    'bootstrap4',
+    'bootstrap_datepicker_plus',
 
     'mainapp',
     'hub',
