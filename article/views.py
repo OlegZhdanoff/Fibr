@@ -37,8 +37,20 @@ class ArticleEditView(LoginRequiredMixin, UpdateView):
     model = Article
     template_name = 'article/article_edit.html'
     form_class = ArticleEditForm
-    success_url = reverse_lazy('authapp:profile')
+    # success_url = reverse_lazy('auth:profile')
     success_msg = 'Статья успешно отредактирована'
+
+    def get_success_url(self):
+        return reverse_lazy('authapp:profile', kwargs={'pk': self.request.user.pk})
+
+    def form_valid(self, form):
+        """
+        Called if all forms are valid. Creates a Author instance along
+        with associated books and then redirects to a success page.
+        """
+        self.object = form.save()
+
+        return HttpResponseRedirect(self.get_success_url())
 
 
 @login_required(login_url='authapp:login')
@@ -59,3 +71,19 @@ def article_comment(request, pk):
         article.leave_comment(user=request.user, text=request.POST.get('text'))
 
     return HttpResponseRedirect(reverse('article:article', args=[str(pk)]))
+
+
+@login_required(login_url='authapp:login')
+def article_toggle(request, pk):
+    """Публикует/Снимает статью с публикации"""
+    article = get_object_or_404(Article, id=pk)
+    article.toggle_publish()
+    return HttpResponseRedirect(reverse('auth:profile', args=[str(request.user.pk)]))
+
+
+@login_required(login_url='authapp:login')
+def article_delete(request, pk):
+    """Удаляет/восстанавливает статью"""
+    article = get_object_or_404(Article, id=pk)
+    article.toggle_hide()
+    return HttpResponseRedirect(reverse('auth:profile', args=[str(request.user.pk)]))

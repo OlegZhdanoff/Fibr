@@ -9,6 +9,8 @@ class Article(models.Model):
     title = models.CharField(max_length=64, unique=True, verbose_name='Название')
     content = models.TextField(blank=True, verbose_name='Статья')
     image = models.ImageField(upload_to='article_images', blank=True, verbose_name='Фото')
+    is_active = models.BooleanField(default=True, verbose_name='Активна', db_index=True)
+    is_published = models.BooleanField(default=False, verbose_name='Опубликовать', db_index=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -21,7 +23,11 @@ class Article(models.Model):
 
     @staticmethod
     def get_user_articles(user):
-        return Article.objects.filter(user=user)
+        return Article.objects.filter(user=user, is_active=True)
+
+    @staticmethod
+    def get_articles():
+        return Article.objects.filter(is_active=True, is_published=True)
 
     def get_total_likes(self):
         """Возвращает количество лайков для текущей статьи"""
@@ -52,6 +58,16 @@ class Article(models.Model):
     def leave_comment(self, user, text):
         """Создание нового комментария к статье"""
         Comment.objects.create(user=user, article=self, text=text)
+
+    def toggle_publish(self):
+        """Публикует/Снимает статью с публикации"""
+        self.is_published = not self.is_published
+        self.save()
+
+    def toggle_hide(self):
+        """Удаляет/восстанавливает статью"""
+        self.is_active = not self.is_active
+        self.save()
 
 
 class Like(models.Model):
