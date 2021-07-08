@@ -28,9 +28,9 @@
            style="line-height: 1.70;font-size: 18px;overflow-wrap: break-word;"> {{ article.content | safe }}</p>
 
         {% if user.is_authenticated and user.pk == article.user.pk %}
-            {#            <a class="nav-link" href="{% url 'article:edit' article.pk %}" style="color: black">#}
-            {#                <i class="fas fa-user"></i> Редактировать#}
-            {#            </a>#}
+                        <a class="nav-link" href="{% url 'article:edit' article.pk %}" style="color: black">
+                            <button type="button" class="btn bg-light btn-outline-info"> Редактировать</button>
+                        </a>
 
         {% endif %}
 
