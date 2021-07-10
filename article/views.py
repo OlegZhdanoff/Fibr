@@ -87,3 +87,16 @@ def article_delete(request, pk):
     article = get_object_or_404(Article, id=pk)
     article.toggle_hide()
     return HttpResponseRedirect(reverse('auth:profile', args=[str(request.user.pk)]))
+
+
+@login_required(login_url='authapp:login')
+def comment_like(request, pk):
+    """Вызывает метод set_like для комментария или редиректит на статью после авторизации"""
+    if request.method == 'POST':
+        comment = get_object_or_404(Comment, id=pk)
+        comment.set_like_state(user=request.user, like_action=request.POST.get('like_action'))
+        article_id = comment.article.pk
+
+        return HttpResponseRedirect(reverse('article:article', args=[str(article_id)]))
+
+    return HttpResponseRedirect(reverse('mainapp:index'))

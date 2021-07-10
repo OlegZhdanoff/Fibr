@@ -14,4 +14,6 @@ urlpatterns = [
     path('toggle/<int:pk>', article.article_toggle, name='toggle'),
     path('delete/<int:pk>', article.article_delete, name='delete'),
 
+    path('like/comment/<int:pk>/', article.comment_like, name='like_comment'),
+
 ]
