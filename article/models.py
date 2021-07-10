@@ -70,6 +70,50 @@ class Article(models.Model):
         self.save()
 
 
+class Comment(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    article = models.ForeignKey(Article, on_delete=models.CASCADE)
+    text = models.TextField(blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    @property
+    def get_author_name(self):
+        author_name = self.user.get_full_name()
+        return author_name
+
+    @property
+    def get_author_avatar(self):
+        author_avatar = self.user.image
+        return author_avatar
+
+    def get_total_likes(self):
+        """Возвращает количество лайков для текущего коммента"""
+        likes = CommentsLike.objects.filter(comment=self, is_liked=True)
+
+        return len(likes)
+
+    def get_total_dislikes(self):
+        """Возвращает количество дизлайков для текущего коммента"""
+        likes = CommentsLike.objects.filter(comment=self, is_disliked=True)
+
+        return len(likes)
+
+    def set_like_state(self, user, like_action):
+        """Создает запись лайка коммента или меняет свойство is_liked для существующей"""
+        like_object = CommentsLike.objects.filter(comment=self, user=user)
+
+        if like_object:
+            like_object[0].switch_like(like_action)
+            like_object[0].save()
+
+        else:
+            if like_action == 'like':
+                CommentsLike.objects.create(comment=self, article=self.article, user=user, is_liked=True)
+            else:
+                CommentsLike.objects.create(comment=self, article=self.article, user=user, is_disliked=True)
+
+
 class Like(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     article = models.ForeignKey(Article, on_delete=models.CASCADE)
@@ -119,19 +163,5 @@ class Like(models.Model):
         return not self.is_liked and self.is_disliked
 
 
-class Comment(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    article = models.ForeignKey(Article, on_delete=models.CASCADE)
-    text = models.TextField(blank=True)
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
-
-    @property
-    def get_author_name(self):
-        author_name = self.user.get_full_name()
-        return author_name
-
-    @property
-    def get_author_avatar(self):
-        author_avatar = self.user.image
-        return author_avatar
+class CommentsLike(Like):
+    comment = models.ForeignKey(Comment, on_delete=models.CASCADE)
