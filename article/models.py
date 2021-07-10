@@ -109,9 +109,9 @@ class Comment(models.Model):
 
         else:
             if like_action == 'like':
-                CommentsLike.objects.create(comment=self, user=user, is_liked=True)
+                CommentsLike.objects.create(comment=self, article=self.article, user=user, is_liked=True)
             else:
-                CommentsLike.objects.create(comment=self, user=user, is_disliked=True)
+                CommentsLike.objects.create(comment=self, article=self.article, user=user, is_disliked=True)
 
 
 class Like(models.Model):
