@@ -1,0 +1,1 @@
+[{"model": "hub.topic", "pk": 43, "fields": {"name": "Дизайн", "short_description": ""}}, {"model": "hub.topic", "pk": 44, "fields": {"name": "Веб-разработка", "short_description": ""}}, {"model": "hub.topic", "pk": 45, "fields": {"name": "Мобильная разработка", "short_description": ""}}]

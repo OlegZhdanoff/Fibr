@@ -1,4 +1,5 @@
 from django.db import models
+from django.db.models.expressions import CombinedExpression
 from authapp.models import User
 from hub.models import Topic
 
@@ -31,13 +32,13 @@ class Article(models.Model):
 
     def get_total_likes(self):
         """Возвращает количество лайков для текущей статьи"""
-        likes = Like.objects.filter(article=self, is_liked=True)
+        likes = Like.objects.filter(article=self, is_liked=True, is_for_comment=False)
 
         return len(likes)
 
     def get_total_dislikes(self):
         """Возвращает количество дизлайков для текущей статьи"""
-        likes = Like.objects.filter(article=self, is_disliked=True)
+        likes = Like.objects.filter(article=self, is_disliked=True, is_for_comment=False)
 
         return len(likes)
 
@@ -76,6 +77,7 @@ class Comment(models.Model):
     text = models.TextField(blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    is_for_comment = models.BooleanField(default=False)
 
     @property
     def get_author_name(self):
@@ -109,9 +111,23 @@ class Comment(models.Model):
 
         else:
             if like_action == 'like':
-                CommentsLike.objects.create(comment=self, article=self.article, user=user, is_liked=True)
+                CommentsLike.objects.create(comment=self, article=self.article, user=user,
+                                            is_liked=True, is_for_comment=True)
             else:
-                CommentsLike.objects.create(comment=self, article=self.article, user=user, is_disliked=True)
+                CommentsLike.objects.create(comment=self, article=self.article, user=user,
+                                            is_disliked=True, is_for_comment=True)
+
+    @property
+    def get_comments(self):
+        comment_replies = CommentOnComment.objects.filter(comment=self)
+        return comment_replies
+
+    def reply_comment(self, user, text):
+        CommentOnComment.objects.create(user=user, comment=self, text=text, article=self.article, is_for_comment=True)
+
+
+class CommentOnComment(Comment):
+    comment = models.ForeignKey(Comment, on_delete=models.CASCADE, related_name='comments')
 
 
 class Like(models.Model):
@@ -119,6 +135,7 @@ class Like(models.Model):
     article = models.ForeignKey(Article, on_delete=models.CASCADE)
     is_liked = models.BooleanField(default=False)
     is_disliked = models.BooleanField(default=False)
+    is_for_comment = models.BooleanField(default=False)
 
     @staticmethod
     def get_users_article_liked(article):
