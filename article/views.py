@@ -16,7 +16,7 @@ class ArticleView(DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['articles'] = Article.objects.filter(topic=self.kwargs.get('pk'))
-        context['comments'] = Comment.objects.filter(article=self.kwargs.get('pk'))
+        context['comments'] = Comment.objects.filter(article=self.kwargs.get('pk'), is_for_comment=False)
 
         return context
 
@@ -95,6 +95,19 @@ def comment_like(request, pk):
     if request.method == 'POST':
         comment = get_object_or_404(Comment, id=pk)
         comment.set_like_state(user=request.user, like_action=request.POST.get('like_action'))
+        article_id = comment.article.pk
+
+        return HttpResponseRedirect(reverse('article:article', args=[str(article_id)]))
+
+    return HttpResponseRedirect(reverse('mainapp:index'))
+
+
+@login_required(login_url='authapp:login')
+def comment_reply(request, pk):
+    """Вызывает метод leave_comment для статьи или редиректит на статью после авторизации"""
+    if request.method == 'POST':
+        comment = get_object_or_404(Comment, id=pk)
+        comment.reply_comment(user=request.user, text=request.POST.get('text'))
         article_id = comment.article.pk
 
         return HttpResponseRedirect(reverse('article:article', args=[str(article_id)]))
