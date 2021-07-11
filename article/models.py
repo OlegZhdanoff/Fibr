@@ -1,4 +1,5 @@
 from django.db import models
+from django.db.models.expressions import CombinedExpression
 from authapp.models import User
 from hub.models import Topic
 
@@ -112,6 +113,10 @@ class Comment(models.Model):
                 CommentsLike.objects.create(comment=self, article=self.article, user=user, is_liked=True)
             else:
                 CommentsLike.objects.create(comment=self, article=self.article, user=user, is_disliked=True)
+
+
+class CommentOnComment(Comment):
+    comment = models.ForeignKey(Comment, on_delete=models.CASCADE, related_name='comments')
 
 
 class Like(models.Model):
