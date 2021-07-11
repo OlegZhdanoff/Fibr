@@ -70,7 +70,7 @@
             <div class="media-list media-bordered mt-2 w-75">
                 <div class="media">
 
-                    <div class="media-body">
+                    <div class="media-body {% if comment.user.pk == article.user.pk %}bg-light text-primary{% endif %}">
 
                         {{ comment.text }}
                     </div>
