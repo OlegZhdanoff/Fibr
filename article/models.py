@@ -41,6 +41,12 @@ class Article(models.Model):
         likes = Like.objects.filter(article=self, is_disliked=True, is_for_comment=False)
 
         return len(likes)
+    
+    def get_total_comments(self):
+        """Возвращает количество комментариев к текущей статье"""
+        comments = Comment.objects.filter(article=self, is_for_comment=False)
+
+        return len(comments)
 
     def set_like_state(self, user, like_action):
         """Создает запись лайка или меняет свойство is_liked для существующей"""
