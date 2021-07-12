@@ -1,4 +1,5 @@
 from django.db import models
+from django.db.models.expressions import CombinedExpression
 from authapp.models import User
 from hub.models import Topic
 
@@ -9,6 +10,8 @@ class Article(models.Model):
     title = models.CharField(max_length=64, unique=True, verbose_name='Название')
     content = models.TextField(blank=True, verbose_name='Статья')
     image = models.ImageField(upload_to='article_images', blank=True, verbose_name='Фото')
+    is_active = models.BooleanField(default=True, verbose_name='Активна', db_index=True)
+    is_published = models.BooleanField(default=False, verbose_name='Опубликовать', db_index=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -21,19 +24,29 @@ class Article(models.Model):
 
     @staticmethod
     def get_user_articles(user):
-        return Article.objects.filter(user=user)
+        return Article.objects.filter(user=user, is_active=True)
+
+    @staticmethod
+    def get_articles():
+        return Article.objects.filter(is_active=True, is_published=True)
 
     def get_total_likes(self):
         """Возвращает количество лайков для текущей статьи"""
-        likes = Like.objects.filter(article=self, is_liked=True)
+        likes = Like.objects.filter(article=self, is_liked=True, is_for_comment=False)
 
         return len(likes)
 
     def get_total_dislikes(self):
         """Возвращает количество дизлайков для текущей статьи"""
-        likes = Like.objects.filter(article=self, is_disliked=True)
+        likes = Like.objects.filter(article=self, is_disliked=True, is_for_comment=False)
 
         return len(likes)
+    
+    def get_total_comments(self):
+        """Возвращает количество комментариев к текущей статье"""
+        comments = Comment.objects.filter(article=self, is_for_comment=False)
+
+        return len(comments)
 
     def set_like_state(self, user, like_action):
         """Создает запись лайка или меняет свойство is_liked для существующей"""
@@ -53,12 +66,82 @@ class Article(models.Model):
         """Создание нового комментария к статье"""
         Comment.objects.create(user=user, article=self, text=text)
 
+    def toggle_publish(self):
+        """Публикует/Снимает статью с публикации"""
+        self.is_published = not self.is_published
+        self.save()
+
+    def toggle_hide(self):
+        """Удаляет/восстанавливает статью"""
+        self.is_active = not self.is_active
+        self.save()
+
+
+class Comment(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    article = models.ForeignKey(Article, on_delete=models.CASCADE)
+    text = models.TextField(blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    is_for_comment = models.BooleanField(default=False)
+
+    @property
+    def get_author_name(self):
+        author_name = self.user.get_full_name()
+        return author_name
+
+    @property
+    def get_author_avatar(self):
+        author_avatar = self.user.image
+        return author_avatar
+
+    def get_total_likes(self):
+        """Возвращает количество лайков для текущего коммента"""
+        likes = CommentsLike.objects.filter(comment=self, is_liked=True)
+
+        return len(likes)
+
+    def get_total_dislikes(self):
+        """Возвращает количество дизлайков для текущего коммента"""
+        likes = CommentsLike.objects.filter(comment=self, is_disliked=True)
+
+        return len(likes)
+
+    def set_like_state(self, user, like_action):
+        """Создает запись лайка коммента или меняет свойство is_liked для существующей"""
+        like_object = CommentsLike.objects.filter(comment=self, user=user)
+
+        if like_object:
+            like_object[0].switch_like(like_action)
+            like_object[0].save()
+
+        else:
+            if like_action == 'like':
+                CommentsLike.objects.create(comment=self, article=self.article, user=user,
+                                            is_liked=True, is_for_comment=True)
+            else:
+                CommentsLike.objects.create(comment=self, article=self.article, user=user,
+                                            is_disliked=True, is_for_comment=True)
+
+    @property
+    def get_comments(self):
+        comment_replies = CommentOnComment.objects.filter(comment=self)
+        return comment_replies
+
+    def reply_comment(self, user, text):
+        CommentOnComment.objects.create(user=user, comment=self, text=text, article=self.article, is_for_comment=True)
+
+
+class CommentOnComment(Comment):
+    comment = models.ForeignKey(Comment, on_delete=models.CASCADE, related_name='comments')
+
 
 class Like(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     article = models.ForeignKey(Article, on_delete=models.CASCADE)
     is_liked = models.BooleanField(default=False)
     is_disliked = models.BooleanField(default=False)
+    is_for_comment = models.BooleanField(default=False)
 
     @staticmethod
     def get_users_article_liked(article):
@@ -103,19 +186,5 @@ class Like(models.Model):
         return not self.is_liked and self.is_disliked
 
 
-class Comment(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    article = models.ForeignKey(Article, on_delete=models.CASCADE)
-    text = models.TextField(blank=True)
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
-
-    @property
-    def get_author_name(self):
-        author_name = self.user.get_full_name()
-        return author_name
-
-    @property
-    def get_author_avatar(self):
-        author_avatar = self.user.image
-        return author_avatar
+class CommentsLike(Like):
+    comment = models.ForeignKey(Comment, on_delete=models.CASCADE)

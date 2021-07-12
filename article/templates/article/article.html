@@ -5,7 +5,7 @@
     <div class="container w-75">
         <header class="accordion-header">
             Автор: <a href="user" class="text-info" title="Автор публикации" style="text-decoration: none;">
-            <img src="http://placehold.it/30X30" width="24" height="24" class="img-fluid" alt="img">
+            <img src="{{ article.user.image.url }}" width="24" height="24" class="img-fluid" alt="img">
             <span class="text">{{ article.user }}</span>
         </a>
             <p class="timelist text-muted"><small>{{ article.created_at }}</small></p>
@@ -28,9 +28,9 @@
            style="line-height: 1.70;font-size: 18px;overflow-wrap: break-word;"> {{ article.content | safe }}</p>
 
         {% if user.is_authenticated and user.pk == article.user.pk %}
-            {#            <a class="nav-link" href="{% url 'article:edit' article.pk %}" style="color: black">#}
-            {#                <i class="fas fa-user"></i> Редактировать#}
-            {#            </a>#}
+                        <a class="nav-link" href="{% url 'article:edit' article.pk %}" style="color: black">
+                            <button type="button" class="btn bg-light btn-outline-info"> Редактировать</button>
+                        </a>
 
         {% endif %}
 
@@ -57,27 +57,7 @@
         <div class="card-header mt-5 w-75 bg-light">
             <p class="h5"> Комментарии</p>
         </div>
-        {% for comment in comments %}
-            <header class="accordion-header mt-2 w-75">
-                <a href="user" class="text-info" title="Автор публикации" style="text-decoration: none;">
-                    <img src="/media/{{ comment.get_author_avatar }}" width="40" height="40" class="img-fluid"
-                         alt="img">
-                    <span class="text">{{ comment.get_author_name }}</span>
-                </a>
-                <p class="timelist text-muted"><small>{{ comment.created_at }}</small></p>
-
-            </header>
-            <div class="media-list media-bordered mt-2 w-75">
-                <div class="media">
-
-                    <div class="media-body">
-
-                        {{ comment.text }}
-                    </div>
-                    <hr style="border: 1px solid grey;">
-                </div>
-            </div>
-        {% endfor %}
+        {% include 'article/includes/inc_comments.html' %}
         <form class="form" action="{% url 'article:comment_article' article.pk %}" method="POST">
             {% csrf_token %}
             <div class="form-body">

@@ -8,8 +8,14 @@ urlpatterns = [
     path('<int:pk>/', article.ArticleView.as_view(), name='article'),
     path('create/', article.ArticleCreateView.as_view(), name='create'),
     path('edit/<int:pk>/', article.ArticleEditView.as_view(), name='edit'),
+    path('comment_article/<int:pk>/', article.article_comment, name='comment_article'),
 
     path('like/<int:pk>', article.article_like, name='like_article'),
-    path('comment/<int:pk>', article.article_comment, name='comment_article'),
+    path('toggle/<int:pk>', article.article_toggle, name='toggle'),
+    path('delete/<int:pk>', article.article_delete, name='delete'),
+
+    path('like/comment/<int:pk>/', article.comment_like, name='like_comment'),
+
+    path('comment/reply/<int:pk>', article.comment_reply, name='reply_comment'),
 
 ]
