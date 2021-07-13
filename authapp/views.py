@@ -35,6 +35,10 @@ class ProfileView(UpdateView):
 
     success_msg = 'Профиль успешно изменен'
 
+    def get_user_profile(request, username):
+        user = User.objects.get(username=username)
+        return render(request, 'authapp/user_profile.html', {"user": user})
+
     def get_success_url(self):
         return reverse_lazy('authapp:profile', kwargs={'pk': self.kwargs['pk']})
 

@@ -29,6 +29,7 @@ urlpatterns = [
 
     # Оставил параметры админки по дефолту
     path('admin/', admin.site.urls),
+    path('user/', include('authapp.urls', namespace='user')),
 
 ]
 
