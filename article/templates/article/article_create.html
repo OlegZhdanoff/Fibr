@@ -4,16 +4,21 @@
 {% block content %}
     <div class="container w-75">
 
-        <form method="post">
+        <form method="post" enctype='multipart/form-data'>
             {% csrf_token %}
             {{ form.non_field.errors }}
             {% for field in form %}
             <div class="form-group">
-                {{ field.label_tag }}
                 {% if field.name == 'content' %}
+                    {{ field.label_tag }}
                     {{ field | safe }}
+                {% elif field.name == 'is_published' %}
+                    <div class="mt-3 mb-3"> {{ field.label_tag }}
+                    {{ field}}
+                    </div>
                 {% else %}
-                    {{ field | safe}}
+                    {{ field.label_tag }}
+                    {{ field}}
                 {% endif %}
                 <div class="invalid-feedback">
                     {{ field.errors }}
@@ -22,9 +27,9 @@
             {% endfor %}
 
 
-            <div class="form-group">
-                <button type="submit" class="btn btn-primary btn-lg">Создать</button>
-                <button type="reset" class="btn btn-secondary btn-lg">Отменить</button>
+            <div class="form-group pt-3 border-top">
+                <button type="submit" class="btn btn-primary">Создать</button>
+                <button type="reset" class="btn btn-secondary">Отменить</button>
             </div>
         </form>
     </div>

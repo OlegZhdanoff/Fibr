@@ -6,7 +6,7 @@ from article.models import *
 
 
 class User(AbstractUser):
-    image = models.ImageField(upload_to='users_avatars', blank=True, default='static/img/default.jpg')
+    image = models.ImageField(upload_to='users_avatars', blank=True, default='users_avatars/default.jpg')
     birthday = models.DateField(blank=True, null=True)
 
     def __str__(self):

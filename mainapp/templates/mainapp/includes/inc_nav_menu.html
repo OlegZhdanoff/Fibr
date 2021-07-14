@@ -49,13 +49,13 @@
             </li>
             {% if user.is_authenticated %}
                 <li class="nav-item">
-                    <a class="nav-link" href="{% url 'auth:profile' %}">{{ user.username }}</a>
+                    <a class="nav-link" href="{% url 'auth:profile' user.pk %}">{{ user.username }}</a>
                 </li>
             {% endif %}
 
             {% if user.is_superuser %}
                 <li class="nav-item">
-                    <a class="nav-link" href="/admin-staff/">Администрирование</a>
+                    <a class="nav-link" href="/admin-staff/">Админка</a>
                 </li>
             {% endif %}
 
