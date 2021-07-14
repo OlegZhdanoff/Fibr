@@ -3,11 +3,12 @@ from django.contrib.auth.views import LoginView, LogoutView
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse, reverse_lazy
+from django.views.generic import DetailView
 from django.views.generic.edit import CreateView, UpdateView
 
 from article.models import Article
 from authapp.forms import UserRegisterForm, UserAuthenticationForm, UserEditForm, UserProfileEditForm
-from authapp.models import User
+from authapp.models import User, UserProfile
 from django.db import transaction
 
 
@@ -50,9 +51,9 @@ class ProfileView(UpdateView):
         print('get_context_data', context)
         return context
 
-    def get_user_profile(request, username):
-        user = User.objects.get(username=username)
-        return render(request, 'authapp/user_profile.html', {"user": user})
+    # def get_user_profile(request, username):
+    #     user = User.objects.get(username=username)
+    #     return render(request, 'authapp/user_profile.html', {"user.pk": user.pk})
 
     def post(self, request, *args, **kwargs):
         """
@@ -95,6 +96,18 @@ def moderation(request):
     }
     return render(request, 'authapp/moderation.html', context)
 
+
+class DetailUserView(DetailView):
+    model = UserProfile
+    template_name = 'authapp/user_profile.html'
+    form_class = UserEditForm
+
+    def get_user_profile(request, username):
+        user = UserProfile.objects.get(username=username)
+        return render(request, {"user.pk": user.pk})
+
+    def get_success_url(self):
+        return reverse_lazy('authapp:user_profile', kwargs={'user.pk': self.kwargs['user.pk']})
 # def profile(request):
 #     if request.method == 'POST':
 #         form = UserProfileEditForm(data=request.POST, files=request.FILES, instance=request.user)
