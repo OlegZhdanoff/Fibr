@@ -28,16 +28,14 @@ class RegisterUserView(CreateView):
     success_msg = 'Пользователь успешно создан'
 
 
+
+
 class ProfileView(UpdateView):
     model = User
     template_name = 'authapp/profile.html'
     form_class = UserEditForm
 
     success_msg = 'Профиль успешно изменен'
-
-    def get_user_profile(request, username):
-        user = User.objects.get(username=username)
-        return render(request, 'authapp/user_profile.html', {"user": user})
 
     def get_success_url(self):
         return reverse_lazy('authapp:profile', kwargs={'pk': self.kwargs['pk']})
@@ -51,6 +49,10 @@ class ProfileView(UpdateView):
             context['profile_form'] = UserProfileEditForm(instance=self.request.user.userprofile)
         print('get_context_data', context)
         return context
+
+    def get_user_profile(request, username):
+        user = User.objects.get(username=username)
+        return render(request, 'authapp/user_profile.html', {"user": user})
 
     def post(self, request, *args, **kwargs):
         """

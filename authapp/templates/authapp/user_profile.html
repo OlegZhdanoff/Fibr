@@ -13,7 +13,7 @@
     <div class="row justify-content-md-center">
         <div class="col-8">
             <div class="wrapper bg-white mt-sm-4">
-                <h4 class="pb-4 border-bottom">Настройки аккаунта</h4>
+                <h4 class="pb-4 border-bottom">Аккаунт {{ user.username }} </h4>
                 <form method="post" enctype='multipart/form-data'>
                     {% csrf_token %}
                     {{ form.non_field.errors }}
@@ -60,7 +60,7 @@
                     </div>
                 </div>
                 <div class="row justify-content-md-center pt-3">
-                    <label for="about_me">Напишите немного о себе:</label> {{ profile_form.about_me }}
+                    <label for="about_me">О себе:</label> {{ profile_form.about_me }}
                 </div>
 {#                <div class="py-3 pb-4">#}
 {#                    <button class="btn btn-primary mr-3" type="submit">Сохранить</button>#}
