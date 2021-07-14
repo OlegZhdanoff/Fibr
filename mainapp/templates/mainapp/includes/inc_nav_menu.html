@@ -44,6 +44,12 @@
                                 onclick="location.href='{% url 'auth:register' %}'">Регистрация
                         </button>
                     {% endif %}
+                    {% if user.is_moderator %}
+                        <button class="btn btn-outline-secondary btn-sm my-0 m-1" type="button"
+                                onclick="location.href='{% url 'auth:moderation' %}'">
+                            Модерация
+                        </button>
+                    {% endif %}
 
                 </div>
             </li>
