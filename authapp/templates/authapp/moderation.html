@@ -3,11 +3,11 @@
 
 
 {% block content %}
-    {% load bootstrap4 %}
-    {% bootstrap_css %}
-    {% bootstrap_javascript jquery='full' %}
 
-    {{ form.media }}
+    {% load bootstrap4 %}
+    {% bootstrap_javascript jquery='full' %}
+    {% bootstrap_css %}
+
 
 <div class="container">
     <div class="row justify-content-md-center">
@@ -56,15 +56,30 @@
 
                                     <a class="text-decoration-none" href="{% url 'article:toggle' article.pk %}">
                                         {% if article.is_published %}
-                                            <button type="button" class="btn bg-light btn-outline-info btn-sm">
+                                            <button type="button" class="btn bg-light btn-outline-warning btn-sm">
                                                 Снять с публикации </button>
                                         {% else %}
                                             <button type="button" class="btn btn-success btn-sm">
                                                 Опубликовать </button>
                                     {% endif %}</a>
 
-                                <a class="text-decoration-none" href="{% url 'article:decline' article.pk %}">
-                                    <button type="button" class="btn bg-light btn-outline-danger btn-sm"> Отклонить </button></a>
+                                    <button type="button" class="btn bg-light btn-outline-danger btn-sm" data-toggle="collapse" data-target="#declineForm" aria-expanded="false" aria-controls="declineForm"> Отклонить </button>
+                                <div class="collapse" id="declineForm">
+                                  <form class="form" action="{% url 'article:decline' article.pk %}" method="POST">
+                                    {% csrf_token %}
+                                    <div class="form-body">
+                                        <div class="form-group">
+                                            <label class="mt-3" for="moderation-decline-comment">Причина
+                                            </label>
+                                            <textarea class="form-control" id="moderation-decline-comment" name="text"
+                                                      placeholder="введите текст" rows="5"></textarea>
+                                        </div>
+                                        <button class="btn btn-secondary mb-4" type="submit">
+                                            Отправить
+                                        </button>
+                                    </div>
+                                </form>
+                                </div>
                             </li>
                         {% endfor %}
                     </ul>

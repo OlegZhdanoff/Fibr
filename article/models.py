@@ -68,6 +68,16 @@ class Article(models.Model):
             else:
                 Like.objects.create(article=self, user=user, is_disliked=True)
 
+    def decline(self, text):
+        self.is_moderated = False
+        self.is_published = False
+        self.moderate_comment = text
+        self.save()
+
+    def set_moderate(self):
+        self.is_moderated = True
+        self.save()
+
     def leave_comment(self, user, text):
         """Создание нового комментария к статье"""
         Comment.objects.create(user=user, article=self, text=text)
