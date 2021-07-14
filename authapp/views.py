@@ -1,3 +1,4 @@
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.views import LoginView, LogoutView
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
@@ -80,6 +81,13 @@ class ProfileView(UpdateView):
             self.get_context_data(form=form, profile_form=profile_form)
         )
 
+
+@login_required
+def moderation(request):
+    context = {
+        'articles': Article.get_moderated_articles()
+    }
+    return render(request, 'authapp/moderation.html', context)
 
 # def profile(request):
 #     if request.method == 'POST':

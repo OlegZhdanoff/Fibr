@@ -82,6 +82,24 @@ def article_toggle(request, pk):
 
 
 @login_required(login_url='authapp:login')
+def article_moderate(request, pk):
+    """Публикует/Снимает статью с публикации"""
+    article = get_object_or_404(Article, id=pk)
+    article.set_moderate()
+    return HttpResponseRedirect(reverse('auth:profile', args=[str(request.user.pk)]))
+
+
+@login_required(login_url='authapp:login')
+def article_decline(request, pk):
+    """Отклоняет статью на модерации"""
+    if request.method == 'POST':
+        article = get_object_or_404(Article, id=pk)
+        article.decline(request.POST.get('text'))
+
+    return HttpResponseRedirect(reverse('auth:moderation'))
+
+
+@login_required(login_url='authapp:login')
 def article_delete(request, pk):
     """Удаляет/восстанавливает статью"""
     article = get_object_or_404(Article, id=pk)
