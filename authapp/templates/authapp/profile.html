@@ -28,9 +28,11 @@
                 <div class="tab-content" id="pills-tabContent">
                     <div class="tab-pane fade show active" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">
 
-                        <form method="post" enctype='multipart/form-data' class="border-top pt-3">
+                        <form method="post" enctype='multipart/form-data' class="border-top pt-3" novalidate>
                             {% csrf_token %}
+                            <div class="text-danger"><small>
                             {{ form.non_field.errors }}
+                            </small></div>
 
                             <h6>Фото профиля</h6>
                             <div class="row justify-content-md-justify border-bottom">
@@ -45,8 +47,8 @@
                                     <div class="row justify-content-start">
                                         {{ form.image }}
                                     </div>
-                                    <div class="invalid-feedback">
-                                        {{ form.image.errors }}
+                                    <div class="text-danger"><small>
+                                        {{ form.image.errors }}</small>
                                     </div>
                                 </div>
                             </div>
@@ -63,15 +65,16 @@
                                 </div>
                                 <div class="row py-2 border-bottom pb-4">
                                     <div class="col-md-6"><label for="gender">Пол</label> {{ profile_form.gender }}
-                                        <div class="invalid-feedback">
-                                                {{ profile_form.gender.errors }}
-                                        </div>
+                                        <div class="text-danger"><small>
+                                            {{ form.gender.errors }}</small>
                                     </div>
-                                    <div class="col-md-6 pt-md-0 pt-3"><label for="birthdate">Дата рождения</label>{{ form.birthday }}
-                                        <div class="invalid-feedback">
-                                                {{ form.birthday.errors }}
-                                        </div>
                                     </div>
+                                    <div class="col-md-6 pt-md-0 pt-3 has-validation"><label for="birthday">Дата рождения</label>{{ form.birthday }}
+                                        <div class="text-danger"><small>
+                                            {{ form.birthday.errors }}</small>
+                                    </div>
+                                    </div>
+
                                 </div>
                                 <div class="row justify-content-md-center pt-3">
                                     <label for="about_me">Напишите немного о себе:</label> {{ profile_form.about_me }}
@@ -80,17 +83,6 @@
                                     <button class="btn btn-primary mr-3" type="submit">Сохранить</button>
                                     <button class="btn border button" style="margin-left: 10px" type="reset">Отменить</button>
                                 </div>
-
-                                {% comment %}
-                                <div class="d-sm-flex align-items-center pt-3" style="display: flex;flex-direction: column"
-                                     id="deactivate">
-                                    <div class="pt-3"><b>Деактивировать аккаунт</b>
-                                    </div>
-                                    <div class="ml-auto mt-3">
-                                        <button class="btn danger">Деактивация</button>
-                                    </div>
-                                </div>
-                                {% endcomment %}
                             </div>
                         </form>
                     </div>
@@ -101,7 +93,8 @@
                         <ul>
                             {% for article in articles %}
                                 <li>
-                                    <a class="text-decoration-none" href="{% url 'article:edit' article.pk %}"> {{ article.title }}<br>
+                                    <a class="text-decoration-none" href="{% url 'article:edit' article.pk %}">
+                                        [{{ article.topic.name }}] - {{ article.title }}<br>
                                        <div class="d-flex justify-content-lg-start mb-2">
                                         <div class="text-black-50 mr-2"><small>
                                 <svg xmlns="http://www.w3.org/2000/svg" width="15" height="13" fill="green"
