@@ -7,6 +7,7 @@ from django.db.models.signals import post_save
 class User(AbstractUser):
     image = models.ImageField(upload_to='users_avatars', blank=True, default='users_avatars/default.jpg')
     birthday = models.DateField(blank=True, null=True)
+    is_moderator = models.BooleanField(default=False)
 
     def __str__(self):
         return self.username
