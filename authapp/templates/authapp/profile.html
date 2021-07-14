@@ -93,7 +93,8 @@
                         <ul>
                             {% for article in articles %}
                                 <li>
-                                    <a class="text-decoration-none" href="{% url 'article:edit' article.pk %}"> {{ article.title }}<br>
+                                    <a class="text-decoration-none" href="{% url 'article:edit' article.pk %}">
+                                        [{{ article.topic.name }}] - {{ article.title }}<br>
                                        <div class="d-flex justify-content-lg-start mb-2">
                                         <div class="text-black-50 mr-2"><small>
                                 <svg xmlns="http://www.w3.org/2000/svg" width="15" height="13" fill="green"
