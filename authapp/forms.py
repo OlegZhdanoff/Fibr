@@ -1,3 +1,5 @@
+import datetime
+
 from django import forms
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, UserChangeForm
 from django.forms import FileInput
@@ -65,6 +67,13 @@ class UserEditForm(UserChangeForm):
                     field.widget.attrs['class'] = 'form-control .bg-secondary'
                 else:
                     field.widget.attrs['class'] = 'form-control'
+
+    def clean_birthday(self):
+        data = self.cleaned_data['birthday']
+        if datetime.date.today().year - data.year < 18:
+            raise forms.ValidationError("Вы слишком молоды!")
+
+        return data
 
 
 class UserProfileEditForm(forms.ModelForm):
