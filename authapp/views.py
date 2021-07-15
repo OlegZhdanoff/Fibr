@@ -1,12 +1,15 @@
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LoginView, LogoutView
 from django.http import HttpResponseRedirect
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.urls import reverse, reverse_lazy
+from django.views.generic import ListView
 from django.views.generic.edit import CreateView, UpdateView
 
-from article.models import Article
+from article.models import Article, Comment
 from authapp.forms import UserRegisterForm, UserAuthenticationForm, UserEditForm, UserProfileEditForm
-from authapp.models import User
+from authapp.models import User, UserProfile
 from django.db import transaction
 
 
@@ -33,6 +36,10 @@ class ProfileView(UpdateView):
     form_class = UserEditForm
 
     success_msg = 'Профиль успешно изменен'
+
+    def get_user_profile(request, username):
+        user = User.objects.get(username=username)
+        return render(request, 'authapp/user_profile.html', {"user": user})
 
     def get_success_url(self):
         return reverse_lazy('authapp:profile', kwargs={'pk': self.kwargs['pk']})
@@ -80,6 +87,30 @@ class ProfileView(UpdateView):
             self.get_context_data(form=form, profile_form=profile_form)
         )
 
+
+class UserInfoView(LoginRequiredMixin, ListView):
+    model = User
+    template_name = 'authapp/user_profile.html'
+
+    # def get_queryset(self):
+
+    def get_context_data(self, **kwargs):
+        # Call the base implementation first to get a context
+        context = super().get_context_data(**kwargs)
+        # Add in the publisher
+        context['user_info'] = get_object_or_404(User, pk=self.kwargs['pk'])
+        context['user_profile'] = get_object_or_404(UserProfile, user=self.kwargs['pk'])
+        context['comments_count'] = Comment.objects.filter(user=self.kwargs['pk']).count()
+        context['article_count'] = Article.objects.filter(user=self.kwargs['pk']).count()
+        return context
+
+
+@login_required
+def moderation(request):
+    context = {
+        'articles': Article.get_moderated_articles()
+    }
+    return render(request, 'authapp/moderation.html', context)
 
 # def profile(request):
 #     if request.method == 'POST':

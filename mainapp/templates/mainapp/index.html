@@ -9,7 +9,7 @@
             <li class="list-group-item p-4">
                 <div class="row">
                     <header class="accordion-header">
-                        <a href="user" class="text-info" title="Автор публикации" style="text-decoration: none;">
+                        <a href="{% url 'auth:user_info' article.user.pk %}" class="text-info" title="Автор публикации" style="text-decoration: none;">
                             <img src="{{ article.user.image.url }}" width="24" height="24" class="img-fluid" alt="img">
                             <span class="text">{{ article.user }}</span>
                         </a>

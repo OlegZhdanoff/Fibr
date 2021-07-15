@@ -12,8 +12,10 @@ class Article(models.Model):
     image = models.ImageField(upload_to='article_images', blank=True, verbose_name='Фото')
     is_active = models.BooleanField(default=True, verbose_name='Активна', db_index=True)
     is_published = models.BooleanField(default=False, verbose_name='Опубликовать', db_index=True)
+    is_moderated = models.BooleanField(default=False, verbose_name='На модерацию', db_index=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    moderate_comment = models.TextField(blank=True, verbose_name='Замечания модератора')
 
     class Meta:
         verbose_name = 'Статья'
@@ -29,6 +31,10 @@ class Article(models.Model):
     @staticmethod
     def get_articles():
         return Article.objects.filter(is_active=True, is_published=True)
+
+    @staticmethod
+    def get_moderated_articles():
+        return Article.objects.filter(is_active=True, is_moderated=True)
 
     def get_total_likes(self):
         """Возвращает количество лайков для текущей статьи"""
@@ -62,13 +68,30 @@ class Article(models.Model):
             else:
                 Like.objects.create(article=self, user=user, is_disliked=True)
 
+    def decline(self, text):
+        self.is_moderated = False
+        self.is_published = False
+        self.moderate_comment = text
+        self.save()
+
+    def set_moderate(self):
+        self.is_moderated = True
+        self.save()
+
     def leave_comment(self, user, text):
         """Создание нового комментария к статье"""
         Comment.objects.create(user=user, article=self, text=text)
 
-    def toggle_publish(self):
-        """Публикует/Снимает статью с публикации"""
-        self.is_published = not self.is_published
+    def unpublish(self):
+        """Снимает статью с публикации"""
+        self.is_published = False
+        self.save()
+
+    def publish(self):
+        """Снимает статью с публикации"""
+        self.is_published = True
+        self.is_moderated = False
+        self.moderate_comment = ''
         self.save()
 
     def toggle_hide(self):

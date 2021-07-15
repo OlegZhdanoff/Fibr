@@ -1,3 +1,5 @@
+import datetime
+
 from django import forms
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, UserChangeForm
 from django.forms import FileInput
@@ -66,6 +68,13 @@ class UserEditForm(UserChangeForm):
                 else:
                     field.widget.attrs['class'] = 'form-control'
 
+    def clean_birthday(self):
+        data = self.cleaned_data['birthday']
+        if datetime.date.today().year - data.year < 18:
+            raise forms.ValidationError("Вы слишком молоды!")
+
+        return data
+
 
 class UserProfileEditForm(forms.ModelForm):
     # Позволит пользователям редактировать дополнительные данные,
@@ -74,7 +83,7 @@ class UserProfileEditForm(forms.ModelForm):
     # для своего профиля.
     class Meta:
         model = UserProfile
-        fields = ('article', 'about_me', 'gender')
+        fields = ('about_me', 'gender')
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
