@@ -1,13 +1,15 @@
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LoginView, LogoutView
 from django.http import HttpResponseRedirect
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.urls import reverse, reverse_lazy
+from django.views.generic import ListView
 from django.views.generic.edit import CreateView, UpdateView
 
-from article.models import Article
+from article.models import Article, Comment
 from authapp.forms import UserRegisterForm, UserAuthenticationForm, UserEditForm, UserProfileEditForm
-from authapp.models import User
+from authapp.models import User, UserProfile
 from django.db import transaction
 
 
@@ -84,6 +86,23 @@ class ProfileView(UpdateView):
         return self.render_to_response(
             self.get_context_data(form=form, profile_form=profile_form)
         )
+
+
+class UserInfoView(LoginRequiredMixin, ListView):
+    model = User
+    template_name = 'authapp/user_profile.html'
+
+    # def get_queryset(self):
+
+    def get_context_data(self, **kwargs):
+        # Call the base implementation first to get a context
+        context = super().get_context_data(**kwargs)
+        # Add in the publisher
+        context['user_info'] = get_object_or_404(User, pk=self.kwargs['pk'])
+        context['user_profile'] = get_object_or_404(UserProfile, user=self.kwargs['pk'])
+        context['comments_count'] = Comment.objects.filter(user=self.kwargs['pk']).count()
+        context['article_count'] = Article.objects.filter(user=self.kwargs['pk']).count()
+        return context
 
 
 @login_required

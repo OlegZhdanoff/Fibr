@@ -7,94 +7,41 @@
     {% bootstrap_css %}
     {% bootstrap_javascript jquery='full' %}
 
-    {{ form.media }}
-
 <div class="container">
     <div class="row justify-content-md-center">
         <div class="col-8">
             <div class="wrapper bg-white mt-sm-4">
-                <h4 class="pb-4 border-bottom">Настройки аккаунта</h4>
-                <form method="post" enctype='multipart/form-data'>
-                    {% csrf_token %}
-                    {{ form.non_field.errors }}
+                <h4 class="pb-4 border-bottom">Информация о пользователе {{ user_info.first_name }} {{ user_info.last_name }}</h4>
 
-                    <h6>Фото профиля</h6>
                     <div class="row justify-content-md-justify border-bottom">
                         <div class="col-6 py-1">
                             <div class="d-flex align-items-start">
-                                <div class="form-group">
-                                    <img src="{{user.image.url}}" width="128" height="128">
-                                </div>
+                                    <img src="{{user_info.image.url}}" height="128">
                             </div>
                         </div>
                         <div class="col-6">
                             <div class="row justify-content-start">
-                                {{ form.image }}
-                            </div>
-                            <div class="invalid-feedback">
-                                {{ form.image.errors }}
+                                Количество статей: {{ article_count }}<br>
+                                Количество комментариев: {{ comments_count }}
                             </div>
                         </div>
-                    </div>
-            <div class="py-2">
-                <div class="row py-2">
-                    <div class="col-md-6"><label for="username">Логин</label> {{ form.username }}</div>
-                    <div class="col-md-6 pt-md-0 pt-3"><label for="email">Email</label> {{ form.email }}
-                    </div>
-                </div>
-                <div class="row py-2">
-                    <div class="col-md-6"><label for="firstname">Имя</label> {{ form.first_name }}</div>
-                    <div class="col-md-6 pt-md-0 pt-3"><label for="lastname">Фамилия</label> {{ form.last_name }}
-                    </div>
-                </div>
-                <div class="row py-2 border-bottom pb-4">
-                    <div class="col-md-6"><label for="gender">Пол</label> {{ profile_form.gender }}
-                        <div class="invalid-feedback">
-                                {{ profile_form.gender.errors }}
-                        </div>
-                    </div>
-                    <div class="col-md-6 pt-md-0 pt-3"><label for="birthdate">Дата рождения</label>{{ form.birthday }}
-                        <div class="invalid-feedback">
-                                {{ form.birthday.errors }}
+                        <div class="row py-2">
+                            <div class="col-md-auto pt-md-0 pt-3">Дата рождения: {{ user_info.birthday }}
                             </div>
-                    </div>
-                </div>
-                <div class="row justify-content-md-center pt-3">
-                    <label for="about_me">Напишите немного о себе:</label> {{ profile_form.about_me }}
-                </div>
-{#                <div class="py-3 pb-4">#}
-{#                    <button class="btn btn-primary mr-3" type="submit">Сохранить</button>#}
-{#                    <button class="btn border button" style="margin-left: 10px" type="reset">Отменить</button>#}
-{#                </div>#}
+                        </div>
 
-                {% comment %}
-                <div class="d-sm-flex align-items-center pt-3" style="display: flex;flex-direction: column"
-                     id="deactivate">
-                    <div class="pt-3"><b>Деактивировать аккаунт</b>
                     </div>
-                    <div class="ml-auto mt-3">
-                        <button class="btn danger">Деактивация</button>
+                <h6 class="card-title mt-3">Немного о себе</h6>
+                <div class="card bg-light mb-3" style="max-width: 36rem;">
+                    <div class="card-body">
+
+                        <p class="card-text">{{ user_info.userprofile.about_me }}</p>
                     </div>
+
                 </div>
-                {% endcomment %}
             </div>
-        </form>
+        </div>
     </div>
 </div>
-{#<div class="col-4">#}
-{#    <div class="wrapper bg-white mt-sm-4">#}
-{#    <p><a class="text-decoration-none" href="{% url 'article:create' %}">#}
-{#                                    <button type="button" class="btn btn-primary"> Создать статью </button>#}
-{#                                </a></p>#}
-{#        <ul>#}
-{#            {% for article in articles %}#}
-{#                <li><a class="text-decoration-none" href="{% url 'article:edit' article.pk %}"> {{ article.title }}<br>#}
-{#                                    <button type="button" class="btn bg-light btn-outline-info btn-sm"> Редактировать </button>#}
-{#                                </a></li>#}
-{#            {% endfor %}#}
-{#        </ul>#}
-{#    </div>#}
-{#</div>#}
-{#</div>#}
-{#</div>#}
+
 {% endblock %}
