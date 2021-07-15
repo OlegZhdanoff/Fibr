@@ -1,0 +1,47 @@
+{% extends 'authapp/base.html' %}
+{% load static %}
+
+
+{% block content %}
+    {% load bootstrap4 %}
+    {% bootstrap_css %}
+    {% bootstrap_javascript jquery='full' %}
+
+<div class="container">
+    <div class="row justify-content-md-center">
+        <div class="col-8">
+            <div class="wrapper bg-white mt-sm-4">
+                <h4 class="pb-4 border-bottom">Информация о пользователе {{ user_info.first_name }} {{ user_info.last_name }}</h4>
+
+                    <div class="row justify-content-md-justify border-bottom">
+                        <div class="col-6 py-1">
+                            <div class="d-flex align-items-start">
+                                    <img src="{{user_info.image.url}}" height="128">
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="row justify-content-start">
+                                Количество статей: {{ article_count }}<br>
+                                Количество комментариев: {{ comments_count }}
+                            </div>
+                        </div>
+                        <div class="row py-2">
+                            <div class="col-md-auto pt-md-0 pt-3">Дата рождения: {{ user_info.birthday }}
+                            </div>
+                        </div>
+
+                    </div>
+                <h6 class="card-title mt-3">Немного о себе</h6>
+                <div class="card bg-light mb-3" style="max-width: 36rem;">
+                    <div class="card-body">
+
+                        <p class="card-text">{{ user_info.userprofile.about_me }}</p>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

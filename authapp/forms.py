@@ -83,7 +83,7 @@ class UserProfileEditForm(forms.ModelForm):
     # для своего профиля.
     class Meta:
         model = UserProfile
-        fields = ('article', 'about_me', 'gender')
+        fields = ('about_me', 'gender')
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
