@@ -82,9 +82,16 @@ class Article(models.Model):
         """Создание нового комментария к статье"""
         Comment.objects.create(user=user, article=self, text=text)
 
-    def toggle_publish(self):
-        """Публикует/Снимает статью с публикации"""
-        self.is_published = not self.is_published
+    def unpublish(self):
+        """Снимает статью с публикации"""
+        self.is_published = False
+        self.save()
+
+    def publish(self):
+        """Снимает статью с публикации"""
+        self.is_published = True
+        self.is_moderated = False
+        self.moderate_comment = ''
         self.save()
 
     def toggle_hide(self):

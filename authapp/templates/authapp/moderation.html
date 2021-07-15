@@ -20,7 +20,13 @@
                         {% for article in articles %}
                             <li>
                                 <a class="text-decoration-none" href="{% url 'article:article' article.pk %}">
-                                    [{{ article.topic.name }}] - {{ article.title }}<br>
+                                    [{{ article.topic.name }}] - {{ article.title }}
+                                    {% if article.moderate_comment %}
+                                            <span class="badge badge-warning"
+                                            data-toggle="tooltip" data-placement="bottom" title="{{ article.moderate_comment }}">
+                                                Замечание!</span>
+                                    {% endif %}
+                                    <br>
                                    <div class="d-flex justify-content-lg-start mb-2">
                                     <div class="text-black-50 mr-2"><small>
                             <svg xmlns="http://www.w3.org/2000/svg" width="15" height="13" fill="green"
@@ -54,14 +60,16 @@
                                    </div>
                                     <button type="button" class="btn bg-light btn-outline-info btn-sm"> Открыть </button></a>
 
-                                    <a class="text-decoration-none" href="{% url 'article:toggle' article.pk %}">
-                                        {% if article.is_published %}
-                                            <button type="button" class="btn bg-light btn-outline-warning btn-sm">
-                                                Снять с публикации </button>
-                                        {% else %}
-                                            <button type="button" class="btn btn-success btn-sm">
-                                                Опубликовать </button>
-                                    {% endif %}</a>
+
+                                    {% if article.is_published %}
+                                                <a class="text-decoration-none" href="{% url 'article:unpublish' article.pk %}">
+                                                <button type="button" class="btn bg-light btn-outline-warning btn-sm">
+                                                    Снять с публикации </button></a>
+                                    {% else %}
+                                        <a class="text-decoration-none" href="{% url 'article:publish' article.pk %}">
+                                                <button type="button" class="btn btn-success btn-sm">
+                                                    Опубликовать </button></a>
+                                    {% endif %}
 
                                     <button type="button" class="btn bg-light btn-outline-danger btn-sm" data-toggle="collapse" data-target="#declineForm" aria-expanded="false" aria-controls="declineForm"> Отклонить </button>
                                 <div class="collapse" id="declineForm">

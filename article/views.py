@@ -74,10 +74,18 @@ def article_comment(request, pk):
 
 
 @login_required(login_url='authapp:login')
-def article_toggle(request, pk):
-    """Публикует/Снимает статью с публикации"""
+def article_publish(request, pk):
+    """Публикует статью с публикации"""
     article = get_object_or_404(Article, id=pk)
-    article.toggle_publish()
+    article.publish()
+    return HttpResponseRedirect(reverse('auth:profile', args=[str(request.user.pk)]))
+
+
+@login_required(login_url='authapp:login')
+def article_unpublish(request, pk):
+    """Снимает статью с публикации"""
+    article = get_object_or_404(Article, id=pk)
+    article.unpublish()
     return HttpResponseRedirect(reverse('auth:profile', args=[str(request.user.pk)]))
 
 

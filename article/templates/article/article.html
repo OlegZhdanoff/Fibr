@@ -15,6 +15,15 @@
 
         </header>
         <div class="col-sm-12 w-75">
+        {% if user.is_moderator and article.moderate_comment %}
+            <h6 class="card-title mt-3">Замечания модератора</h6>
+            <div class="card bg-light mb-3">
+                <div class="card-body">
+                    <p class="card-text text-danger">{{ article.moderate_comment }}</p>
+                </div>
+
+            </div>
+        {% endif %}
             <h1 class="card-title text" style="color: #86b7fe; cursor: default">
                 {{ article.title }}</h1>
             <p class="text-muted"><span class="glyphicon glyphicon-lock"></span> {{ article.topic }}
@@ -37,14 +46,15 @@
                         </a>
             {% endif %}
             {% if user.is_moderator %}
-                <a class="text-decoration-none" href="{% url 'article:toggle' article.pk %}" style="color: black">
-                                        {% if article.is_published %}
-                                            <button type="button" class="btn bg-light btn-outline-warning">
-                                                Снять с публикации </button>
-                                        {% else %}
-                                            <button type="button" class="btn btn-success">
-                                                Опубликовать </button>
-                                    {% endif %}</a>
+                {% if article.is_published %}
+                                                <a class="text-decoration-none" href="{% url 'article:unpublish' article.pk %}">
+                                                <button type="button" class="btn bg-light btn-outline-warning">
+                                                    Снять с публикации </button></a>
+                                    {% else %}
+                                        <a class="text-decoration-none" href="{% url 'article:publish' article.pk %}">
+                                                <button type="button" class="btn btn-outline-success">
+                                                    Опубликовать </button></a>
+                                    {% endif %}
 
                 <button type="button" class="btn bg-light btn-outline-danger" data-toggle="collapse" data-target="#declineForm" aria-expanded="false" aria-controls="declineForm"> Отклонить </button>
                                 <div class="collapse" id="declineForm">
