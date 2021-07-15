@@ -5,6 +5,7 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404
 from django.urls import reverse, reverse_lazy
 from django.views.generic import ListView
+from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, UpdateView
 
 from article.models import Article, Comment
@@ -88,7 +89,7 @@ class ProfileView(UpdateView):
         )
 
 
-class UserInfoView(LoginRequiredMixin, ListView):
+class UserInfoView(LoginRequiredMixin, DetailView):
     model = User
     template_name = 'authapp/user_profile.html'
 
