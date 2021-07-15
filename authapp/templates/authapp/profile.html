@@ -139,12 +139,14 @@
                                                 <a class="text-decoration-none" href="{% url 'article:unpublish' article.pk %}">
                                                 <button type="button" class="btn bg-light btn-outline-info btn-sm">
                                                     В черновик </button></a>
+                                            {% else %}
+                                                {% if not article.is_moderated %}
+                                                    <a class="text-decoration-none" href="{% url 'article:moderate' article.pk %}">
+                                                    <button type="button" class="btn btn-outline-success btn-sm">
+                                                        На проверку </button></a>
+                                                {% endif %}
                                             {% endif %}
-                                            {% if not article.is_moderated %}
-                                                <a class="text-decoration-none" href="{% url 'article:moderate' article.pk %}">
-                                                <button type="button" class="btn btn-outline-success btn-sm">
-                                                    На проверку </button></a>
-                                            {% endif %}
+
                                     <a class="text-decoration-none" href="{% url 'article:delete' article.pk %}">
                                         <button type="button" class="btn bg-light btn-outline-danger btn-sm"> Удалить </button></a>
                                 </li>

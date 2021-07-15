@@ -45,9 +45,9 @@
                         </button>
                     {% endif %}
                     {% if user.is_moderator %}
-                        <button class="btn btn-outline-secondary btn-sm my-0 m-1" type="button"
+                        <button class="btn btn-outline-info btn-sm my-0 m-1" type="button"
                                 onclick="location.href='{% url 'auth:moderation' %}'">
-                            Модерация
+                            Модерация <span class="badge badge-info">{{ moderated_articles_count }}</span>
                         </button>
                     {% endif %}
 
