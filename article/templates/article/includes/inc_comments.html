@@ -1,6 +1,6 @@
 {% for comment in comments %}
     <header class="accordion-header mt-2 w-75">
-        <a href="user" class="text-info" title="Автор публикации" style="text-decoration: none;">
+        <a href="{% url 'auth:user_info' comment.user.pk %}" class="text-info" title="Автор публикации" style="text-decoration: none;">
             <img src="/media/{{ comment.get_author_avatar }}" width="40" height="40" class="img-fluid"
                  alt="img">
             <span class="text">{{ comment.get_author_name }}</span>
@@ -40,7 +40,7 @@
         </div>
     {% for reply in comment.get_comments %}
         <header class="accordion-header mt-2 w-75">
-            <a href="user" class="text-info" title="Автор публикации" style="text-decoration: none;">
+            <a href="{% url 'auth:user_info' reply.user.pk %}" class="text-info" title="Автор публикации" style="text-decoration: none;">
                 <img src="/media/{{ reply.get_author_avatar }}" width="40" height="40" class="img-fluid"
                      alt="img">
                 <span class="text">{{ reply.get_author_name }}</span>
