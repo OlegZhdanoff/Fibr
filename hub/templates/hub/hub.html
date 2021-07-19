@@ -2,9 +2,9 @@
 {% load static %}
 
 {% block content %}
-    {% load bootstrap4 %}
-    {% bootstrap_css %}
-    {% bootstrap_javascript jquery='full' %}
+{% load bootstrap4 %}
+{% bootstrap_css %}
+{% bootstrap_javascript jquery='full' %}
 <section>
     <div class="container w-75 p-2">
         <ul class="list-group list-group-flush w-75">
@@ -12,7 +12,8 @@
             <li class="list-group-item p-4">
                 <div class="row">
                     <header class="accordion-header">
-                        <a href="{% url 'auth:user_info' article.user.pk %}" class="text-info" title="Автор публикации" style="text-decoration: none;">
+                        <a href="{% url 'auth:user_info' article.user.pk %}" class="text-info" title="Автор публикации"
+                            style="text-decoration: none;">
                             <img src="{{ article.user.image.url }}" width="24" height="24" class="img-fluid" alt="img">
                             <span class="text">{{ article.user }}</span>
                         </a>
@@ -69,6 +70,18 @@
                                     </g>
                                 </svg>
                                 {{ article.get_total_comments }}</div>
+                            <div class="m-1">
+                                <svg id="Capa_1" enable-background="new 0 0 511.979 511.979" width="30" height="26"
+                                    viewBox="0 0 511.979 511.979" xmlns="http://www.w3.org/2000/svg">
+                                    <g id="XMLID_909_">
+                                        <path id="XMLID_918_"
+                                            d="m316.787 0c-107.63 0-195.192 87.562-195.192 195.192 0 30.268 6.925 58.949 19.274 84.542l-28.311 28.31c-7.584 7.585-7.584 19.925 0 27.51l.63.63-100.243 100.243c-17.26 17.261-17.26 45.346 0 62.607 8.631 8.63 19.967 12.945 31.304 12.945s22.673-4.315 31.304-12.945l100.242-100.242.63.63c3.793 3.792 8.773 5.688 13.755 5.688s9.963-1.896 13.756-5.688l28.31-28.311c25.593 12.349 54.273 19.274 84.542 19.274 107.63 0 195.192-87.562 195.192-195.192s-87.563-195.193-195.193-195.193zm-255.377 484.892c-9.461 9.464-24.859 9.464-34.322.001-9.463-9.464-9.463-24.861 0-34.323l100.242-100.243 34.322 34.323zm128.77-99.999-63.093-63.094 23.83-23.829c15.896 25.562 37.53 47.196 63.092 63.092zm126.607-14.508c-96.602 0-175.192-78.591-175.192-175.192s78.59-175.193 175.192-175.193 175.192 78.591 175.192 175.192-78.591 175.193-175.192 175.193z" />
+                                        <path id="XMLID_927_"
+                                            d="m456.844 190.565c-27.354-52.415-81.021-84.977-140.058-84.977-59.036 0-112.703 32.562-140.058 84.977-1.513 2.899-1.513 6.354 0 9.254 27.354 52.415 81.021 84.977 140.058 84.977s112.704-32.562 140.058-84.977c1.513-2.899 1.513-6.354 0-9.254zm-140.057 74.231c-49.8 0-95.228-26.534-119.801-69.604 24.573-43.069 70.001-69.604 119.801-69.604 49.801 0 95.229 26.534 119.801 69.604-24.573 43.07-70 69.604-119.801 69.604z" />
+                                        <circle id="XMLID_928_" cx="316.787" cy="195.192" r="47.603" />
+                                    </g>
+                                </svg>
+                                {{ article.get_total_views }}</div>
                         </div>
 
                     </div>
