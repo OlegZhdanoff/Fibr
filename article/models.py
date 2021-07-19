@@ -98,6 +98,16 @@ class Article(models.Model):
         """Удаляет/восстанавливает статью"""
         self.is_active = not self.is_active
         self.save()
+    
+    def view(self, user):
+        article_view = ArticlesViews.objects.filter(user=user, article=self)
+
+        if not article_view:
+            ArticlesViews.objects.create(user=user, article=self)
+
+class ArticlesViews(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    article = models.ForeignKey(Article, on_delete=models.CASCADE)
 
 
 class Comment(models.Model):
