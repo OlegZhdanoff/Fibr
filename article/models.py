@@ -50,7 +50,7 @@ class Article(models.Model):
     
     def get_total_comments(self):
         """Возвращает количество комментариев к текущей статье"""
-        comments = Comment.objects.filter(article=self, is_for_comment=False)
+        comments = Comment.objects.filter(article=self)
 
         return len(comments)
     
