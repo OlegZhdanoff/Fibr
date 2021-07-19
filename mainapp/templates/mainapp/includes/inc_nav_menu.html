@@ -3,6 +3,9 @@
 
     <div class="container w-75">
         <a class="navbar-brand px-lg-3" href="/">Fibr</a>
+        <form action="{% url 'article:search_results'  %}" method="get">
+            <input name="q" type="text" placeholder="Поиск по статьям...">
+        </form>
 
     </div>
 

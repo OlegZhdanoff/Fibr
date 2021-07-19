@@ -44,3 +44,20 @@ class ArticleEditForm(forms.ModelForm):
                 field.widget.attrs['rows'] = 5
             else:
                 field.widget.attrs['class'] = 'form-control bg-light'
+
+class ArticleSearchForm(forms.ModelForm):
+    class Meta:
+        model = Article
+        fields = ('title', 'content', 'is_moderated')
+        widgets = {
+            'content': SummernoteWidget(attrs={'summernote': {'width': '100%', 'height': '600px'}}),
+            'is_moderated': forms.CheckboxInput(),
+        }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for name, field in self.fields.items():
+            if name == 'is_moderated':
+                field.widget.attrs['class'] = 'form-check-input'
+            else:
+                field.widget.attrs['class'] = 'form-control bg-light'

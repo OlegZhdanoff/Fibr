@@ -1,11 +1,13 @@
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
+from django.db.models import Q
 from django.urls import reverse_lazy, reverse
-from django.views.generic import DetailView, CreateView, UpdateView
-from django.shortcuts import get_object_or_404
+from django.views.generic import DetailView, CreateView, UpdateView, ListView
+from django.shortcuts import get_object_or_404, render
 from django.http import HttpResponseRedirect
 
-from article.forms import ArticleCreateForm, ArticleEditForm
+from article.forms import ArticleCreateForm, ArticleEditForm, ArticleSearchForm
 from article.models import Article, Comment
 
 
@@ -18,7 +20,7 @@ class ArticleView(DetailView):
         context['comments'] = Comment.objects.filter(article=self.kwargs.get('pk'), is_for_comment=False)
 
         return context
-    
+
     def dispatch(self, *args, **kwargs):
         if self.request.user.is_authenticated:
             article = get_object_or_404(Article, pk=self.kwargs.get('pk'))
@@ -144,3 +146,24 @@ def comment_reply(request, pk):
         return HttpResponseRedirect(reverse('article:article', args=[str(article_id)]))
 
     return HttpResponseRedirect(reverse('mainapp:index'))
+
+
+class SearchResultsView(ListView):
+    model = Article
+    template_name = 'article/search_results.html'
+    # form_class = ArticleSearchForm
+    success_url = '/'
+    success_msg = 'Поиск статьи'
+
+
+    def get_queryset(self): # новый
+        # title = self.request.GET.get('q')
+        # object_list = Article.objects.filter(
+        #     Q(name__icontains=title) | Q(state__icontains=title)
+        # )
+
+        name = self.kwargs.get('name', '')
+        object_list = Article.objects.all()
+        if name:
+            object_list = object_list.filter(name__icontains=name)
+        return object_list

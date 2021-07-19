@@ -21,4 +21,6 @@ urlpatterns = [
 
     path('comment/reply/<int:pk>', article.comment_reply, name='reply_comment'),
 
+    path('search/', article.SearchResultsView.as_view(), name='search_results'),
+
 ]
