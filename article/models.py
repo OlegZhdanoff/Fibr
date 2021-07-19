@@ -53,6 +53,13 @@ class Article(models.Model):
         comments = Comment.objects.filter(article=self, is_for_comment=False)
 
         return len(comments)
+    
+    def get_total_views(self):
+        """Возвращает количество просмотров к текущей статье"""
+
+        article_views = ArticlesViews.objects.filter(article=self)
+
+        return len(article_views)
 
     def set_like_state(self, user, like_action):
         """Создает запись лайка или меняет свойство is_liked для существующей"""
