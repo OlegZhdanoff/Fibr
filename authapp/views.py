@@ -89,7 +89,7 @@ class ProfileView(UpdateView):
         )
 
 
-class UserInfoView(LoginRequiredMixin, DetailView):
+class UserInfoView(DetailView):
     model = User
     template_name = 'authapp/user_profile.html'
 

@@ -15,10 +15,15 @@ class ArticleView(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['articles'] = Article.objects.filter(topic=self.kwargs.get('pk'))
         context['comments'] = Comment.objects.filter(article=self.kwargs.get('pk'), is_for_comment=False)
 
         return context
+    
+    def dispatch(self, *args, **kwargs):
+        if self.request.user.is_authenticated:
+            article = get_object_or_404(Article, pk=self.kwargs.get('pk'))
+            article.view(user=self.request.user)
+        return super().dispatch(*args, **kwargs)
 
 
 class ArticleCreateView(LoginRequiredMixin, CreateView):
