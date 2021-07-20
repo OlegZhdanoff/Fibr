@@ -5,6 +5,5 @@ import search.views as search
 app_name = 'search'
 
 urlpatterns = [
-    path('search_article/', search.SearchResultsView.as_view(), name='search_article')
-
+    path('search_result/', search.search, name='search_result'),
 ]
