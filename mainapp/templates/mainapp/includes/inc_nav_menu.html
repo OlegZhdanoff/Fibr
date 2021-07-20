@@ -3,7 +3,9 @@
 
     <div class="container w-75">
         <a class="navbar-brand px-lg-3" href="/">Fibr</a>
-
+        <form action="{% url 'search:search_article'  %}" method="get">
+            <input name="q" type="text" placeholder="Поиск по статьям...">
+        </form>
     </div>
 
 </nav>
@@ -18,11 +20,11 @@
 
 
             {% for topic in topic_list %}
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'hub:topic' topic.pk %}">
-                        {{ topic.name }}
-                    </a>
-                </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'hub:topic' topic.pk %}">
+                    {{ topic.name }}
+                </a>
+            </li>
             {% endfor %}
 
         </ul>
@@ -31,38 +33,38 @@
             <li class="nav-item">
                 <div class="d-grid gap-2 d-md-block mt-1">
                     {% if user.is_authenticated %}
-                        <button class="btn btn-outline-secondary btn-sm my-0 m-1" type="button"
-                                onclick="location.href='{% url 'auth:logout' %}'">
-                            Выйти
-                        </button>
+                    <button class="btn btn-outline-secondary btn-sm my-0 m-1" type="button"
+                        onclick="location.href='{% url 'auth:logout' %}'">
+                        Выйти
+                    </button>
                     {% else %}
-                        <button class="btn btn-outline-secondary btn-sm my-0 m-1" type="button"
-                                onclick="location.href='{% url 'auth:login' %}'">
-                            Войти
-                        </button>
-                        <button class="btn btn-primary btn-sm my-0 m-1 " type="button"
-                                onclick="location.href='{% url 'auth:register' %}'">Регистрация
-                        </button>
+                    <button class="btn btn-outline-secondary btn-sm my-0 m-1" type="button"
+                        onclick="location.href='{% url 'auth:login' %}'">
+                        Войти
+                    </button>
+                    <button class="btn btn-primary btn-sm my-0 m-1 " type="button"
+                        onclick="location.href='{% url 'auth:register' %}'">Регистрация
+                    </button>
                     {% endif %}
                     {% if user.is_moderator %}
-                        <button class="btn btn-outline-info btn-sm my-0 m-1" type="button"
-                                onclick="location.href='{% url 'auth:moderation' %}'">
-                            Модерация <span class="badge badge-info">{{ moderated_articles_count }}</span>
-                        </button>
+                    <button class="btn btn-outline-info btn-sm my-0 m-1" type="button"
+                        onclick="location.href='{% url 'auth:moderation' %}'">
+                        Модерация <span class="badge badge-info">{{ moderated_articles_count }}</span>
+                    </button>
                     {% endif %}
 
                 </div>
             </li>
             {% if user.is_authenticated %}
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'auth:profile' user.pk %}">{{ user.username }}</a>
-                </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'auth:profile' user.pk %}">{{ user.username }}</a>
+            </li>
             {% endif %}
 
             {% if user.is_superuser %}
-                <li class="nav-item">
-                    <a class="nav-link" href="/admin-staff/">Админка</a>
-                </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/admin-staff/">Админка</a>
+            </li>
             {% endif %}
 
         </ul>
