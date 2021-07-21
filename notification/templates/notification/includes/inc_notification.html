@@ -4,10 +4,16 @@
 })
 </script>
 
-
 <button type="button" class="btn btn-outline-primary btn-sm"
-data-container="body" data-toggle="popover" data-placement="bottom" data-html="true" data-content='
+data-container="body" data-toggle="popover" data-placement="bottom" data-html="true"
+        title='
+        <a class="btn btn-secondary-outline btn-sm" href="{% url 'notification:clear_all' %}"
+            role="button">Очистить</a>
+        <a role="button" class="btn btn-info-outline btn-sm" data-toggle="modal"
+        href="{% url 'auth:profile' 21 %}#pills-notifications" id="buttonNotice">История</a>
+        '
 
+        data-content='
 <ul class="list-group list-group-flush">
 {% for note in notice.unread.moderator %}
     <li class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">

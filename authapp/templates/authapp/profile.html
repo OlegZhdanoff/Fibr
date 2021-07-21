@@ -21,6 +21,11 @@
                                 href="#pills-article" role="tab"
                                 aria-controls="pills-article" aria-selected="false">Публикации</a>
                     </li>
+                    <li class="nav-item" role="presentation">
+                        <a class="nav-link" id="pills-notifications-tab" data-toggle="pill"
+                                href="#pills-notifications" role="tab"
+                                aria-controls="pills-notifications" aria-selected="false">Уведомления</a>
+                    </li>
                 </ul>
                 <div class="tab-content" id="pills-tabContent">
                     <div class="tab-pane fade show active" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">
@@ -150,6 +155,9 @@
                             {% endfor %}
                         </ul>
                     </div>
+
+                    {% include 'notification/includes/inc_notices_view.html' %}
+
                 </div>
             </div>
         </div>
@@ -162,4 +170,17 @@
         {% endcomment %}
     </div>
 </div>
+<script>
+    // Javascript to enable link to tab
+var hash = location.hash.replace(/^#/, '');
+    console.log(hash)
+if (hash) {
+    $('.nav-pills a[href="#' + hash + '"]').tab('show');
+}
+
+// Change hash for page-reload
+$('.nav-pills a').on('shown.bs.tab', function (e) {
+    window.location.hash = e.target.hash;
+})
+    </script>
 {% endblock %}
