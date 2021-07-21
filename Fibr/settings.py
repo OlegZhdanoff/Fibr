@@ -45,7 +45,6 @@ INSTALLED_APPS = [
     'authapp',
     'adminapp',
     'notification',
-    'search',
 ]
 
 MIDDLEWARE = [
