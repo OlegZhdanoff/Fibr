@@ -112,6 +112,7 @@ class Article(models.Model):
         if not article_view:
             ArticlesViews.objects.create(user=user, article=self)
 
+
 class ArticlesViews(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     article = models.ForeignKey(Article, on_delete=models.CASCADE)

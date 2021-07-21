@@ -2,9 +2,7 @@
 {% load static %}
 
 {% block content %}
-{% load bootstrap4 %}
-{% bootstrap_javascript jquery='full' %}
-{% bootstrap_css %}
+
 <div class="container w-75">
     <header class="accordion-header">
         Автор: <a href="{% url 'auth:user_info' article.user.pk %}" class="text-info" title="Автор публикации"
