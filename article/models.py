@@ -171,6 +171,10 @@ class Comment(models.Model):
     def reply_comment(self, user, text):
         CommentOnComment.objects.create(user=user, comment=self, text=text, article=self.article, is_for_comment=True)
 
+    def delete_comment(self):
+        current_comment = Comment.objects.get(pk=self.pk)
+        current_comment.delete()
+
 
 class CommentOnComment(Comment):
     comment = models.ForeignKey(Comment, on_delete=models.CASCADE, related_name='comments')

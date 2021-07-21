@@ -144,3 +144,14 @@ def comment_reply(request, pk):
         return HttpResponseRedirect(reverse('article:article', args=[str(article_id)]))
 
     return HttpResponseRedirect(reverse('mainapp:index'))
+
+
+@login_required(login_url='authapp:login')
+def comment_delete(request, pk):
+    """Вызывает метод delete_comment для комментария"""
+    if request.method == 'POST':
+        comment = get_object_or_404(Comment, pk=pk)
+        article_id = comment.article.pk
+        comment.delete_comment()        
+
+    return HttpResponseRedirect(reverse('article:article', args=[str(article_id)]))
