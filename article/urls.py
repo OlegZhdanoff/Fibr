@@ -20,5 +20,6 @@ urlpatterns = [
     path('like/comment/<int:pk>/', article.comment_like, name='like_comment'),
 
     path('comment/reply/<int:pk>', article.comment_reply, name='reply_comment'),
+    path('comment/delete/<int:pk>', article.comment_delete, name='comment_delete'),
 
 ]
