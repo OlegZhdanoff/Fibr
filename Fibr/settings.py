@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'article',
     'authapp',
     'adminapp',
+    'notification',
     'search',
 ]
 
@@ -72,6 +73,7 @@ TEMPLATES = [
                 'django.contrib.messages.context_processors.messages',
                 'context_processor.topic_list',
                 'context_processor.moderated_article_count',
+                'context_processor.notifications',
             ],
         },
     },
