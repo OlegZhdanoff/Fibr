@@ -65,6 +65,10 @@ class Notification(models.Model):
     def get_all(user_pk):
         return Notification.objects.filter(user=user_pk).order_by('-created_at')
 
+    @staticmethod
+    def del_all(user_pk):
+        return Notification.objects.filter(user=user_pk).delete()
+
     @classmethod
     def add_notice(cls, type_of, target=None, comment=None):
         if target:

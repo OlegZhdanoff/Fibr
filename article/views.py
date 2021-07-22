@@ -97,7 +97,7 @@ def article_publish(request, pk):
 
     Notification.add_notice(target=article, type_of=Notification.PUBLISH)
 
-    return HttpResponseRedirect(reverse('auth:profile', args=[str(request.user.pk)]))
+    return HttpResponseRedirect(reverse('auth:profile', args=[str(request.user.pk)]) + '#pills-article')
 
 
 @login_required(login_url='authapp:login')
@@ -109,7 +109,7 @@ def article_unpublish(request, pk):
     if not request.user == article.user:
         Notification.add_notice(target=article, type_of=Notification.RM_ARTICLE)
 
-    return HttpResponseRedirect(reverse('auth:profile', args=[str(request.user.pk)]))
+    return HttpResponseRedirect(reverse('auth:profile', args=[str(request.user.pk)]) + '#pills-article')
 
 
 @login_required(login_url='authapp:login')
@@ -117,7 +117,7 @@ def article_moderate(request, pk):
     """Автор отправляет статью на модерацию"""
     article = get_object_or_404(Article, id=pk)
     article.set_moderate()
-    return HttpResponseRedirect(reverse('auth:profile', args=[str(request.user.pk)]))
+    return HttpResponseRedirect(reverse('auth:profile', args=[str(request.user.pk)]) + '#pills-article')
 
 
 @login_required(login_url='authapp:login')
@@ -141,7 +141,7 @@ def article_delete(request, pk):
     if not article.user == request.user:
         Notification.add_notice(target=article, type_of=Notification.RESTORE)
 
-    return HttpResponseRedirect(reverse('auth:profile', args=[str(request.user.pk)]))
+    return HttpResponseRedirect(reverse('auth:profile', args=[str(request.user.pk)]) + '#pills-article')
 
 
 @login_required(login_url='authapp:login')

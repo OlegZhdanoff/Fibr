@@ -14,6 +14,12 @@ def clear_all(request):
 
 
 @login_required
+def del_all(request):
+    Notification.del_all(request.user.pk)
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
+
+@login_required
 def open_article(request, pk):
     notice = get_object_or_404(Notification, id=pk)
     notice.clear()

@@ -13,6 +13,8 @@ from authapp.forms import UserRegisterForm, UserAuthenticationForm, UserEditForm
 from authapp.models import User, UserProfile
 from django.db import transaction
 
+from notification.models import Notification
+
 
 class UserLogin(LoginView):
     form_class = UserAuthenticationForm
@@ -48,6 +50,7 @@ class ProfileView(UpdateView):
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(**kwargs)
         context['articles'] = Article.get_user_articles(self.request.user)
+        context['notices'] = Notification.get_all(self.request.user)
         if self.request.POST:
             context['profile_form'] = UserProfileEditForm(self.request.POST, instance=self.request.user.userprofile)
         else:

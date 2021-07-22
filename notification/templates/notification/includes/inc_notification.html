@@ -10,7 +10,7 @@ data-container="body" data-toggle="popover" data-placement="bottom" data-html="t
         <a class="btn btn-secondary-outline btn-sm" href="{% url 'notification:clear_all' %}"
             role="button">Очистить</a>
         <a role="button" class="btn btn-info-outline btn-sm" data-toggle="modal"
-        href="{% url 'auth:profile' 21 %}#pills-notifications" id="buttonNotice">История</a>
+        href="{% url 'auth:profile' user.pk %}#pills-notifications" id="buttonNotice">История</a>
         '
 
         data-content='
