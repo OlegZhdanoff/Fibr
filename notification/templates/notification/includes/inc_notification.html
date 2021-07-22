@@ -4,6 +4,7 @@
 })
 </script>
 
+{% if user.is_authenticated %}
 <button type="button" class="btn btn-outline-primary btn-sm"
 data-container="body" data-toggle="popover" data-placement="bottom" data-html="true"
         title='
@@ -105,3 +106,4 @@ data-container="body" data-toggle="popover" data-placement="bottom" data-html="t
     </svg>
     <span class="badge badge-primary">{{ notice.unread_count }}</span>
 </button>
+{% endif %}
