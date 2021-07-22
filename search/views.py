@@ -35,10 +35,7 @@ def search(request):
     found_entries = None
     if ('q' in request.GET) and request.GET['q'].strip():
         query_string = request.GET['q']
-        print(query_string)
         entry_query = get_query(query_string, ["title", ])
-        print(entry_query)
         found_entries = Article.objects.filter(entry_query).order_by("-title")
-        print(found_entries)
     return render(request, 'search/search_result.html',
                   {'query_string': query_string, 'found_entries': found_entries})
