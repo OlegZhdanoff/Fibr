@@ -15,6 +15,10 @@
     <!-- Core theme CSS (includes Bootstrap)-->
     <link href="{% static 'css/header.css' %}" rel="stylesheet"/>
 
+    {% load bootstrap4 %}
+    {% bootstrap_javascript jquery='full' %}
+    {% bootstrap_css %}
+
     {% block css %} {% endblock %}
 
 </head>

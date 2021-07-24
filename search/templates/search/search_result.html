@@ -2,11 +2,14 @@
 {% load static %}
 
 {% block content %}
-
+{% load bootstrap4 %}
+{% bootstrap_javascript jquery='full' %}
+{% bootstrap_css %}
 <section>
     <div class="container w-75 p-2">
+        <h1>Результаты поиска</h1>
         <ul class="list-group list-group-flush w-75">
-            {% for article in articles %}
+            {% for article in found_entries %}
             <li class="list-group-item p-4">
                 <div class="row">
                     <header class="accordion-header">
@@ -97,4 +100,7 @@
         </ul>
     </div>
 </section>
-{% endblock %}
+
+
+
+{% endblock %}>

@@ -26,10 +26,11 @@ urlpatterns = [
     path('auth/', include('authapp.urls', namespace='auth')),
     path('admin-staff/', include('adminapp.urls', namespace='admin-staff')),
     path('summernote/', include('django_summernote.urls')),
+    path('search/', include('search.urls', namespace='search')),
 
     # Оставил параметры админки по дефолту
     path('admin/', admin.site.urls),
-    # path('user/', include('authapp.urls', namespace='user')),
+    path('notification/', include('notification.urls', namespace='notification')),
 
 ]
 
