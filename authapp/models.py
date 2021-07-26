@@ -29,6 +29,11 @@ class User(AbstractUser):
             self.is_blocked = False
         return not self.is_blocked
 
+    def block_user(self, blocked_time):
+        self.is_blocked = True
+        self.blocked_time = blocked_time
+        self.save()
+
 
 class UserProfile(models.Model):
     MALE = 'M'

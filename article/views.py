@@ -102,6 +102,7 @@ def article_comment(request, pk):
 
 @login_required(login_url='authapp:login')
 @user_passes_test(lambda u: u.is_not_blocked(), login_url=reverse_lazy('auth:access_error'))
+@user_passes_test(lambda u: u.is_moderator, login_url=reverse_lazy('auth:access_error'))
 def article_publish(request, pk):
     """Модератор публикует статью автора"""
     article = get_object_or_404(Article, id=pk)
@@ -112,6 +113,7 @@ def article_publish(request, pk):
     return HttpResponseRedirect(reverse('auth:profile', args=[str(request.user.pk)]) + '#pills-article')
 
 
+# ДОБАВИТЬ ДЕКОРАТОР ПРОВЕРКИ НА АВТОРА ИЛИ МОДЕРАТОРА!
 @login_required(login_url='authapp:login')
 @user_passes_test(lambda u: u.is_not_blocked(), login_url=reverse_lazy('auth:access_error'))
 def article_unpublish(request, pk):
@@ -136,6 +138,7 @@ def article_moderate(request, pk):
 
 @login_required(login_url='authapp:login')
 @user_passes_test(lambda u: u.is_not_blocked(), login_url=reverse_lazy('auth:access_error'))
+@user_passes_test(lambda u: u.is_moderator, login_url=reverse_lazy('auth:access_error'))
 def article_decline(request, pk):
     """Модератор отклоняет статью на модерации"""
     if request.method == 'POST':
@@ -201,11 +204,16 @@ def comment_reply(request, pk):
 
 @login_required(login_url='authapp:login')
 @user_passes_test(lambda u: u.is_not_blocked(), login_url=reverse_lazy('auth:access_error'))
+@user_passes_test(lambda u: u.is_moderator, login_url=reverse_lazy('auth:access_error'))
 def comment_delete(request, pk):
     """Вызывает метод delete_comment для комментария"""
     if request.method == 'POST':
         comment = get_object_or_404(Comment, pk=pk)
+
+        reason = f'Комментарий <<< {comment.text} >>> удален по причине: \n{request.POST.get("reason")}'
+        Notification.add_notice(target=comment.article, reason=reason, type_of=Notification.DEL_COMMENT)
+
         article_id = comment.article.pk
-        comment.delete_comment()        
+        comment.delete_comment()
 
     return HttpResponseRedirect(reverse('article:article', args=[str(article_id)]))

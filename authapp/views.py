@@ -111,6 +111,7 @@ class UserInfoView(DetailView):
 
 @login_required
 @user_passes_test(lambda u: u.is_not_blocked(), login_url=reverse_lazy('auth:access_error'))
+@user_passes_test(lambda u: u.is_moderator, login_url=reverse_lazy('auth:access_error'))
 def moderation(request):
     context = {
         'articles': Article.get_moderated_articles()
@@ -120,3 +121,18 @@ def moderation(request):
 
 def access_error(request):
     return render(request, 'authapp/access_error.html')
+
+
+@login_required
+@user_passes_test(lambda u: u.is_not_blocked(), login_url=reverse_lazy('auth:access_error'))
+@user_passes_test(lambda u: u.is_moderator, login_url=reverse_lazy('auth:access_error'))
+def block_user(request, pk):
+    """Модератор блокирует пользователя"""
+    if request.method == 'POST':
+        user = get_object_or_404(User, id=pk)
+        block_time = request.POST.get('block_time')
+        user.block_user(block_time)
+
+        Notification.add_notice(reason=request.POST.get('reason'), type_of=Notification.BLOCK_USER)
+
+    return HttpResponseRedirect(reverse('auth:moderation'))

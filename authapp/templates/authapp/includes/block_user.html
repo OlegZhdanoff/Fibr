@@ -1,0 +1,14 @@
+<form class="form" action="{% url 'auth:decline' article.pk %}" method="POST">
+    {% csrf_token %}
+    <div class="form-body">
+        <div class="form-group">
+            <label class="mt-3" for="moderation-decline-comment">Причина
+            </label>
+            <textarea class="form-control" id="moderation-decline-comment" name="text"
+                      placeholder="введите текст" rows="5"></textarea>
+        </div>
+        <button class="btn btn-secondary mb-4" type="submit">
+            Отправить
+        </button>
+    </div>
+</form>
