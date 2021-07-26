@@ -1,6 +1,8 @@
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy, reverse
+from django.utils.decorators import method_decorator
+from django.views import View
 from django.views.generic import DetailView, CreateView, UpdateView
 from django.shortcuts import get_object_or_404
 from django.http import HttpResponseRedirect
@@ -8,6 +10,13 @@ from django.http import HttpResponseRedirect
 from article.forms import ArticleCreateForm, ArticleEditForm
 from article.models import Article, Comment, Like, CommentsLike
 from notification.models import Notification
+
+
+class UserNotBlocked(View):
+
+    @method_decorator(user_passes_test(lambda u: u.is_not_blocked(), login_url=reverse_lazy('auth:access_error')))
+    def dispatch(self, *args, **kwargs):
+        return super().dispatch(*args, **kwargs)
 
 
 class ArticleView(DetailView):
@@ -27,7 +36,7 @@ class ArticleView(DetailView):
         return super().dispatch(*args, **kwargs)
 
 
-class ArticleCreateView(LoginRequiredMixin, CreateView):
+class ArticleCreateView(LoginRequiredMixin, UserNotBlocked, CreateView):
     model = Article
     template_name = 'article/article_create.html'
     form_class = ArticleCreateForm
@@ -39,7 +48,7 @@ class ArticleCreateView(LoginRequiredMixin, CreateView):
         return super().form_valid(form)
 
 
-class ArticleEditView(LoginRequiredMixin, UpdateView):
+class ArticleEditView(LoginRequiredMixin, UserNotBlocked, UpdateView):
     model = Article
     template_name = 'article/article_edit.html'
     form_class = ArticleEditForm
@@ -60,6 +69,7 @@ class ArticleEditView(LoginRequiredMixin, UpdateView):
 
 
 @login_required(login_url='authapp:login')
+@user_passes_test(lambda u: u.is_not_blocked(), login_url=reverse_lazy('auth:access_error'))
 def article_like(request, pk):
     """Вызывает метод set_like для статьи или редиректит на статью после авторизации"""
     if request.method == 'POST':
@@ -78,6 +88,7 @@ def article_like(request, pk):
 
 
 @login_required(login_url='authapp:login')
+@user_passes_test(lambda u: u.is_not_blocked(), login_url=reverse_lazy('auth:access_error'))
 def article_comment(request, pk):
     """Вызывает метод leave_comment для статьи или редиректит на статью после авторизации"""
     if request.method == 'POST':
@@ -90,6 +101,7 @@ def article_comment(request, pk):
 
 
 @login_required(login_url='authapp:login')
+@user_passes_test(lambda u: u.is_not_blocked(), login_url=reverse_lazy('auth:access_error'))
 def article_publish(request, pk):
     """Модератор публикует статью автора"""
     article = get_object_or_404(Article, id=pk)
@@ -101,6 +113,7 @@ def article_publish(request, pk):
 
 
 @login_required(login_url='authapp:login')
+@user_passes_test(lambda u: u.is_not_blocked(), login_url=reverse_lazy('auth:access_error'))
 def article_unpublish(request, pk):
     """Модератор или автор снимает статью с публикации"""
     article = get_object_or_404(Article, id=pk)
@@ -113,6 +126,7 @@ def article_unpublish(request, pk):
 
 
 @login_required(login_url='authapp:login')
+@user_passes_test(lambda u: u.is_not_blocked(), login_url=reverse_lazy('auth:access_error'))
 def article_moderate(request, pk):
     """Автор отправляет статью на модерацию"""
     article = get_object_or_404(Article, id=pk)
@@ -121,6 +135,7 @@ def article_moderate(request, pk):
 
 
 @login_required(login_url='authapp:login')
+@user_passes_test(lambda u: u.is_not_blocked(), login_url=reverse_lazy('auth:access_error'))
 def article_decline(request, pk):
     """Модератор отклоняет статью на модерации"""
     if request.method == 'POST':
@@ -133,6 +148,7 @@ def article_decline(request, pk):
 
 
 @login_required(login_url='authapp:login')
+@user_passes_test(lambda u: u.is_not_blocked(), login_url=reverse_lazy('auth:access_error'))
 def article_delete(request, pk):
     """Автор удаляет статью / Админ восстанавливает"""
     article = get_object_or_404(Article, id=pk)
@@ -145,6 +161,7 @@ def article_delete(request, pk):
 
 
 @login_required(login_url='authapp:login')
+@user_passes_test(lambda u: u.is_not_blocked(), login_url=reverse_lazy('auth:access_error'))
 def comment_like(request, pk):
     """Вызывает метод set_like для комментария или редиректит на статью после авторизации"""
     if request.method == 'POST':
@@ -166,6 +183,7 @@ def comment_like(request, pk):
 
 
 @login_required(login_url='authapp:login')
+@user_passes_test(lambda u: u.is_not_blocked(), login_url=reverse_lazy('auth:access_error'))
 def comment_reply(request, pk):
     """Вызывает метод leave_comment для статьи или редиректит на статью после авторизации"""
     if request.method == 'POST':
@@ -182,6 +200,7 @@ def comment_reply(request, pk):
 
 
 @login_required(login_url='authapp:login')
+@user_passes_test(lambda u: u.is_not_blocked(), login_url=reverse_lazy('auth:access_error'))
 def comment_delete(request, pk):
     """Вызывает метод delete_comment для комментария"""
     if request.method == 'POST':

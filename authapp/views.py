@@ -1,4 +1,4 @@
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LoginView, LogoutView
 from django.http import HttpResponseRedirect
@@ -110,43 +110,13 @@ class UserInfoView(DetailView):
 
 
 @login_required
+@user_passes_test(lambda u: u.is_not_blocked(), login_url=reverse_lazy('auth:access_error'))
 def moderation(request):
     context = {
         'articles': Article.get_moderated_articles()
     }
     return render(request, 'authapp/moderation.html', context)
 
-# def profile(request):
-#     if request.method == 'POST':
-#         form = UserProfileEditForm(data=request.POST, files=request.FILES, instance=request.user)
-#         if form.is_valid():
-#             form.save()
-#             return HttpResponseRedirect(reverse('authapp:profile'))
-#     else:
-#         form = UserEditForm(instance=request.user)
-#
-#     context = {
-#         'form': form,
-#         'articles': Article.get_user_articles(request.user)
-#     }
-#     return render(request, 'authapp/profile.html', context)
 
-
-# @transaction.atomic
-# def edit(request):
-#     title = 'редактирование'
-#     if request.method == 'POST':
-#         edit_form = UserEditForm(request.POST, request.FILES, instance=request.user)
-#         profile_form = UserProfileEditForm(request.POST, instance=request.user.userprofile)
-#         if edit_form.is_valid() and profile_form.is_valid():
-#             edit_form.save()
-#             return HttpResponseRedirect(reverse('authapp:edit'))
-#     else:
-#         edit_form = UserEditForm(instance=request.user)
-#         profile_form = UserProfileEditForm(instance=request.user.userprofile)
-#     content = {
-#         'title': title,
-#         'edit_form': edit_form,
-#         'profile_form': profile_form
-#     }
-#     return render(request, 'authapp/edit.html', content)
+def access_error(request):
+    return render(request, 'authapp/access_error.html')
