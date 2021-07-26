@@ -73,12 +73,14 @@ class Notification(models.Model):
         return Notification.objects.filter(user=user_pk).delete()
 
     @classmethod
-    def add_notice(cls, type_of, target=None, comment=None, reason=''):
+    def add_notice(cls, type_of, target=None, comment=None, reason='', user=None):
         if target:
             cls.objects.create(user=target.user, target=target, type_of=type_of, reason=reason).save()
         elif comment:
             cls.objects.create(user=comment.user, target=comment.article, comment=comment, type_of=type_of,
                                reason=reason).save()
+        elif type_of == Notification.BLOCK_USER:
+            cls.objects.create(user=user, type_of=type_of, reason=reason).save()
 
     @classmethod
     def get_new_comments_articles(cls, user):

@@ -133,6 +133,6 @@ def block_user(request, pk):
         block_time = request.POST.get('block_time')
         user.block_user(block_time)
 
-        Notification.add_notice(reason=request.POST.get('reason'), type_of=Notification.BLOCK_USER)
+        Notification.add_notice(user=user, reason=request.POST.get('reason'), type_of=Notification.BLOCK_USER)
 
     return redirect(request.META['HTTP_REFERER'])

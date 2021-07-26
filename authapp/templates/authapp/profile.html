@@ -36,6 +36,21 @@
                             {{ form.non_field.errors }}
                             </small></div>
 
+                            {% if user.is_blocked %}
+                                <div class="alert alert-danger" role="alert">
+
+                                    {% if user.is_blocked %}
+                                        <h4 class="alert-heading">
+                                            Ваш аккаунт заблокирован. Время блокировки до {{ user.blocked_time }} (UTC)
+                                        </h4>
+                                        <p><b>Причина:</b><br>{{ notice.unread.blocked.reason }}</p>
+                                        <hr>
+                                        <p class="mb-0">Вы по прежнему можете просматривать статьи,
+                                            а также управлять своим профилем</p>
+                                    {% endif %}
+                                </div>
+                            {% endif %}
+
                             <h6>Фото профиля</h6>
                             <div class="row justify-content-md-justify border-bottom">
                                 <div class="col-6 py-1">
