@@ -33,7 +33,7 @@ class User(AbstractUser):
 
     def block_user(self, blocked_time):
         self.is_blocked = True
-        self.blocked_time = blocked_time
+        self.blocked_time = timezone.now() + timezone.timedelta(days=float(blocked_time))
         self.save()
 
 

@@ -12,6 +12,6 @@ urlpatterns = [
     path('moderation/', authapp.moderation, name='moderation'),
     path('user_info/<int:pk>/', authapp.UserInfoView.as_view(), name='user_info'),
     path('access-error/', authapp.access_error, name='access_error'),
-    path('block-user/', authapp.block_user, name='block_user'),
+    path('block-user/<int:pk>/', authapp.block_user, name='block_user'),
     # path('edit/', authapp.edit, name='edit'),
 ]

@@ -2,7 +2,7 @@ from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LoginView, LogoutView
 from django.http import HttpResponseRedirect
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse, reverse_lazy
 from django.views.generic import ListView
 from django.views.generic.detail import DetailView
@@ -135,4 +135,4 @@ def block_user(request, pk):
 
         Notification.add_notice(reason=request.POST.get('reason'), type_of=Notification.BLOCK_USER)
 
-    return HttpResponseRedirect(reverse('auth:moderation'))
+    return redirect(request.META['HTTP_REFERER'])
