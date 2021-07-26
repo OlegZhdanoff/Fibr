@@ -11,6 +11,11 @@
             <li class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
                 <a href="{% url 'article:article' note.target.pk %}" class="text-decoration-none text-dark">
                 <b>{{ note.type_of }}</b> <br> <i>{{ note.target.title | truncatechars:50 }}</i>
+                    {% if note.reason %}
+                        <span class="badge badge-warning"
+                        data-toggle="tooltip" data-placement="bottom" title="{{ note.reason }}">
+                            Примечание</span>
+                    {% endif %}
                 </a>
             </li>
         {% endfor %}

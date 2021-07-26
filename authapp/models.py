@@ -25,8 +25,10 @@ class User(AbstractUser):
         # self.save()
         # print(self.blocked_time)
         # print(self.username)
+        # print(self.is_blocked)
         if self.is_blocked and self.blocked_time < timezone.now():
             self.is_blocked = False
+            self.save()
         return not self.is_blocked
 
     def block_user(self, blocked_time):
