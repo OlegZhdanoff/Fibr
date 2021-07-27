@@ -1,0 +1,29 @@
+<button type="button" class="btn bg-light btn-outline-danger btn-sm" data-toggle="collapse" data-target="#blockUserForm"
+        aria-expanded="false" aria-controls="blockUserForm"> Заблокировать пользователя </button>
+<div class="collapse" id="blockUserForm">
+<form class="form" action="{% url 'auth:block_user' user_info.pk %}" method="POST">
+    {% csrf_token %}
+    <div class="form-body">
+        <div class="form-group">
+            <label class="mt-3" for="moderation-block-user-reason">Причина
+            </label>
+            <textarea class="form-control" id="moderation-block-user-reason" name="reason"
+                      placeholder="введите текст" rows="5"></textarea>
+        </div>
+        <div class="form-group">
+            <label class="mt-3" for="moderation-block-user-time">Период блокировки
+            </label>
+            <select class="form-control" id="moderation-block-user-time" name="block_time" size="1">
+                <option value="1">1 день</option>
+                <option value="3">3 дня</option>
+                <option value="7">неделя</option>
+                <option value="30">месяц</option>
+                <option value="365000">навсегда</option>
+            </select>
+        </div>
+        <button class="btn btn-secondary mb-4" type="submit">
+            Отправить
+        </button>
+    </div>
+</form>
+</div>

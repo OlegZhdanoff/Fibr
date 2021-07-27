@@ -21,6 +21,7 @@ def notifications(request):
         'del_comment': [],
         'publish': [],
         'restore': [],
+        'blocked': None,
     }
     for notice in Notification.get_unread(request.user.pk):
         if notice.type_of == Notification.MODERATOR:
@@ -33,12 +34,16 @@ def notifications(request):
             unread['publish'].append(notice)
         elif notice.type_of == Notification.RESTORE:
             unread['restore'].append(notice)
-    print(Notification.get_new_liked_comments(request.user.pk))
+
+    if request.user.is_blocked:
+        unread['blocked'] = Notification.objects.filter(type_of=Notification.BLOCK_USER,
+                                                        user=request.user.pk).order_by('-created_at').first()
+    # print(unread['blocked'])
     return \
         {
             'notice':
             {
-                'all_notifications': Notification.get_all(request.user.pk),
+                # 'all_notifications': Notification.get_all(request.user.pk),
                 'total_count': Notification.total_count(request.user.pk),
                 'unread': unread,
                 'unread_count': Notification.total_unread_count(request.user.pk),
