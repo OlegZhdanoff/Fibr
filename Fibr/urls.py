@@ -31,6 +31,7 @@ urlpatterns = [
     # Оставил параметры админки по дефолту
     path('admin/', admin.site.urls),
     path('notification/', include('notification.urls', namespace='notification')),
+    path('complaint/', include('complaint.urls', namespace='complaint')),
 
 ]
 
