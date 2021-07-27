@@ -14,3 +14,6 @@ class Index(ListView):
         context['articles'] = Article.get_articles().order_by('-created_at')[:3]
 
         return context
+
+def index(request):
+    return render(request, 'mainapp/index2.html')

@@ -92,22 +92,14 @@ class ProfileView(UpdateView):
         )
 
 
-class UserInfoView(DetailView):
-    model = User
-    template_name = 'authapp/user_profile.html'
-
-    # def get_queryset(self):
-
-    def get_context_data(self, **kwargs):
-        # Call the base implementation first to get a context
-        context = super().get_context_data(**kwargs)
-        # Add in the publisher
-        context['user_info'] = get_object_or_404(User, pk=self.kwargs['pk'])
-        context['user_profile'] = get_object_or_404(UserProfile, user=self.kwargs['pk'])
-        context['comments_count'] = Comment.objects.filter(user=self.kwargs['pk']).count()
-        context['article_count'] = Article.objects.filter(user=self.kwargs['pk']).count()
-        return context
-
+def user_info(request, pk):
+    context = {
+        'user_info': get_object_or_404(User, pk=pk),
+        'user_profile': get_object_or_404(UserProfile, user=pk),
+        'comments_count': Comment.objects.filter(user=pk).count(),
+        'article_count': Article.objects.filter(user=pk).count(),
+    }
+    return render(request, 'authapp/user_profile.html', context)
 
 @login_required
 @user_passes_test(lambda u: u.is_not_blocked(), login_url=reverse_lazy('auth:access_error'))

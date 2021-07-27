@@ -46,7 +46,7 @@ INSTALLED_APPS = [
     'adminapp',
     'notification',
     'search',
-    'complaint'
+    'complaint',
 ]
 
 MIDDLEWARE = [

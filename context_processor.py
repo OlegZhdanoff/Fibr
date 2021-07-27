@@ -14,7 +14,6 @@ def moderated_article_count(request):
 
 def notifications(request):
     if request.user.is_authenticated:
-
         """создаем отдельную структуру для определенных типов уведомлений, чтобы во фронте не заниматься сортировкой"""
         unread = {
             'moderator': [],
@@ -56,3 +55,5 @@ def notifications(request):
                     'new_comments_reply': Notification.get_new_comments_reply(request.user.pk),
                 }
             }
+    else:
+        return {'notice': 0}
