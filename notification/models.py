@@ -43,7 +43,7 @@ class Notification(models.Model):
         (COMPLAINT_DECLINE, 'Жалоба отклонена'),
     )
 
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='Пользователь', null=True)
     target = models.ForeignKey(Article, on_delete=models.CASCADE, verbose_name='Статья', null=True)
     comment = models.ForeignKey(Comment, on_delete=models.CASCADE, verbose_name='Комментарий', null=True)
     complaint = models.ForeignKey(Complaint, on_delete=models.CASCADE, verbose_name='Жалоба', null=True)
@@ -88,7 +88,7 @@ class Notification(models.Model):
             cls.objects.create(user=comment.user, target=comment.article, comment=comment, type_of=type_of,
                                reason=reason).save()
         elif complaint:
-            cls.objects.create(user=user, complaint=complaint, type_of=type_of).save()
+            cls.objects.create(complaint=complaint, type_of=type_of).save()
         elif type_of == Notification.BLOCK_USER:
             cls.objects.create(user=user, type_of=type_of, reason=reason).save()
 

@@ -32,7 +32,6 @@ def create(request, pk):
         complaint = Complaint.create(owner=request.user, target=target, type_of=type_of,
                                      text=request.POST.get('text'))
 
-        Notification.add_notice(user=request.user, complaint=complaint, type_of=Notification.NEW_COMPLAINT)
-        print(complaint, type_of)
+        Notification.add_notice(complaint=complaint, type_of=Notification.NEW_COMPLAINT)
     return redirect(request.META['HTTP_REFERER'])
 

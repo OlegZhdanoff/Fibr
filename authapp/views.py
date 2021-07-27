@@ -101,6 +101,7 @@ def user_info(request, pk):
     }
     return render(request, 'authapp/user_profile.html', context)
 
+
 @login_required
 @user_passes_test(lambda u: u.is_not_blocked(), login_url=reverse_lazy('auth:access_error'))
 @user_passes_test(lambda u: u.is_moderator, login_url=reverse_lazy('auth:access_error'))
