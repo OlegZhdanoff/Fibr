@@ -1,4 +1,5 @@
 from article.models import Article
+from complaint.models import Complaint
 from hub.models import Topic
 from notification.models import Notification
 
@@ -9,7 +10,9 @@ def topic_list(request):
 
 
 def moderated_article_count(request):
-    return {'moderated_articles_count': Article.get_moderated_articles().count()}
+    return {'moderated_articles_count': Article.get_moderated_articles().count(),
+            'new_complaints_count': Complaint.get_active_complaints().count(),
+            }
 
 
 def notifications(request):
