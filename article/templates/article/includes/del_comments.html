@@ -1,0 +1,18 @@
+<button type="button" class="btn bg-light btn-outline-danger" data-toggle="collapse" data-target="#commentDelForm"
+        aria-expanded="false" aria-controls="commentDelForm"> Удалить комментарий </button>
+<div class="collapse" id="commentDelForm">
+    <form class="form" action="{% url 'article:comment_delete' comment.pk %}" method="POST">
+        {% csrf_token %}
+        <div class="form-body">
+            <div class="form-group">
+                <label class="mt-3" for="moderation-decline-comment">Причина
+                </label>
+                <textarea class="form-control" id="moderation-decline-comment" name="reason"
+                          placeholder="введите текст" rows="5"></textarea>
+            </div>
+            <button class="btn btn-secondary mb-4" type="submit">
+                Отправить
+            </button>
+        </div>
+    </form>
+</div>

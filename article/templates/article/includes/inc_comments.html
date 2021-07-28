@@ -42,11 +42,7 @@
         </a>
     </form>
     {% if user.is_moderator %}
-    <form action="{% url 'article:comment_delete' comment.pk %}" method="POST">
-        {% csrf_token %}
-        <button type="submit" class="btn bg-light btn-outline-danger">
-            Удалить комментарий </button>
-    </form>
+        {% include 'article/includes/del_comments.html' %}
     {% endif %}
     {% for reply in comment.get_comments %}
     <header class="accordion-header mt-2 w-75">
