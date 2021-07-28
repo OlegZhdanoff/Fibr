@@ -54,7 +54,7 @@
         <button type="button" class="btn btn-outline-success">
             Опубликовать </button></a>
     {% endif %}
-
+    {% if article.is_moderated %}
     <button type="button" class="btn bg-light btn-outline-danger" data-toggle="collapse" data-target="#declineForm"
         aria-expanded="false" aria-controls="declineForm"> Отклонить </button>
     <div class="collapse" id="declineForm">
@@ -73,6 +73,7 @@
             </div>
         </form>
     </div>
+    {% endif %}
 
     {% endif %}
 
