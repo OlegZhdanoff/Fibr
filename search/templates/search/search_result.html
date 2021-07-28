@@ -5,10 +5,20 @@
 {% load bootstrap4 %}
 {% bootstrap_javascript jquery='full' %}
 {% bootstrap_css %}
+<div class="h3 pt-5 px-lg-3 pb-4 text-black-50">
+    <div class="container w-75">
+        <h3 class="h3"> Расширенный поиск </h3>
+    </div>
+
+</div>
 <section>
+    {% include 'search/includes/search_filter.html' %}
+
     <div class="container w-75 p-2">
         <h1>Результаты поиска</h1>
         <ul class="list-group list-group-flush w-75">
+                        <link href="https://fonts.googleapis.com/css?family=Roboto:400,700" rel="stylesheet" />
+                        <link href="{% static 'css/advanced_search.css' %}" rel="stylesheet" />
             {% for article in found_entries %}
             <li class="list-group-item p-4">
                 <div class="row">
@@ -21,7 +31,9 @@
                         <p class="timelist text-muted"><small>
                                 {{ article.created_at }}
                             </small></p>
-
+                        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+                        <meta name="viewport" content="width=device-width, initial-scale=1" />
+                        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
                     </header>
 
                     <div class="col-sm-12">
@@ -99,7 +111,12 @@
             {% endfor %}
         </ul>
     </div>
+
 </section>
+
+
+
+
 
 
 

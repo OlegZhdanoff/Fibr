@@ -1,41 +1,57 @@
-import re
-
 from django.db.models import Q
-from django.shortcuts import render
+from django.views.generic import ListView
 
 from article.models import Article
+from hub.models import Topic
+from authapp.models import User
 
 
-def normal_query(query_string,
-                 findterms=re.compile(r'"([^"]+)"|(\S+)').findall,
-                 normspace=re.compile(r'\s{2,}').sub):
-    return [normspace(' ', (t[0] or t[1]).strip()) for t in findterms(query_string)]
+class SearchResultsView(ListView):
+    model = Article
+    template_name = 'search/search_result.html'
 
+    def get_search_parameters(self):
+        # Дает список Q-объектов с параметрами по заданным фильтрам
+        search_parameters = []
 
-def get_query(query_string, search_fields):
-    query = None
-    terms = normal_query(query_string)
-    for term in terms:
-        or_query = None
-        for field_name in search_fields:
-            q = Q(**{"%s__icontains" % field_name: term})
-            if or_query is None:
-                or_query = q
-            else:
-                or_query = or_query | q
-        if query is None:
-            query = or_query
-        else:
-            query = query & or_query
-    return query
+        keyword = self.request.GET.get('keyword')
+        topic = self.request.GET.get('topic')
+        start_date = self.request.GET.get('start_date')
+        end_date = self.request.GET.get('end_date')
+        author = self.request.GET.get('author')
 
+        if keyword:
+            text_contain = Q(title__icontains=keyword) | Q(content__icontains=keyword)
+            search_parameters.append(text_contain)
 
-def search(request):
-    query_string = ''
-    found_entries = None
-    if ('q' in request.GET) and request.GET['q'].strip():
-        query_string = request.GET['q']
-        entry_query = get_query(query_string, ["title", ])
-        found_entries = Article.objects.filter(entry_query).order_by("-title")
-    return render(request, 'search/search_result.html',
-                  {'query_string': query_string, 'found_entries': found_entries})
+        if topic:
+            topic = Topic.objects.filter(name__icontains=topic)
+            topic_parameter = Q(topic=topic[0].id)
+            search_parameters.append(topic_parameter)
+
+        if start_date:
+            start_date_parameter = Q(created_at__gte=start_date)
+            search_parameters.append(start_date_parameter)
+
+        if end_date:
+            start_date_parameter = Q(created_at__lte=end_date)
+            search_parameters.append(start_date_parameter)
+
+        if author:
+            authors = User.objects.filter(Q(first_name__icontains=author) | Q(last_name__icontains=author))
+            author_parameter = Q(user__in=authors)
+            search_parameters.append(author_parameter)
+
+        return search_parameters
+
+    def get_queryset(self):
+        search_parameters = self.get_search_parameters()
+        found_entries = Article.objects.filter(*search_parameters)
+
+        return found_entries
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['found_entries'] = self.get_queryset()
+
+        return context
