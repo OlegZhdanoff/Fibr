@@ -49,3 +49,24 @@ class Complaint(models.Model):
         if obj:
             obj.save()
         return obj
+
+    @classmethod
+    def get_all_complaints(cls):
+        return Complaint.objects.all().order_by('-created_at')
+
+    @classmethod
+    def get_accepted_complaints(cls):
+        return Complaint.objects.filter(status__exact=cls.ACCEPTED).order_by('-created_at')
+
+    @classmethod
+    def get_declined_complaints(cls):
+        return Complaint.objects.filter(status__exact=cls.DECLINE).order_by('-created_at')
+
+    @classmethod
+    def get_active_complaints(cls):
+        return Complaint.objects.filter(status__exact=cls.ACTIVE).order_by('-created_at')
+
+    def edit(self, status, text_moderator):
+        self.text_moderator = text_moderator
+        self.status = status
+        self.save()

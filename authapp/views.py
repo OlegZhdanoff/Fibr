@@ -13,6 +13,7 @@ from authapp.forms import UserRegisterForm, UserAuthenticationForm, UserEditForm
 from authapp.models import User, UserProfile
 from django.db import transaction
 
+from complaint.models import Complaint
 from notification.models import Notification
 
 
@@ -103,11 +104,14 @@ def user_info(request, pk):
 
 
 @login_required
-@user_passes_test(lambda u: u.is_not_blocked(), login_url=reverse_lazy('auth:access_error'))
-@user_passes_test(lambda u: u.is_moderator, login_url=reverse_lazy('auth:access_error'))
+@user_passes_test(lambda u: u.is_not_blocked() and u.is_moderator, login_url=reverse_lazy('auth:access_error'))
 def moderation(request):
     context = {
-        'articles': Article.get_moderated_articles()
+        'articles': Article.get_moderated_articles(),
+        'all_complaints': Complaint.get_all_complaints(),
+        'accepted_complaints': Complaint.get_accepted_complaints(),
+        'declined_complaints': Complaint.get_declined_complaints(),
+        'active_complaints': Complaint.get_active_complaints(),
     }
     return render(request, 'authapp/moderation.html', context)
 
@@ -117,8 +121,7 @@ def access_error(request):
 
 
 @login_required
-@user_passes_test(lambda u: u.is_not_blocked(), login_url=reverse_lazy('auth:access_error'))
-@user_passes_test(lambda u: u.is_moderator, login_url=reverse_lazy('auth:access_error'))
+@user_passes_test(lambda u: u.is_not_blocked() and u.is_moderator, login_url=reverse_lazy('auth:access_error'))
 def block_user(request, pk):
     """Модератор блокирует пользователя"""
     if request.method == 'POST':

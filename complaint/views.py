@@ -35,3 +35,15 @@ def create(request, pk):
         Notification.add_notice(complaint=complaint, type_of=Notification.NEW_COMPLAINT)
     return redirect(request.META['HTTP_REFERER'])
 
+
+@login_required
+@user_passes_test(lambda u: u.is_not_blocked() and u.is_moderator, login_url=reverse_lazy('auth:access_error'))
+def edit(request, pk):
+    if request.method == 'POST':
+        status = request.POST.get('status')
+        complaint = get_object_or_404(Complaint, id=pk)
+        text_moderator = request.POST.get('text_moderator')
+
+        complaint.edit(status, text_moderator)
+
+    return redirect(request.META['HTTP_REFERER'])
