@@ -27,12 +27,46 @@ class Complaint(models.Model):
         (DECLINE, 'Отклонена')
     )
 
-    owner = models.ManyToManyField(User, related_name='usercomplaint')
+    owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='usercomplaint')
     user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='Пользователь', null=True)
     article = models.ForeignKey(Article, on_delete=models.CASCADE, verbose_name='Статья', null=True)
     comment = models.ForeignKey(Comment, on_delete=models.CASCADE, verbose_name='Комментарий', null=True)
     type_of = models.CharField(max_length=50, choices=TYPE_CHOICES, verbose_name='Тип', db_index=True)
-    status = models.CharField(max_length=50, choices=STATUS, verbose_name='Статус', db_index=True)
-    text = models.TextField(blank=True, verbose_name='Текст')
+    status = models.CharField(max_length=50, choices=STATUS, default=ACTIVE, verbose_name='Статус', db_index=True)
+    text = models.TextField(verbose_name='Текст')
     text_moderator = models.TextField(blank=True, verbose_name='Ответ модератора')
     created_at = models.DateTimeField(auto_now_add=True)
+
+    @classmethod
+    def create(cls, owner, target, type_of, text):
+        obj = None
+        if type_of == cls.USER:
+            obj = cls.objects.create(owner=owner, user=target, type_of=type_of, text=text)
+        elif type_of == cls.ARTICLE:
+            obj = cls.objects.create(owner=owner, article=target, type_of=type_of, text=text)
+        elif type_of == cls.COMMENT:
+            obj = cls.objects.create(owner=owner, comment=target, type_of=type_of, text=text)
+        if obj:
+            obj.save()
+        return obj
+
+    @classmethod
+    def get_all_complaints(cls):
+        return Complaint.objects.all().order_by('-created_at')
+
+    @classmethod
+    def get_accepted_complaints(cls):
+        return Complaint.objects.filter(status__exact=cls.ACCEPTED).order_by('-created_at')
+
+    @classmethod
+    def get_declined_complaints(cls):
+        return Complaint.objects.filter(status__exact=cls.DECLINE).order_by('-created_at')
+
+    @classmethod
+    def get_active_complaints(cls):
+        return Complaint.objects.filter(status__exact=cls.ACTIVE).order_by('-created_at')
+
+    def edit(self, status, text_moderator):
+        self.text_moderator = text_moderator
+        self.status = status
+        self.save()

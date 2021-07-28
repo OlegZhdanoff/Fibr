@@ -3,6 +3,7 @@ from django.db.models import Count, Q
 
 from article.models import Article, Comment
 from authapp.models import User
+from complaint.models import Complaint
 
 
 class Notification(models.Model):
@@ -20,6 +21,9 @@ class Notification(models.Model):
     COMMENT_DISLIKE = 'Дизлайк на коммент'
     COMMENT_REPLY = 'Ответ на коммент'
     BLOCK_USER = 'Аккаунт заблокирован!'
+    NEW_COMPLAINT = 'Новая жалоба'
+    COMPLAINT_ACCEPTED = 'Жалоба принята'
+    COMPLAINT_DECLINE = 'Жалоба отклонена'
 
     TYPE_CHOICES = (
         (MODERATOR, 'Отклонено модератором!'),
@@ -34,11 +38,15 @@ class Notification(models.Model):
         (COMMENT_DISLIKE, 'Дизлайк на коммент'),
         (COMMENT_REPLY, 'Ответ на коммент'),
         (BLOCK_USER, 'Аккаунт заблокирован!'),
+        (NEW_COMPLAINT, 'Новая жалоба'),
+        (COMPLAINT_ACCEPTED, 'Жалоба принята'),
+        (COMPLAINT_DECLINE, 'Жалоба отклонена'),
     )
 
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='Пользователь', null=True)
     target = models.ForeignKey(Article, on_delete=models.CASCADE, verbose_name='Статья', null=True)
     comment = models.ForeignKey(Comment, on_delete=models.CASCADE, verbose_name='Комментарий', null=True)
+    complaint = models.ForeignKey(Complaint, on_delete=models.CASCADE, verbose_name='Жалоба', null=True)
     read = models.BooleanField(verbose_name='Прочитано', default=False, db_index=True)
     type_of = models.CharField(max_length=50, choices=TYPE_CHOICES, verbose_name='тип', db_index=True)
     reason = models.TextField(blank=True)
@@ -73,12 +81,14 @@ class Notification(models.Model):
         return Notification.objects.filter(user=user_pk).delete()
 
     @classmethod
-    def add_notice(cls, type_of, target=None, comment=None, reason='', user=None):
+    def add_notice(cls, type_of, target=None, comment=None, complaint=None, reason='', user=None):
         if target:
             cls.objects.create(user=target.user, target=target, type_of=type_of, reason=reason).save()
         elif comment:
             cls.objects.create(user=comment.user, target=comment.article, comment=comment, type_of=type_of,
                                reason=reason).save()
+        elif complaint:
+            cls.objects.create(complaint=complaint, type_of=type_of).save()
         elif type_of == Notification.BLOCK_USER:
             cls.objects.create(user=user, type_of=type_of, reason=reason).save()
 

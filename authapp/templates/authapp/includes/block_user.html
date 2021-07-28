@@ -1,4 +1,4 @@
-<button type="button" class="btn bg-light btn-outline-danger btn-sm" data-toggle="collapse" data-target="#blockUserForm"
+<button type="button" class="btn bg-light btn-outline-danger btn-sm mb-3" data-toggle="collapse" data-target="#blockUserForm"
         aria-expanded="false" aria-controls="blockUserForm"> Заблокировать пользователя </button>
 <div class="collapse" id="blockUserForm">
 <form class="form" action="{% url 'auth:block_user' user_info.pk %}" method="POST">

@@ -22,10 +22,11 @@
                         <div class="col-6">
 
                             <div class="row justify-content-start">
+                                {% include 'authapp/includes/add_complaint.html' %}
                                 {% if user_info.is_blocked %}
                                     <div class="mb-3 border-bottom">
                                         <p class="text-danger">Аккаунт заблокирован. Время блокировки до
-                                            {{ user.blocked_time }} (UTC)</p>
+                                            {{ user_info.blocked_time }} (UTC)</p>
                                     </div>
                                 {% elif user.is_moderator %}
                                     {% include 'authapp/includes/block_user.html' %}
