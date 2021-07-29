@@ -1,0 +1,21 @@
+{% if user.is_authenticated and not user.pk == user_info.pk %}
+<button type="button" class="btn bg-light btn-outline-warning mb-3" data-toggle="collapse" data-target="#complaintArticleForm"
+        aria-expanded="false" aria-controls="complaintArticleForm"> Пожаловаться </button>
+<div class="collapse" id="complaintArticleForm">
+<form class="form" action="{% url 'complaint:create' article.pk %}" method="POST">
+    {% csrf_token %}
+    <div class="form-body">
+        <div class="form-group">
+            <label class="mt-3" for="complaint-article-reason">Причина
+            </label>
+            <textarea class="form-control" id="complaint-article-reason" name="text"
+                      placeholder="введите текст" rows="5"></textarea>
+            <input type="hidden" id="complaint-article-type-of" name="type_of" value="2">
+        </div>
+        <button class="btn btn-secondary mb-4" type="submit">
+            Отправить
+        </button>
+    </div>
+</form>
+</div>
+{% endif %}

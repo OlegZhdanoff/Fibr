@@ -1,8 +1,8 @@
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LoginView, LogoutView
 from django.http import HttpResponseRedirect
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse, reverse_lazy
 from django.views.generic import ListView
 from django.views.generic.detail import DetailView
@@ -13,6 +13,7 @@ from authapp.forms import UserRegisterForm, UserAuthenticationForm, UserEditForm
 from authapp.models import User, UserProfile
 from django.db import transaction
 
+from complaint.models import Complaint
 from notification.models import Notification
 
 
@@ -92,61 +93,42 @@ class ProfileView(UpdateView):
         )
 
 
-class UserInfoView(DetailView):
-    model = User
-    template_name = 'authapp/user_profile.html'
-
-    # def get_queryset(self):
-
-    def get_context_data(self, **kwargs):
-        # Call the base implementation first to get a context
-        context = super().get_context_data(**kwargs)
-        # Add in the publisher
-        context['user_info'] = get_object_or_404(User, pk=self.kwargs['pk'])
-        context['user_profile'] = get_object_or_404(UserProfile, user=self.kwargs['pk'])
-        context['comments_count'] = Comment.objects.filter(user=self.kwargs['pk']).count()
-        context['article_count'] = Article.objects.filter(user=self.kwargs['pk']).count()
-        return context
+def user_info(request, pk):
+    context = {
+        'user_info': get_object_or_404(User, pk=pk),
+        'user_profile': get_object_or_404(UserProfile, user=pk),
+        'comments_count': Comment.objects.filter(user=pk).count(),
+        'article_count': Article.objects.filter(user=pk).count(),
+    }
+    return render(request, 'authapp/user_profile.html', context)
 
 
 @login_required
+@user_passes_test(lambda u: u.is_not_blocked() and u.is_moderator, login_url=reverse_lazy('auth:access_error'))
 def moderation(request):
     context = {
-        'articles': Article.get_moderated_articles()
+        'articles': Article.get_moderated_articles(),
+        'all_complaints': Complaint.get_all_complaints(),
+        'accepted_complaints': Complaint.get_accepted_complaints(),
+        'declined_complaints': Complaint.get_declined_complaints(),
+        'active_complaints': Complaint.get_active_complaints(),
     }
     return render(request, 'authapp/moderation.html', context)
 
-# def profile(request):
-#     if request.method == 'POST':
-#         form = UserProfileEditForm(data=request.POST, files=request.FILES, instance=request.user)
-#         if form.is_valid():
-#             form.save()
-#             return HttpResponseRedirect(reverse('authapp:profile'))
-#     else:
-#         form = UserEditForm(instance=request.user)
-#
-#     context = {
-#         'form': form,
-#         'articles': Article.get_user_articles(request.user)
-#     }
-#     return render(request, 'authapp/profile.html', context)
+
+def access_error(request):
+    return render(request, 'authapp/access_error.html')
 
 
-# @transaction.atomic
-# def edit(request):
-#     title = 'редактирование'
-#     if request.method == 'POST':
-#         edit_form = UserEditForm(request.POST, request.FILES, instance=request.user)
-#         profile_form = UserProfileEditForm(request.POST, instance=request.user.userprofile)
-#         if edit_form.is_valid() and profile_form.is_valid():
-#             edit_form.save()
-#             return HttpResponseRedirect(reverse('authapp:edit'))
-#     else:
-#         edit_form = UserEditForm(instance=request.user)
-#         profile_form = UserProfileEditForm(instance=request.user.userprofile)
-#     content = {
-#         'title': title,
-#         'edit_form': edit_form,
-#         'profile_form': profile_form
-#     }
-#     return render(request, 'authapp/edit.html', content)
+@login_required
+@user_passes_test(lambda u: u.is_not_blocked() and u.is_moderator, login_url=reverse_lazy('auth:access_error'))
+def block_user(request, pk):
+    """Модератор блокирует пользователя"""
+    if request.method == 'POST':
+        user = get_object_or_404(User, id=pk)
+        block_time = request.POST.get('block_time')
+        user.block_user(block_time)
+
+        Notification.add_notice(user=user, reason=request.POST.get('reason'), type_of=Notification.BLOCK_USER)
+
+    return redirect(request.META['HTTP_REFERER'])

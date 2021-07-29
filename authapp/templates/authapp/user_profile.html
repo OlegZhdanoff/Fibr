@@ -20,7 +20,17 @@
                             </div>
                         </div>
                         <div class="col-6">
+
                             <div class="row justify-content-start">
+                                {% include 'authapp/includes/add_complaint.html' %}
+                                {% if user_info.is_blocked %}
+                                    <div class="mb-3 border-bottom">
+                                        <p class="text-danger">Аккаунт заблокирован. Время блокировки до
+                                            {{ user_info.blocked_time }} (UTC)</p>
+                                    </div>
+                                {% elif user.is_moderator %}
+                                    {% include 'authapp/includes/block_user.html' %}
+                                {% endif %}
                                 Количество статей: {{ article_count }}<br>
                                 Количество комментариев: {{ comments_count }}
                             </div>

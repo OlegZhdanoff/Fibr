@@ -19,6 +19,8 @@
     </div>
 </div>
 <div class="panel-heading w-75 mt-4">
+<div class="row justify-content-end">
+<div class="col-9">
     <form action="{% url 'article:like_comment' comment.pk %}" method="POST">
         {% csrf_token %}
         <button class="btn btn-outline-success m-1" type="submit" name="like_action" value="like">
@@ -42,12 +44,13 @@
         </a>
     </form>
     {% if user.is_moderator %}
-    <form action="{% url 'article:comment_delete' comment.pk %}" method="POST">
-        {% csrf_token %}
-        <button type="submit" class="btn bg-light btn-outline-danger">
-            Удалить комментарий </button>
-    </form>
+        {% include 'article/includes/del_comments.html' %}
     {% endif %}
+</div>
+<div class="col-3">
+        {% include 'article/includes/add_comment_complaint.html' %}
+    </div>
+</div>
     {% for reply in comment.get_comments %}
     <header class="accordion-header mt-2 w-75">
         <a href="{% url 'auth:user_info' reply.user.pk %}" class="text-info" title="Автор публикации"
