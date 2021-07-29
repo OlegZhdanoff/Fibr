@@ -49,7 +49,7 @@
                     {% if user.is_moderator %}
                     <button class="btn btn-outline-info btn-sm my-0 m-1" type="button"
                         onclick="location.href='{% url 'auth:moderation' %}'">
-                        Модерация <span class="badge badge-info">{{ moderated_articles_count }}</span>
+                        Модерация <span class="badge badge-info">{{ moderated_articles_count|add:new_complaints_count}}</span>
                     </button>
                     {% endif %}
 

@@ -44,7 +44,7 @@
                         </div>
                         <br>
                         <p class="card-text" style="line-height: 1.70;font-size: 18px;overflow-wrap: break-word;">
-                            {{ article.content| safe| truncatewords:60 }}</p>
+                            {{ article.content| safe| truncatewords:30 }}</p>
 
                         <a href="{% url 'article:article' article.pk %}">
                         </a>
