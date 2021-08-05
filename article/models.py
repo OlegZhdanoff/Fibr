@@ -53,6 +53,18 @@ class Article(models.Model):
         comments = Comment.objects.filter(article=self)
 
         return len(comments)
+
+    def get_comments(self):
+        """Возвращает комментарии к текущей статье"""
+        comments = Comment.objects.filter(article=self)
+
+        return comments
+
+    @property
+    def rating(self):
+        """Свойство рейтинг"""
+
+        return self.get_total_likes() - self.get_total_dislikes()
     
     def get_total_views(self):
         """Возвращает количество просмотров к текущей статье"""
