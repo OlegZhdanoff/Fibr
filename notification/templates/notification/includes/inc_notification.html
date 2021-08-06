@@ -16,7 +16,7 @@ data-container="body" data-toggle="popover" data-placement="bottom" data-html="t
 
         data-content='
 <ul class="list-group list-group-flush">
-{% if user.is_blocked %}
+{% if notice.unread.blocked %}
     <li class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
         <a href="{% url 'auth:profile' user.pk %}" class="text-decoration-none text-dark">
         <b class="text-danger">Аккаунт заблокирован!</b>

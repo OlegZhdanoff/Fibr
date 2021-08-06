@@ -38,7 +38,7 @@ def notifications(request):
             elif notice.type_of == Notification.RESTORE:
                 unread['restore'].append(notice)
             elif notice.type_of == Notification.BLOCK_USER:
-                unread['blocked'].append(notice)
+                unread['blocked'] = notice
 
         # if request.user.is_blocked:
         #     unread['blocked'] = Notification.objects.filter(type_of=Notification.BLOCK_USER,
