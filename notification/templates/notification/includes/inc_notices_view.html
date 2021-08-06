@@ -9,7 +9,7 @@
 
         {% for note in notices %}
             <li class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
-                {% if note.type_of == 'Аккаунт заблокирован!' %}
+                {% if note.type_of == 'Аккаунт заблокирован!' or  note.type_of == 'Аккаунт разблокирован!'%}
                     <a href="{% url 'auth:profile' user.pk %}" class="text-decoration-none text-dark">
                 {% else %}
                     <a href="{% url 'article:article' note.target.pk %}" class="text-decoration-none text-dark">

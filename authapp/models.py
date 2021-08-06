@@ -29,6 +29,7 @@ class User(AbstractUser):
         if self.is_blocked and self.blocked_time < timezone.now():
             self.is_blocked = False
             self.save()
+            self.notification.create(user=self, type_of='Аккаунт разблокирован!').save()
         return not self.is_blocked
 
     def block_user(self, blocked_time):
