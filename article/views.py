@@ -211,7 +211,7 @@ def comment_delete(request, pk):
         comment = get_object_or_404(Comment, pk=pk)
 
         reason = f'Комментарий <<< {comment.text} >>> удален по причине: \n{request.POST.get("reason")}'
-        Notification.add_notice(target=comment.article, reason=reason, type_of=Notification.DEL_COMMENT)
+        Notification.add_notice(comment=comment, reason=reason, type_of=Notification.DEL_COMMENT)
 
         article_id = comment.article.pk
         comment.delete_comment()

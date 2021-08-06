@@ -37,10 +37,12 @@ def notifications(request):
                 unread['publish'].append(notice)
             elif notice.type_of == Notification.RESTORE:
                 unread['restore'].append(notice)
+            elif notice.type_of == Notification.BLOCK_USER:
+                unread['blocked'].append(notice)
 
-        if request.user.is_blocked:
-            unread['blocked'] = Notification.objects.filter(type_of=Notification.BLOCK_USER,
-                                                            user=request.user.pk).order_by('-created_at').first()
+        # if request.user.is_blocked:
+        #     unread['blocked'] = Notification.objects.filter(type_of=Notification.BLOCK_USER,
+        #                                                     user=request.user.pk).order_by('-created_at').first()
         # print(unread['blocked'])
         return \
             {
