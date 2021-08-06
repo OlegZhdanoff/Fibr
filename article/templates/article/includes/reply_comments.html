@@ -1,0 +1,18 @@
+<button type="button" class="btn bg-light btn-outline-primary btn-sm w-25 mb-2 mt-1" data-toggle="collapse"
+        data-target="#commentAddForm{{ comment.pk }}-{{ reply.pk }}"
+        aria-expanded="false" aria-controls="commentAddForm{{ comment.pk }}-{{ reply.pk }}">
+    Ответить </button>
+<div class="collapse" id="commentAddForm{{ comment.pk }}-{{ reply.pk }}">
+    <form class="form" action="{% url 'article:reply_comment' comment.pk %}" method="POST">
+        {% csrf_token %}
+        <div class="form-body">
+            <div class="form-group">
+                <textarea class="form-control" id="review-desc-comment{{ comment.pk }}" name="text"
+                    placeholder="введите текст" rows="3"></textarea>
+            </div>
+            <button class="btn btn-secondary btn-sm mb-3" type="submit">
+                Отправить
+            </button>
+        </div>
+    </form>
+</div>
