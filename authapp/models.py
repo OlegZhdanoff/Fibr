@@ -46,9 +46,10 @@ class User(AbstractUser):
         total_likes = sum([article.get_total_likes() for article in articles])
         total_dislikes = sum([article.get_total_dislikes() for article in articles])
 
-        total_likes_on_comments = sum([sum([comment.get_total_likes() for comment in article.get_comments()]) for article in articles])
+        total_likes_on_comments = sum([sum([comment.get_total_likes() for comment in article.get_comments()])
+                                       for article in articles])
 
-        return total_likes - total_dislikes + 0.1 * (total_likes_on_comments)
+        return total_likes - total_dislikes + 0.1 * total_likes_on_comments
 
 
 class UserProfile(models.Model):

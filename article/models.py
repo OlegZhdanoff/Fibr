@@ -1,4 +1,5 @@
 from django.db import models
+from django.db.models import Count, Q
 from django.db.models.expressions import CombinedExpression
 from authapp.models import User
 from hub.models import Topic
@@ -47,7 +48,7 @@ class Article(models.Model):
         likes = Like.objects.filter(article=self, is_disliked=True, is_for_comment=False)
 
         return len(likes)
-    
+
     def get_total_comments(self):
         """Возвращает количество комментариев к текущей статье"""
         comments = Comment.objects.filter(article=self)
@@ -65,7 +66,7 @@ class Article(models.Model):
         """Свойство рейтинг"""
 
         return self.get_total_likes() - self.get_total_dislikes()
-    
+
     def get_total_views(self):
         """Возвращает количество просмотров к текущей статье"""
 
@@ -117,12 +118,24 @@ class Article(models.Model):
         """Удаляет/восстанавливает статью"""
         self.is_active = not self.is_active
         self.save()
-    
+
     def view(self, user):
         article_view = ArticlesViews.objects.filter(user=user, article=self)
 
         if not article_view:
             ArticlesViews.objects.create(user=user, article=self)
+
+    @classmethod
+    def get_articles_by_likes(cls):
+        return cls.objects.all().annotate(
+            num_likes=Count('like', filter=Q(like__is_liked=True))).order_by('-num_likes')
+
+    @classmethod
+    def get_articles_by_rating(cls):
+        return cls.objects.all().annotate(
+            num_rating=(Count('like', filter=Q(like__is_liked=True) & Q(like__is_for_comment=False))
+                        - Count('like', filter=Q(like__is_disliked=True) & Q(like__is_for_comment=False)))). \
+            order_by('-num_rating')
 
 
 class ArticlesViews(models.Model):
