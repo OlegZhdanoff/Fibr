@@ -100,6 +100,7 @@
 
 {% block content %}
 
+    {{ form.media }}
 
     <div class="h3 px-lg-3   text-black-50"></div>
     <div class="signup-form">
@@ -110,6 +111,9 @@
 
             <h2>Регистрация</h2>
             <p>Пожалуйста заполните форму для регистрации!</p>
+            <div class="text-danger"><small>
+                            {{ form.non_field.errors }}
+                            </small></div>
             <hr>
             <div class="form-group">
                 <div class="row">
@@ -123,6 +127,12 @@
                 {{ form.first_name }}
             </div>
             <div class="form-group">{{ form.last_name }}</div>
+            <div class="form-group has-validation"><label for="birthday">Дата рождения</label>
+                {{ form.birthday }}
+                <div class="text-danger"><small>
+                    {{ form.birthday.errors }}</small>
+                </div>
+            </div>
             <div class="form-group">
                 {{ form.password1 }}{{ form.password1.errors }}
             </div>
