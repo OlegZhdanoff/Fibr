@@ -21,6 +21,7 @@ class Notification(models.Model):
     COMMENT_DISLIKE = 'Дизлайк на коммент'
     COMMENT_REPLY = 'Ответ на коммент'
     BLOCK_USER = 'Аккаунт заблокирован!'
+    UNBLOCK_USER = 'Аккаунт разблокирован!'
     NEW_COMPLAINT = 'Новая жалоба'
     COMPLAINT_ACCEPTED = 'Жалоба принята'
     COMPLAINT_DECLINE = 'Жалоба отклонена'
@@ -38,14 +39,16 @@ class Notification(models.Model):
         (COMMENT_DISLIKE, 'Дизлайк на коммент'),
         (COMMENT_REPLY, 'Ответ на коммент'),
         (BLOCK_USER, 'Аккаунт заблокирован!'),
+        (UNBLOCK_USER, 'Аккаунт разблокирован!'),
         (NEW_COMPLAINT, 'Новая жалоба'),
         (COMPLAINT_ACCEPTED, 'Жалоба принята'),
         (COMPLAINT_DECLINE, 'Жалоба отклонена'),
     )
 
-    user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='Пользователь', null=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='notification', verbose_name='Пользователь',
+                             null=True)
     target = models.ForeignKey(Article, on_delete=models.CASCADE, verbose_name='Статья', null=True)
-    comment = models.ForeignKey(Comment, on_delete=models.CASCADE, verbose_name='Комментарий', null=True)
+    comment = models.ForeignKey(Comment, on_delete=models.SET_NULL, verbose_name='Комментарий', null=True)
     complaint = models.ForeignKey(Complaint, on_delete=models.CASCADE, verbose_name='Жалоба', null=True)
     read = models.BooleanField(verbose_name='Прочитано', default=False, db_index=True)
     type_of = models.CharField(max_length=50, choices=TYPE_CHOICES, verbose_name='тип', db_index=True)

@@ -1,6 +1,6 @@
-<button type="button" class="btn bg-light btn-outline-danger" data-toggle="collapse" data-target="#commentDelForm"
-        aria-expanded="false" aria-controls="commentDelForm"> Удалить комментарий </button>
-<div class="collapse" id="commentDelForm">
+<button type="button" class="btn bg-light btn-outline-danger btn-sm mb-1" data-toggle="collapse" data-target="#commentDelForm{{ comment.pk }}"
+        aria-expanded="false" aria-controls="commentDelForm{{ comment.pk }}"> Удалить комментарий </button>
+<div class="collapse" id="commentDelForm{{ comment.pk }}">
     <form class="form" action="{% url 'article:comment_delete' comment.pk %}" method="POST">
         {% csrf_token %}
         <div class="form-body">
