@@ -10,9 +10,9 @@
 <li class="nav-item" role="presentation">
     <a class="nav-link" id="pills-complaint-declined-tab" data-toggle="pill" href="#complaint-declined" role="tab" aria-controls="complaint-declined" aria-selected="false">Отклоненные</a>
   </li>
-<li class="nav-item" role="presentation">
-    <a class="nav-link" id="pills-complaint-all-tab" data-toggle="pill" href="#complaint-all" role="tab" aria-controls="complaint-all" aria-selected="false">Все</a>
-  </li>
+{#<li class="nav-item" role="presentation">#}
+{#    <a class="nav-link" id="pills-complaint-all-tab" data-toggle="pill" href="#complaint-all" role="tab" aria-controls="complaint-all" aria-selected="false">Все</a>#}
+{#  </li>#}
 </ul>
 <div class="tab-content" id="pills-tab-complaintContent">
   <div class="tab-pane fade show active" id="complaint-active" role="tabpanel" aria-labelledby="pills-complaint-active-tab">
@@ -36,13 +36,13 @@
         {% endfor %}
     </ul>
   </div>
-    <div class="tab-pane fade" id="complaint-all" role="tabpanel" aria-labelledby="pills-complaint-all-tab">
-        <ul>
-        {% for complaint in all_complaints %}
-            {% include 'complaint/includes/inc_complaint_modal.html' %}
-        {% endfor %}
-    </ul>
-    </div>
+{#    <div class="tab-pane fade" id="complaint-all" role="tabpanel" aria-labelledby="pills-complaint-all-tab">#}
+{#        <ul>#}
+{#        {% for complaint in all_complaints %}#}
+{#            {% include 'complaint/includes/inc_complaint_modal.html' %}#}
+{#        {% endfor %}#}
+{#    </ul>#}
+{#    </div>#}
 </div>
 
 </div>
