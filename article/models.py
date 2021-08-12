@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.db import models
 from django.db.models import Count, Q
 from django.db.models.expressions import CombinedExpression
@@ -29,9 +30,21 @@ class Article(models.Model):
     def get_user_articles(user):
         return Article.objects.filter(user=user, is_active=True)
 
-    @staticmethod
-    def get_articles():
-        return Article.objects.filter(is_active=True, is_published=True)
+    @classmethod
+    def get_articles(cls, topic=None, sorting=settings.SORTING.NEWEST):
+        if sorting == settings.SORTING.LIKED:
+            return cls.get_articles_by_likes(topic)
+        elif sorting == settings.SORTING.RATING:
+            return cls.get_articles_by_rating(topic)
+        elif sorting == settings.SORTING.COMMENTS:
+            return cls.get_articles_by_comments(topic)
+
+        if topic:
+            return Article.objects.filter(is_active=True, is_published=True, topic=topic).\
+                order_by('-created_at')
+        else:
+            return Article.objects.filter(is_active=True, is_published=True). \
+                       order_by('-created_at')[:settings.MAX_ARTICLES_BY_PAGE]
 
     @staticmethod
     def get_moderated_articles():
@@ -126,16 +139,37 @@ class Article(models.Model):
             ArticlesViews.objects.create(user=user, article=self)
 
     @classmethod
-    def get_articles_by_likes(cls):
-        return cls.objects.all().annotate(
-            num_likes=Count('like', filter=Q(like__is_liked=True))).order_by('-num_likes')
+    def get_articles_by_likes(cls, topic=None):
+        if topic:
+            return cls.objects.filter(topic=topic).annotate(
+                num_likes=Count('like', filter=Q(like__is_liked=True) & Q(like__is_for_comment=False))). \
+                order_by('-num_likes')
+        else:
+            return cls.objects.all().annotate(
+                num_likes=Count('like', filter=Q(like__is_liked=True) & Q(like__is_for_comment=False))).\
+                order_by('-num_likes')[:settings.MAX_ARTICLES_BY_PAGE]
 
     @classmethod
-    def get_articles_by_rating(cls):
-        return cls.objects.all().annotate(
-            num_rating=(Count('like', filter=Q(like__is_liked=True) & Q(like__is_for_comment=False))
-                        - Count('like', filter=Q(like__is_disliked=True) & Q(like__is_for_comment=False)))). \
-            order_by('-num_rating')
+    def get_articles_by_rating(cls, topic=None):
+        if topic:
+            return cls.objects.filter(topic=topic).annotate(
+                num_rating=(Count('like', filter=Q(like__is_liked=True) & Q(like__is_for_comment=False))
+                            - Count('like', filter=Q(like__is_disliked=True) & Q(like__is_for_comment=False)))). \
+                order_by('-num_rating')
+        else:
+            return cls.objects.all().annotate(
+                num_rating=(Count('like', filter=Q(like__is_liked=True) & Q(like__is_for_comment=False))
+                            - Count('like', filter=Q(like__is_disliked=True) & Q(like__is_for_comment=False)))). \
+                order_by('-num_rating')[:settings.MAX_ARTICLES_BY_PAGE]
+
+    @classmethod
+    def get_articles_by_comments(cls, topic=None):
+        if topic:
+            return cls.objects.filter(topic=topic).annotate(
+                num_comments=(Count('comment'))).order_by('-num_comments')
+        else:
+            return cls.objects.all().annotate(
+                num_comments=(Count('comment'))).order_by('-num_comments')[:settings.MAX_ARTICLES_BY_PAGE]
 
 
 class ArticlesViews(models.Model):

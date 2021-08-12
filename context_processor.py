@@ -1,3 +1,5 @@
+from django.conf import settings
+
 from article.models import Article
 from complaint.models import Complaint
 from hub.models import Topic
@@ -6,7 +8,13 @@ from notification.models import Notification
 
 # Добавляет в контекст меню категорий(хабов)
 def topic_list(request):
-    return {"topic_list": Topic.objects.all()}
+    if request.POST:
+        sorting = request.POST.get('sorting', settings.SORTING.NEWEST)
+    else:
+        sorting = request.GET.get('sorting', settings.SORTING.NEWEST)
+    return {"topic_list": Topic.objects.all(),
+            'sorting': sorting,
+            'sorting_list': settings.SORTING.__dict__.values()}
 
 
 def moderated_article_count(request):
