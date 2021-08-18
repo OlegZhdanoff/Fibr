@@ -1,0 +1,15 @@
+{% extends 'mainapp/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container w-75 p-2">
+    <div class="alert alert-danger" role="alert">
+        <h4 class="alert-heading">У вас нет доступа!</h4>
+        {% if user.is_blocked %}
+            <p>Ваш аккаунт заблокирован. Время блокировки до {{ user.blocked_time }} (UTC)</p>
+            <hr>
+            <p class="mb-0">Вы по прежнему можете просматривать статьи, а также управлять своим профилем</p>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

@@ -13,16 +13,26 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
-from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path, include
 
-import mainapp.urls as mainapp
-from Fibr import settings
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
+    path('', include('mainapp.urls', namespace='mainapp')),
+    path('hub/', include('hub.urls', namespace='hub')),
+    path('article/', include('article.urls', namespace='article')),
+    path('auth/', include('authapp.urls', namespace='auth')),
+    path('admin-staff/', include('adminapp.urls', namespace='admin-staff')),
+    path('summernote/', include('django_summernote.urls')),
+    path('search/', include('search.urls', namespace='search')),
+
+    # Оставил параметры админки по дефолту
     path('admin/', admin.site.urls),
-    path('', include(mainapp, namespace='main'))
+    path('notification/', include('notification.urls', namespace='notification')),
+    path('complaint/', include('complaint.urls', namespace='complaint')),
+
 ]
 
 if settings.DEBUG:

@@ -1,0 +1,49 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+    <meta name="description" content=""/>
+    <meta name="author" content=""/>
+    <title> Fibr </title>
+    <!-- Favicon-->
+    <link rel="icon" type="image/x-icon" href="{% static 'vendor/img/favicon.ico' %}"/>
+    <!-- Core theme CSS (includes Bootstrap)-->
+    <link href="{% static 'css/header.css' %}" rel="stylesheet"/>
+
+    {% block css %} {% endblock %}
+
+    {% load bootstrap4 %}
+    {% bootstrap_css %}
+    {% bootstrap_javascript jquery='full' %}
+
+</head>
+
+<body>
+
+{% include 'mainapp/includes/inc_nav_menu.html' %}
+
+
+{% block content %} {% endblock %}
+
+<footer class="footer mt-auto py-3 bg-light">
+
+    <div class="container">
+        <span class="text-muted">© 2021 «Fibr»</span>
+    </div>
+
+</footer>
+<!-- Page content-->
+
+<!-- Core theme JS-->
+<script type="text/javascript" src={% static "js/index.js" %}></script>
+<script type="text/javascript" src={% static "js/foot.js" %}></script>
+
+
+</body>
+
+</html>

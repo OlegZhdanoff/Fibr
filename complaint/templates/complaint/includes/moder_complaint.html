@@ -1,0 +1,48 @@
+<div class="tab-pane fade" id="tabs-complaint" role="tabpanel" aria-labelledby="complaint-tab">
+
+<ul class="nav nav-pills mb-3 nav-justified" id="pills-tab-complaint" role="tablist">
+  <li class="nav-item" role="presentation">
+    <a class="nav-link active" id="pills-complaint-active-tab" data-toggle="pill" href="#complaint-active" role="tab" aria-controls="complaint-active" aria-selected="true">Новые</a>
+  </li>
+  <li class="nav-item" role="presentation">
+    <a class="nav-link" id="pills-complaint-accepted-tab" data-toggle="pill" href="#complaint-accepted" role="tab" aria-controls="complaint-accepted" aria-selected="false">Принятые</a>
+  </li>
+<li class="nav-item" role="presentation">
+    <a class="nav-link" id="pills-complaint-declined-tab" data-toggle="pill" href="#complaint-declined" role="tab" aria-controls="complaint-declined" aria-selected="false">Отклоненные</a>
+  </li>
+{#<li class="nav-item" role="presentation">#}
+{#    <a class="nav-link" id="pills-complaint-all-tab" data-toggle="pill" href="#complaint-all" role="tab" aria-controls="complaint-all" aria-selected="false">Все</a>#}
+{#  </li>#}
+</ul>
+<div class="tab-content" id="pills-tab-complaintContent">
+  <div class="tab-pane fade show active" id="complaint-active" role="tabpanel" aria-labelledby="pills-complaint-active-tab">
+    <ul>
+        {% for complaint in active_complaints %}
+            {% include 'complaint/includes/inc_complaint_modal.html' %}
+        {% endfor %}
+    </ul>
+  </div>
+  <div class="tab-pane fade" id="complaint-accepted" role="tabpanel" aria-labelledby="pills-complaint-accepted-tab">
+    <ul>
+        {% for complaint in accepted_complaints %}
+            {% include 'complaint/includes/inc_complaint_modal.html' %}
+        {% endfor %}
+    </ul>
+  </div>
+  <div class="tab-pane fade" id="complaint-declined" role="tabpanel" aria-labelledby="pills-complaint-declined-tab">
+    <ul>
+        {% for complaint in declined_complaints %}
+            {% include 'complaint/includes/inc_complaint_modal.html' %}
+        {% endfor %}
+    </ul>
+  </div>
+{#    <div class="tab-pane fade" id="complaint-all" role="tabpanel" aria-labelledby="pills-complaint-all-tab">#}
+{#        <ul>#}
+{#        {% for complaint in all_complaints %}#}
+{#            {% include 'complaint/includes/inc_complaint_modal.html' %}#}
+{#        {% endfor %}#}
+{#    </ul>#}
+{#    </div>#}
+</div>
+
+</div>

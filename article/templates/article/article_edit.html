@@ -1,0 +1,46 @@
+{% extends 'article/base.html' %}
+{% load static %}
+
+{% block content %}
+    {% load bootstrap4 %}
+    {% bootstrap_css %}
+    {% bootstrap_javascript jquery='full' %}
+    <div class="container w-75">
+
+        <form method="post" enctype='multipart/form-data'>
+            {% csrf_token %}
+            {{ form.non_field.errors }}
+            {% for field in form %}
+            <div class="form-group">
+                {% if field.name == 'content' %}
+                    {{ field.label_tag }}
+                    {{ field | safe }}
+                {% elif field.name == 'is_published' %}
+                    <div class="mt-3 mb-3"> {{ field.label_tag }}
+                    {{ field}}
+                    </div>
+                {% elif field.name == 'moderate_comment' %}
+                    {% if field.value %}
+                        <div class="mt-3 mb-3 text-danger"> {{ field.label_tag }}
+                        {{ field}}
+                        </div>
+                    {% endif %}
+                {% else %}
+                    {{ field.label_tag }}
+                    {{ field}}
+                {% endif %}
+                <div class="invalid-feedback">
+                    {{ field.errors }}
+                </div>
+            </div>
+            {% endfor %}
+
+
+            <div class="form-group pt-3 border-top">
+                <button type="submit" class="btn btn-primary">Сохранить</button>
+                <button type="reset" class="btn btn-secondary">Отменить</button>
+            </div>
+        </form>
+    </div>
+
+{% endblock %}

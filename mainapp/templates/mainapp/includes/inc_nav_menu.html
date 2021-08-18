@@ -1,0 +1,75 @@
+<!-- Responsive navbar-->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+
+    <div class="container w-75">
+        <a class="navbar-brand px-lg-3" href="/">Fibr</a>
+        <form action="{% url 'search:search_result'  %}" method="get">
+            <input name="keyword" type="text" placeholder="Поиск по статьям...">
+        </form>
+    </div>
+
+</nav>
+<nav id="navbar_top" class="navbar-expand-md navbar-light bg-light">
+
+    <div class="container d-flex justify-content-between w-75">
+        <ul class="nav justify-content-center">
+
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'mainapp:index' %}">Все потоки</a>
+            </li>
+
+
+            {% for topic in topic_list %}
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'hub:topic' topic.pk %}">
+                    {{ topic.name }}
+                </a>
+            </li>
+            {% endfor %}
+
+        </ul>
+
+        <ul class="nav">
+            <li class="nav-item">
+                <div class="d-grid gap-2 d-md-block mt-1">
+                    {% if user.is_authenticated %}
+                    <button class="btn btn-outline-secondary btn-sm my-0 m-1" type="button"
+                        onclick="location.href='{% url 'auth:logout' %}'">
+                        Выйти
+                    </button>
+                    {% else %}
+                    <button class="btn btn-outline-secondary btn-sm my-0 m-1" type="button"
+                        onclick="location.href='{% url 'auth:login' %}'">
+                        Войти
+                    </button>
+                    <button class="btn btn-primary btn-sm my-0 m-1 " type="button"
+                        onclick="location.href='{% url 'auth:register' %}'">Регистрация
+                    </button>
+                    {% endif %}
+                    {% if user.is_moderator %}
+                    <button class="btn btn-outline-info btn-sm my-0 m-1" type="button"
+                        onclick="location.href='{% url 'auth:moderation' %}'">
+                        Модерация <span class="badge badge-info">{{ moderated_articles_count|add:new_complaints_count}}</span>
+                    </button>
+                    {% endif %}
+
+                    {% include 'notification/includes/inc_notification.html' %}
+
+                </div>
+            </li>
+            {% if user.is_authenticated %}
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'auth:profile' user.pk %}">{{ user.get_full_name }}</a>
+            </li>
+            {% endif %}
+
+            {% if user.is_superuser %}
+            <li class="nav-item">
+                <a class="nav-link" href="/admin-staff/">Админка</a>
+            </li>
+            {% endif %}
+
+        </ul>
+    </div>
+
+</nav>
