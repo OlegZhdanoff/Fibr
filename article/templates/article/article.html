@@ -8,7 +8,7 @@
         Автор: <a href="{% url 'auth:user_info' article.user.pk %}" class="text-info" title="Автор публикации"
             style="text-decoration: none;">
             <img src="{{ article.user.image.url }}" width="24" height="24" class="img-fluid" alt="img">
-            <span class="text">{{ article.user }}</span>
+            <span class="text">{{ article.user.get_full_name }}</span>
         </a>
         <p class="timelist text-muted"><small>{{ article.created_at }}</small></p>
 

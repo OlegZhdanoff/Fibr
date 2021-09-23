@@ -11,7 +11,10 @@ from authapp.models import User, UserProfile
 class UserRegisterForm(UserCreationForm):
     class Meta:
         model = User
-        fields = ('username', 'email', 'first_name', 'last_name', 'password1', 'password2')
+        fields = ('username', 'email', 'first_name', 'last_name', 'password1', 'password2', 'birthday')
+        widgets = {
+            'birthday': DatePickerInput(format='%Y-%m-%d'),
+        }
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -23,6 +26,13 @@ class UserRegisterForm(UserCreationForm):
         self.fields['password2'].widget.attrs['placeholder'] = 'Подтвердите пароль'
         for field in self.fields.values():
             field.widget.attrs['class'] = 'form-control'
+
+    def clean_birthday(self):
+        data = self.cleaned_data['birthday']
+        if datetime.date.today().year - data.year < 18:
+            raise forms.ValidationError("Вы слишком молоды!")
+
+        return data
 
 
 class UserAuthenticationForm(AuthenticationForm):

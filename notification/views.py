@@ -49,3 +49,10 @@ def open_article_comment_with_many_notices(request, pk):
     for notice in Notification.get_article_comment_notices(pk):
         notice.clear()
     return HttpResponseRedirect(reverse('article:article', kwargs={'pk': comment.article.pk}))
+
+
+@login_required
+def open_profile(request, pk):
+    notice = get_object_or_404(Notification, id=pk)
+    notice.clear()
+    return HttpResponseRedirect(reverse('auth:profile', kwargs={'pk': request.user.pk}))

@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.shortcuts import render
 from django.views.generic import ListView
 
@@ -11,6 +12,9 @@ class Index(ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['articles'] = Article.get_articles().order_by('-created_at')[:3]
+        context['sorting'] = self.request.GET.get('sorting', settings.SORTING.NEWEST)
+        # context['sorting'] = self.kwargs.get('sorting', settings.SORTING.NEWEST)
+
+        context['articles'] = Article.get_articles(sorting=context['sorting'])
 
         return context

@@ -5,9 +5,11 @@
 <div class="h3 pt-5 px-lg-3 pb-4 text-black-50">
     <div class="container w-75">
         <h3 class="h3"> Все потоки </h3>
+        {% include 'mainapp/includes/inc_sorting.html' %}
     </div>
 
 </div>
+
 <section>
     <div class="container w-75 p-2">
         <ul class="list-group list-group-flush w-75">
@@ -18,7 +20,7 @@
                         <a href="{% url 'auth:user_info' article.user.pk %}" class="text-info" title="Автор публикации"
                             style="text-decoration: none;">
                             <img src="{{ article.user.image.url }}" width="24" height="24" class="img-fluid" alt="img">
-                            <span class="text">{{ article.user }}</span>
+                            <span class="text">{{ article.user.get_full_name }}</span>
                         </a>
                         <p class="timelist text-muted"><small>
                                 {{ article.created_at }}

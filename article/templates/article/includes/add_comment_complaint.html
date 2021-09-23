@@ -1,8 +1,8 @@
 {% if user.is_authenticated and not user.pk == user_info.pk %}
 <button type="button" class="btn bg-light btn-outline-warning btn-sm mb-3" data-toggle="collapse"
-        data-target="#complaintCommentForm"
+        data-target="#complaintCommentForm{{ comment.pk }}"
         aria-expanded="false" aria-controls="complaintCommentForm"> Пожаловаться </button>
-<div class="collapse" id="complaintCommentForm">
+<div class="collapse" id="complaintCommentForm{{ comment.pk }}">
 <form class="form" action="{% url 'complaint:create' comment.pk %}" method="POST">
     {% csrf_token %}
     <div class="form-body">

@@ -13,6 +13,8 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
+from dataclasses import dataclass
+
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # Quick-start development settings - unsuitable for production
@@ -150,3 +152,16 @@ LOGIN_REDIRECT_URL = '/'
 # create/edit article
 X_FRAME_OPTIONS = 'SAMEORIGIN'
 SUMMERNOTE_THEME = 'bs4'
+
+
+@dataclass
+class Sorting:
+    NEWEST: str = 'По новизне'
+    LIKED: str = 'По лайкам'
+    COMMENTS: str = 'По комментариям'
+    RATING: str = 'По рейтингу'
+
+
+SORTING = Sorting()
+
+MAX_ARTICLES_BY_PAGE = 5

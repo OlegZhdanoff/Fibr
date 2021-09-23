@@ -1,3 +1,5 @@
+from django.conf import settings
+
 from article.models import Article
 from complaint.models import Complaint
 from hub.models import Topic
@@ -6,7 +8,13 @@ from notification.models import Notification
 
 # Добавляет в контекст меню категорий(хабов)
 def topic_list(request):
-    return {"topic_list": Topic.objects.all()}
+    if request.POST:
+        sorting = request.POST.get('sorting', settings.SORTING.NEWEST)
+    else:
+        sorting = request.GET.get('sorting', settings.SORTING.NEWEST)
+    return {"topic_list": Topic.objects.all(),
+            'sorting': sorting,
+            'sorting_list': settings.SORTING.__dict__.values()}
 
 
 def moderated_article_count(request):
@@ -17,6 +25,8 @@ def moderated_article_count(request):
 
 def notifications(request):
     if request.user.is_authenticated:
+
+        request.user.is_not_blocked()
         """создаем отдельную структуру для определенных типов уведомлений, чтобы во фронте не заниматься сортировкой"""
         unread = {
             'moderator': [],
@@ -37,10 +47,14 @@ def notifications(request):
                 unread['publish'].append(notice)
             elif notice.type_of == Notification.RESTORE:
                 unread['restore'].append(notice)
+            elif notice.type_of == Notification.BLOCK_USER:
+                unread['blocked'] = notice
+            elif notice.type_of == Notification.UNBLOCK_USER:
+                unread['unblocked'] = notice
 
-        if request.user.is_blocked:
-            unread['blocked'] = Notification.objects.filter(type_of=Notification.BLOCK_USER,
-                                                            user=request.user.pk).order_by('-created_at').first()
+        # if request.user.is_blocked:
+        #     unread['blocked'] = Notification.objects.filter(type_of=Notification.BLOCK_USER,
+        #                                                     user=request.user.pk).order_by('-created_at').first()
         # print(unread['blocked'])
         return \
             {

@@ -12,4 +12,5 @@ urlpatterns = [
     path('open-article-comment-many/<int:pk>/', notification.open_article_comment_with_many_notices,
          name='open_article_comment_many'),
     path('edit-article/<int:pk>/', notification.edit_article, name='edit_article'),
+    path('open-profile/<int:pk>/', notification.open_profile, name='open_profile'),
 ]

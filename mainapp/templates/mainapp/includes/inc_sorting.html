@@ -1,0 +1,16 @@
+<small style="font-size: 58%">Сортировка:</small>
+<div class="dropdown">
+  <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" id="dropdownSorting"
+          data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    {{ sorting }}
+  </button>
+  <ul class="dropdown-menu" aria-labelledby="dropdownSorting">
+      {% for el in sorting_list %}
+          <li><a class="dropdown-item" href="{{ request.path }}?sorting={{ el }}
+{#            {% if request.META.QUERY_STRING %}#}
+{#                ?{{ request.META.QUERY_STRING }}#}
+{#            {% endif %}#}
+            ">{{ el }}</a></li>
+      {% endfor %}
+  </ul>
+</div>
